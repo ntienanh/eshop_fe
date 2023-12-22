@@ -270,6 +270,19 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tabler/icons-react@^2.44.0":
+  version "2.44.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.44.0.tgz#8119d3b6321ebaf98400fba7932e280d008125f8"
+  integrity sha512-10qwrqJ/QBNgY4YYer9PjWmCwm3wv9aVK8kGAkFKkwu6UJURVLZ2ea+oFh5j6vSXnA1zMtUG+X8anR5fZ67Isw==
+  dependencies:
+    "@tabler/icons" "2.44.0"
+    prop-types "^15.7.2"
+
+"@tabler/icons@2.44.0":
+  version "2.44.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.44.0.tgz#9f3cf86150b23e84a6eaf9d29ab2b2aaa8c7eed6"
+  integrity sha512-WPPtihDcAwEm1QZM9MXQw6+r/R2/qx7KMU1eegsi9DsqBLAb0W2kbt6e/syvd6j9c+6XNpRVBW1ziGqSWQAWOg==
+
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
@@ -281,11 +294,6 @@
   integrity sha512-nNPsNE65wjMxEKI93yOP+NPGGBJz/PoN3kZsVLee0XMiJolxSekEVD8wRwBUBqkwc7UWop0edW50yrCQW4CyRw==
   dependencies:
     undici-types "~5.26.4"
-
-"@types/nprogress@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.npmjs.org/@types/nprogress/-/nprogress-0.2.3.tgz"
-  integrity sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==
 
 "@types/prop-types@*":
   version "15.7.11"
@@ -1818,11 +1826,6 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/normalize-range/-/normalize-range-0.1.2.tgz"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
-
-nprogress@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/nprogress/-/nprogress-0.2.0.tgz"
-  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
 
 object-assign@^4.0.1, object-assign@^4.1.1:
   version "4.1.1"
