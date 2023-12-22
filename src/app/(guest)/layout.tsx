@@ -5,7 +5,7 @@ const GuestLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <p>Header</p>
       {children}
-    <p>Footer</p>
+      <p>Footer</p>
     </>
   );
 };
