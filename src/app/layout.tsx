@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@mantine/nprogress/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { NavigationProgress } from "@mantine/nprogress";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider>
+          <NavigationProgress />
           <Notifications limit={5} position="bottom-right" autoClose={3000} />
           {children}
         </MantineProvider>
