@@ -170,6 +170,13 @@
   dependencies:
     "@mantine/store" "7.3.2"
 
+"@mantine/spotlight@^7.3.2":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-7.3.2.tgz#60f0f71aa15573dd366449fd0dff68057dea9a79"
+  integrity sha512-wvrIj7ZZKoVwKFxgY+KvWilu1YYdkv8HDUzZzRxOlD9fjPyyMRgBxAdVkxA4sLbol4XoCpW83dNIiXDII4httw==
+  dependencies:
+    "@mantine/store" "7.3.2"
+
 "@mantine/store@7.3.2":
   version "7.3.2"
   resolved "https://registry.npmjs.org/@mantine/store/-/store-7.3.2.tgz"
