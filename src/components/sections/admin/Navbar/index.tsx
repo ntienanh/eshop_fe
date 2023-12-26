@@ -4,7 +4,7 @@ import React from 'react'
 import classes from './style.module.css';
 import LinksGroup from '../LinksGroup';
 
-const mockdata = [
+ const mockdata = [
     { label: 'Dashboard', icon: IconGauge },
     {
       label: 'Market news',
@@ -33,7 +33,7 @@ const mockdata = [
       label: 'Security',
       icon: IconLock,
       links: [
-        { label: 'Enable 2FA', link: '/' },
+        { label: 'Enable 2FA', link: '/user' },
         { label: 'Change password', link: '/' },
         { label: 'Recovery codes', link: '/' },
       ],
@@ -41,7 +41,9 @@ const mockdata = [
   ];
 
 const AdminNavbar = () => {
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+    const links = mockdata.map((item) => {
+      return <LinksGroup {...item} key={item.label} />
+    });
 
     return (
       <nav className={classes.navbar}>

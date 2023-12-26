@@ -1,6 +1,7 @@
 "use client";
 
 import AdminNavbar from "@/components/sections/admin/Navbar";
+import Navbar2 from "@/components/sections/admin/Navbar2";
 import { useNProgressRouter } from "@/hooks/useNProgress";
 import { spotlightActions } from "@/jsons/spotlight";
 import {
@@ -93,6 +94,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <AdminNavbar />
+        {/* <Navbar2 /> */}
         {/* {Array(10)
           .fill(0)
           .map((_, index) => (
