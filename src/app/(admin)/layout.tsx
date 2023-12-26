@@ -93,7 +93,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <AdminNavbar />
+        {/* <AdminNavbar /> */}
         {/* <Navbar2 /> */}
         {/* {Array(10)
           .fill(0)
