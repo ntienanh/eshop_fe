@@ -15,9 +15,6 @@ const Navbar = () => {
       {nav.map((item, idx) => {
         const { link, label, icon: ICon } = item || {};
 
-        console.log('path',path);
-        console.log('link',link);
-
         return (
           <NavLink
             key={idx}
