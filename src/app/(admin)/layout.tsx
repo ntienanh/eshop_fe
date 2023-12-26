@@ -1,7 +1,6 @@
 "use client";
 
-import AdminNavbar from "@/components/sections/admin/Navbar";
-import Navbar2 from "@/components/sections/admin/Navbar2";
+import Navbar from "@/components/sections/admin/Navbar";
 import { useNProgressRouter } from "@/hooks/useNProgress";
 import { spotlightActions } from "@/jsons/spotlight";
 import {
@@ -10,25 +9,27 @@ import {
   Avatar,
   Badge,
   Burger,
-  Button,
   Flex,
   Group,
   Input,
   Kbd,
-  Skeleton,
   Text,
   Tooltip,
-  rem,
+  rem
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconSearch, IconCurrentLocation } from "@tabler/icons-react";
+import {
+  IconCurrentLocation,
+  IconSearch
+} from "@tabler/icons-react";
 import React from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [opened, { toggle }] = useDisclosure();
   const router = useNProgressRouter();
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -93,13 +94,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        {/* <AdminNavbar /> */}
-        {/* <Navbar2 /> */}
-        {/* {Array(10)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))} */}
+        <Navbar />
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>

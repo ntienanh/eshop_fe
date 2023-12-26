@@ -1,59 +1,36 @@
-import { ScrollArea } from '@mantine/core';
-import { IconAdjustments, IconCalendarStats, IconFileAnalytics, IconGauge, IconLock, IconNotes, IconPresentationAnalytics } from '@tabler/icons-react';
-import React from 'react'
-import classes from './style.module.css';
-import LinksGroup from '../LinksGroup';
+"use client";
+import { NavLink } from "@mantine/core";
+import { IconSchool, IconUsers } from "@tabler/icons-react";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 
- const mockdata = [
-    { label: 'Dashboard', icon: IconGauge },
-    {
-      label: 'Market news',
-      icon: IconNotes,
-      initiallyOpened: true,
-      links: [
-        { label: 'Overview', link: '/' },
-        { label: 'Forecasts', link: '/' },
-        { label: 'Outlook', link: '/' },
-        { label: 'Real time', link: '/' },
-      ],
-    },
-    {
-      label: 'Releases',
-      icon: IconCalendarStats,
-      links: [
-        { label: 'Upcoming releases', link: '/' },
-        { label: 'Previous releases', link: '/' },
-        { label: 'Releases schedule', link: '/' },
-      ],
-    },
-    { label: 'Analytics', icon: IconPresentationAnalytics },
-    { label: 'Contracts', icon: IconFileAnalytics },
-    { label: 'Settings', icon: IconAdjustments },
-    {
-      label: 'Security',
-      icon: IconLock,
-      links: [
-        { label: 'Enable 2FA', link: '/user' },
-        { label: 'Change password', link: '/' },
-        { label: 'Recovery codes', link: '/' },
-      ],
-    },
+const Navbar = () => {
+  const path = usePathname()
+  const nav = [
+    { link:"/admin/user", label: "Users", icon: IconUsers },
+    { link: "/admin/product", label: "Products", icon: IconSchool },
   ];
 
-const AdminNavbar = () => {
-    const links = mockdata.map((item) => {
-      return <LinksGroup {...item} key={item.label} />
-    });
+  return (
+    <>
+      {nav.map((item, idx) => {
+        const { link, label, icon: ICon } = item || {};
 
-    return (
-      <nav className={classes.navbar}>
-        <ScrollArea className={classes.links}>
-          <div className={classes.linksInner}>{links}</div>
-        </ScrollArea>
-  
-       
-      </nav>
-    );
-}
+        console.log('path',path);
+        console.log('link',link);
 
-export default AdminNavbar
+        return (
+          <NavLink
+            key={idx}
+            href={link}
+            leftSection={<ICon size="1rem" stroke={1.5} />}
+            label={label}
+            defaultOpened
+            active={path === link}
+          />
+        );
+      })}
+    </>
+  );
+};
+
+export default Navbar;
