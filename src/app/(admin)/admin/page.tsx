@@ -1,6 +1,7 @@
 "use client";
 import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
 import {
+  Accordion,
   Badge,
   Box,
   Button,
@@ -8,11 +9,10 @@ import {
   Flex,
   Grid,
   Image,
+  List,
   Text,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconBrandAmongUs, IconChessKing } from "@tabler/icons-react";
-import React from "react";
+import { IconBrandAmongUs, IconBrandDatabricks } from "@tabler/icons-react";
 import CountUp from "react-countup";
 
 const AdminPage = () => {
@@ -20,11 +20,13 @@ const AdminPage = () => {
   const router = useNProgressRouter();
 
   return (
-    <Box>
+    <Box className="w-4/5 mx-[auto] my-[0]">
       <Flex direction={"column"} rowGap={16}>
-        <Flex align={"center"} columnGap={12}>
-          <Text className="mb-4 text-4xl">👋 Chào mừng bạn `Admin`</Text>
-          <Badge variant="light" color="yellow" size="lg" radius="xs">
+        <Flex align={"flex-end"} justify={'flex-start'} columnGap={12}>
+          <Text className="text-4xl font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+            👋 Chào mừng bạn `Admin`
+          </Text>
+          <Badge variant="light" color="yellow" size="xl" radius="xs">
             Role
           </Badge>
         </Flex>
@@ -58,13 +60,28 @@ const AdminPage = () => {
           })}
         </Grid>
 
-        <Button
-          className="self-start"
-          variant="light"
-          onClick={() => router.back()}
-        >
-          Back
-        </Button>
+        <Accordion variant="contained" defaultValue={"item1"}>
+          <Accordion.Item value="item1">
+            <Accordion.Control
+              icon={<IconBrandDatabricks color="var(--mantine-color-blue-6)" />}
+            >
+              Platform
+            </Accordion.Control>
+            <Accordion.Panel>
+              <List>
+                <List.Item>Liệt kê các tech stack tại đây</List.Item>
+                <List.Item>Install dependencies with yarn</List.Item>
+                <List.Item>
+                  To start development server run npm start command
+                </List.Item>
+                <List.Item>
+                  Run tests to make sure your changes do not break the build
+                </List.Item>
+                <List.Item>Submit a pull request once you are done</List.Item>
+              </List>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
 
         <Image
           fit="contain"
