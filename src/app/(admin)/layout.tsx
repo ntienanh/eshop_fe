@@ -15,15 +15,12 @@ import {
   Kbd,
   Text,
   Tooltip,
-  rem
+  rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import {
-  IconCurrentLocation,
-  IconSearch
-} from "@tabler/icons-react";
+import { IconCurrentLocation, IconSearch } from "@tabler/icons-react";
 import React from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
