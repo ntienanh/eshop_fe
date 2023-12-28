@@ -22,10 +22,13 @@ const AdminPage = () => {
   return (
     <Box className="w-4/5 mx-[auto] my-[0]">
       <Flex direction={"column"} rowGap={16}>
-        <Flex align={"flex-end"} justify={'flex-start'} columnGap={12}>
-          <Text className="text-4xl font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-            👋 Chào mừng bạn `Admin`
-          </Text>
+        <Flex align={"flex-end"} justify={"flex-start"} columnGap={12}>
+          <Flex className="text-3xl font-semibold gap-x-3">
+            👋
+            <Text className="text-4xl font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+              Chào mừng bạn `Admin`
+            </Text>
+          </Flex>
           <Badge variant="light" color="yellow" size="xl" radius="xs">
             Role
           </Badge>
@@ -41,7 +44,7 @@ const AdminPage = () => {
                   padding="md"
                   radius="md"
                   withBorder
-                  className="hover:bg-[#f2fbf6] cursor-pointer hover:border border-solid flex gap-x-8 items-center justify-evenly flex-row"
+                  className="hover:bg-[#f2fbf6] transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-300 cursor-pointer hover:border border-solid flex gap-x-8 items-center justify-evenly flex-row"
                 >
                   <IconBrandAmongUs size={54} />
                   <div className="flex gap-y-2 flex-col items-center flex-1">

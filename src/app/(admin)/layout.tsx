@@ -13,19 +13,31 @@ import {
   Group,
   Input,
   Kbd,
+  Modal,
+  Popover,
+  Stack,
   Text,
   Tooltip,
-  rem,
+  rem
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconCurrentLocation, IconSearch } from "@tabler/icons-react";
-import classes from "./admin.module.css";
+import {
+  IconCheck,
+  IconCurrentLocation,
+  IconLogout,
+  IconSearch,
+} from "@tabler/icons-react";
 import React from "react";
+import classes from "./admin.module.css";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [opened, { toggle }] = useDisclosure();
+  const [changePassOpened, { open: changePassOpen ,close:changePassClose}] = useDisclosure();
+  const [popoverOpened, { toggle: popoverToggle, close: popoverClose }] =
+    useDisclosure();
   const router = useNProgressRouter();
 
   return (
@@ -69,9 +81,65 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   </>
                 }
               />
-              <Avatar color="cyan" radius="xl">
-                <Text>Ad</Text>
-              </Avatar>
+              <Modal
+                opened={changePassOpened}
+                onClose={changePassClose}
+                title="Change password"
+              >
+                123
+              </Modal>
+
+              <Popover
+                opened={popoverOpened}
+                onClose={popoverClose}
+                width={200}
+                position="bottom-end"
+                withArrow
+                shadow="md"
+              >
+                <Popover.Target>
+                  <Avatar
+                    color="cyan"
+                    radius="xl"
+                    className="cursor-pointer"
+                    onClick={popoverToggle}
+                  >
+                    <Text>Ad</Text>
+                  </Avatar>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Stack gap={"sm"}>
+                    <Text className="cursor-pointer hover:bg-slate-200 rounded p-2">
+                      Profile
+                    </Text>
+
+                    <Text
+                      onClick={() => {
+                        changePassOpen();
+                        popoverClose();
+                      }}
+                      className="cursor-pointer hover:bg-slate-200 rounded p-2"
+                    >
+                      Change Password
+                    </Text>
+
+                    <Group
+                      className="cursor-pointer hover:bg-slate-200 rounded p-2 justify-between"
+                      onClick={() => {
+                        // signOut();
+                        notifications.show({
+                          message: `Logout successfully`,
+                          color: "green",
+                          icon: <IconCheck size="1.1rem" />,
+                        });
+                      }}
+                    >
+                      <Text c="var(--mantine-color-red-7)">Logout</Text>
+                      <IconLogout color="var(--mantine-color-red-7)" />
+                    </Group>
+                  </Stack>
+                </Popover.Dropdown>
+              </Popover>
             </Group>
           </Flex>
         </Flex>
@@ -94,9 +162,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <AppShell.Navbar p="md">
         <Navbar />
       </AppShell.Navbar>
-      <AppShell.Main className={classes.main}>
-        {children}
-      </AppShell.Main>
+      <AppShell.Main className={classes.main}>{children}</AppShell.Main>
     </AppShell>
   );
 };

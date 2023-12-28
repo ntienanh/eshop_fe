@@ -9,6 +9,7 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { NavigationProgress } from "@mantine/nprogress";
 import QueryClientProvider from "@/components/layouts/QueryClientProvider";
+import { ModalsProvider } from "@mantine/modals";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,11 +30,17 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider>
-          <QueryClientProvider>
-            <NavigationProgress />
-            <Notifications limit={5} position="bottom-right" autoClose={3000} />
-            {children}
-          </QueryClientProvider>
+          <ModalsProvider>
+            <QueryClientProvider>
+              <NavigationProgress />
+              <Notifications
+                limit={5}
+                position="bottom-right"
+                autoClose={3000}
+              />
+              {children}
+            </QueryClientProvider>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>
