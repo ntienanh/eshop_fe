@@ -21,6 +21,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconCurrentLocation, IconSearch } from "@tabler/icons-react";
+import classes from "./admin.module.css";
 import React from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -93,7 +94,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <AppShell.Navbar p="md">
         <Navbar />
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main className={classes.main}>
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 };

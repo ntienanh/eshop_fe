@@ -18,12 +18,16 @@
     "@tabler/icons-react": "^2.44.0",
     "@tanstack/react-query": "^5.15.0",
     "@tanstack/react-query-devtools": "^5.15.0",
+    "dayjs": "^1.11.10",
     "next": "14.0.4",
     "react": "^18",
     "react-countup": "^6.5.0",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.49.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@hookform/resolvers": "^3.3.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
