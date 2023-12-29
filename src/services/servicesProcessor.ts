@@ -21,6 +21,7 @@ export const serviceProcessor = async <T extends keyof ResponseData, K = any>(
 
   const data = method === HTTPMethod.Get ? undefined : body;
   const url = buildUrl(serviceName, params, querystring, externalUrl);
+
   const res = await fetch(url, {
     body: JSON.stringify(data),
     method,
@@ -43,10 +44,11 @@ const buildUrl = (
   externalUrl?: boolean
 ): string => {
   const url = process.env.NEXT_PUBLIC_API_URL as string;
-  const apiUrl = externalUrl ? "" : url.endsWith("/") ? url.slice(0, -1) : url;
+  const apiUrl = externalUrl ? "" : url?.endsWith("/") ? url.slice(0, -1) : url;
   const newParams = buildParam(params as any);
   const api = Config?.[serviceName] || `/${serviceName}`;
-  return `${apiUrl}${api}${newParams}${querystring}`;
+  const newQuerystring = !!querystring ? querystring : "";
+  return `${apiUrl}${api}${newParams}${newQuerystring}`;
 };
 
 const buildParam = <T extends keyof ResponseData>(params: IParams<T>) => {

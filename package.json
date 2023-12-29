@@ -19,6 +19,7 @@
     "@tabler/icons-react": "^2.44.0",
     "@tanstack/react-query": "^5.15.0",
     "@tanstack/react-query-devtools": "^5.15.0",
+    "@tanstack/react-table": "^8.11.2",
     "dayjs": "^1.11.10",
     "next": "14.0.4",
     "react": "^18",

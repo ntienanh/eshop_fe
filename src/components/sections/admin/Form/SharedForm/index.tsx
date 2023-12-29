@@ -47,7 +47,6 @@ const SharedForm = (props: IStudentFormProps) => {
   });
 
   const onSubmit = async (body: any) => {
-    console.log("onSubmit", body);
     delete body.createdAt;
     delete body.updatedAt;
     delete body.createdBy;

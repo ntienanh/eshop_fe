@@ -1,0 +1,11 @@
+.root {
+  & tr {
+    border-top: rem(1) solid var(--aitech-color-other-divider);
+  }
+
+  & tr:hover {
+    cursor: pointer;
+    background-color: var(--aitech-color-action-hover);
+    transition: background-color 0.15s;
+  }
+}
