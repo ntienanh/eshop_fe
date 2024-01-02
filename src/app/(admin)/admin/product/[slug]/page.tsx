@@ -1,10 +1,95 @@
-'use client'
+"use client";
 import SharedForm from "@/components/sections/admin/Form/SharedForm";
+import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
+import { serviceProcessor } from "@/services/servicesProcessor";
+import { HTTPMethod, ServiceName } from "@/types/enum";
+import { Box, Button, Card } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import React from "react";
 
 const ProductPage = () => {
+  useNProgress();
+  const queryClient = useQueryClient();
+  const router = useNProgressRouter();
+  const params = useParams();
+  const { slug } = params || {};
+  const isCreate = slug === "create";
+
+  const productQuery = useQuery({
+    queryKey: [ServiceName.Product],
+    queryFn: () =>
+      serviceProcessor({
+        serviceName: ServiceName.Product,
+        options: { params: { slug }, querystring: "?populate=*" },
+      }),
+    staleTime: 10 * 1000,
+    enabled: !isCreate,
+  }) as any;
+
+  const productData = productQuery?.data?.data?.attributes || {};
+
+  const createMutation = useMutation({
+    mutationKey: [ServiceName.Product, slug],
+    mutationFn: async (body: any) =>
+      serviceProcessor({
+        serviceName: ServiceName.Product,
+        method: HTTPMethod.Post,
+        body,
+      }),
+    onSuccess: (data) => {
+      notifications.show({
+        message: `Product created successfully!`,
+        color: "green",
+        icon: <IconCheck size="1.1rem" />,
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationKey: [ServiceName.Product, slug],
+    mutationFn: async (body: any) =>
+      serviceProcessor({
+        serviceName: ServiceName.Product,
+        method: HTTPMethod.Put,
+        body,
+        options: { params: { slug } },
+      }),
+    onSuccess: (data) => {
+      notifications.show({
+        message: `Updated successfully!`,
+        color: "green",
+        icon: <IconCheck size="1.1rem" />,
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: [ServiceName.Product, slug],
+    mutationFn: async () =>
+      serviceProcessor({
+        serviceName: ServiceName.Product,
+        method: HTTPMethod.Delete,
+        options: { params: { slug } },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
+      notifications.show({
+        message: `Deleted successfully!`,
+        color: "green",
+        icon: <IconCheck size="1.1rem" />,
+      });
+    },
+  });
+
   return (
-    <SharedForm data={"null"} onCreate={() => null} onUpdate={() => null} />
+    <SharedForm
+      data={productData}
+      onCreate={() => null}
+      onUpdate={() => null}
+    />
   );
 };
 

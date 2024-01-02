@@ -1,5 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Flex, Grid, Group, Stack, Text } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
@@ -78,9 +88,9 @@ const SharedForm = (props: IStudentFormProps) => {
           Back
         </Button>
 
-        <Group>
-          <Text fz={"1.5rem"} fw={600}>
-            {isCreate ? "Create an entry" : data?.attributes?.name}
+        <Flex justify={"space-between"} align={"center"} columnGap={12}>
+          <Text fz={"1.5rem"} fw={600} className="flex-1">
+            {isCreate ? "Create an entry" : data?.name}
           </Text>
 
           <Group>
@@ -98,44 +108,36 @@ const SharedForm = (props: IStudentFormProps) => {
               </Button>
             )}
           </Group>
-        </Group>
+        </Flex>
 
-        <Grid mt={24} pl={8} pr={8}>
-          <Grid.Col p={16} span={10}>
-            <Grid>
-              <Grid.Col span={6}>
-                <TextInputDetail
-                  name={"name"}
-                  control={control}
-                  withAsterisk
-                  label="Name"
-                  placeholder="Please enter your name"
-                />
-              </Grid.Col>
-            </Grid>
+        <Grid mt={24}>
+          <Grid.Col p={16} span={9}>
+            <Card>
+              <Grid>
+                <Grid.Col span={6}>
+                  <TextInputDetail
+                    name={"name"}
+                    control={control}
+                    withAsterisk
+                    label="Name"
+                    placeholder="Please enter your name"
+                  />
+                </Grid.Col>
+              </Grid>
+            </Card>
           </Grid.Col>
 
-          <Grid.Col
-            ml={24}
-            p={0}
-            span={2}
-            //    sx={{ borderRadius: 4 }}
-          >
+          <Grid.Col span={3} pt={16}>
             <Stack>
-              <Group
-                // position="center"
-                p={12}
-                // sx={{
-                //   backgroundColor: isCreate ? "#EAFBE7" : "#EAF5FF",
-                //   border: isCreate ? "2px solid #C6F0C2" : "2px solid #B8E1FF",
-                //   borderRadius: 4,
-                // }}
+              <Text
+                className={`${
+                  isCreate ? "bg-green-200" : "bg-blue-200"
+                } w-full rounded-md p-3`}
               >
-                <Text color={isCreate ? "green" : "blue"}>
-                  <strong>{isCreate ? "Create" : "Detail"} version</strong>
-                </Text>
-              </Group>
-              <Box p={16} className="bg-white rounded">
+                <strong color="red">{isCreate ? "Create" : "Detail"} version</strong>
+              </Text>
+
+              <Card>
                 <Stack>
                   <Text>INFORMATION</Text>
                   <Stack>
@@ -158,7 +160,7 @@ const SharedForm = (props: IStudentFormProps) => {
                     </Group>
                   </Stack>
                 </Stack>
-              </Box>
+              </Card>
             </Stack>
           </Grid.Col>
         </Grid>

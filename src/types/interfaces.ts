@@ -22,7 +22,7 @@ export interface Services<T extends keyof ResponseData, K = any> {
 
 export interface ExtendsRequestProps<T extends keyof ResponseData> {
   params: IParams<T>;
-  querystring: IQuerystring<T>;
+  querystring: IQuerystring<T> | any;
   auth: boolean;
   timeout?: number;
   externalUrl?: boolean;

@@ -1,8 +1,7 @@
-"use client";
-
-import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
+import TableCell from "@/components/elements/admin/TableCell";
+import TableHead from "@/components/elements/admin/TableHead";
+import { useNProgressRouter } from "@/hooks/useNProgress";
 import { serviceProcessor } from "@/services/servicesProcessor";
-import { ServiceName } from "@/types/enum";
 import {
   ActionIcon,
   Box,
@@ -21,104 +20,60 @@ import { useDebouncedState } from "@mantine/hooks";
 import {
   IconAlignLeft,
   IconArrowLeft,
-  IconArrowsSort,
-  IconEdit,
   IconFilterPlus,
-  IconMenu2,
   IconPlus,
-  IconSearch,
-  IconSettings,
-  IconSortAscending,
-  IconSortDescending,
   IconTrashXFilled,
 } from "@tabler/icons-react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import React from "react";
+import { IconSearch } from "@tabler/icons-react";
+import { IconSettings } from "@tabler/icons-react";
+import { IconMenu2 } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
+import { IconArrowsSort } from "@tabler/icons-react";
+import { IconSortAscending } from "@tabler/icons-react";
+import { IconSortDescending } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
+  Table,
   createColumnHelper,
   flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
 } from "@tanstack/react-table";
-import TableHead from "@/components/elements/admin/TableHead";
-import TableCell from "@/components/elements/admin/TableCell";
-import Table from "@/components/elements/admin/Table";
-import TableHeader from "@/components/elements/admin/TableHeader";
-import TableRow from "@/components/elements/admin/TableRow";
-import TableBody from "@/components/elements/admin/TableBody";
-import { IconEye } from "@tabler/icons-react";
-import TableCollection from "@/components/sections/admin/TableCollection";
+import React from "react";
 
-const ProductPage = () => {
-  useNProgress();
+interface ITableCollectionProps {
+  table: Table<any>;
+  serviceName: any;
+}
+
+const TableCollection = (props: ITableCollectionProps) => {
   const router = useNProgressRouter();
+  const { serviceName, table } = props || {};
   const [searchOpened, setSearchOpened] = React.useState(false);
   const [debouncedSearchValue, setDebouncedSearchValue] = useDebouncedState(
     "",
     300
   );
-  // const [data, setData] = React.useState(() => [...defaultData]);
-  // const [columns] = React.useState<typeof defaultColumns>(() => [
-  //   ...defaultColumns,
-  // ]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
 
-  const productQuery = useQuery({
-    queryKey: [ServiceName.Product],
-    queryFn: () =>
-      serviceProcessor({
-        serviceName: ServiceName.Product,
-        options: { querystring: "?populate=*" },
-      }),
+  const entityQuery = useQuery({
+    queryKey: [serviceName],
+    queryFn: () => serviceProcessor({ serviceName: serviceName }),
     staleTime: 10 * 1000,
   }) as any;
 
   const dataAttributes = Object.keys(
-    productQuery?.data?.data?.[0]?.attributes || {}
+    entityQuery?.data?.data?.[0]?.attributes || {}
   );
   const attributesKeys = ["id", ...dataAttributes];
   const columnHelper = createColumnHelper<any>();
-
-  const mainColumns = React.useMemo(
-    () =>
-      attributesKeys.map((attribute) => {
-        return columnHelper.accessor(attribute, {
-          id: attribute,
-          header: ({ column }) => {
-            const SortIcon =
-              (column.getIsSorted() === "desc" && IconSortDescending) ||
-              (column.getIsSorted() === "asc" && IconSortAscending) ||
-              IconArrowsSort;
-            return (
-              <TableHead>
-                <button
-                  onClick={column.getToggleSortingHandler()}
-                  className="flex text-sm gap-x-2"
-                >
-                  <Text>{attribute}</Text>
-                  <SortIcon />
-                </button>
-              </TableHead>
-            );
-          },
-          cell: ({ row }) => (
-            <TableCell key={row.id}>
-              <Text>{attribute}</Text>
-            </TableCell>
-          ),
-        });
-      }),
-    [attributesKeys]
-  );
-
+  
   const columns: ColumnDef<any>[] = [
     columnHelper.display({
       id: "checkbox",
       header: ({ table }) => (
         <TableHead>
           <Checkbox
+            // checked={table.getIsAllRowsSelected()}
             indeterminate={table.getIsSomeRowsSelected()}
             onChange={table.getToggleAllRowsSelectedHandler()}
           />
@@ -126,11 +81,38 @@ const ProductPage = () => {
       ),
       cell: ({ row, cell }) => (
         <TableCell key={cell.id}>
-          <Checkbox onChange={row.getToggleSelectedHandler()} />
+          <Checkbox
+            // checked={row.getIsSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
         </TableCell>
       ),
     }),
-    ...mainColumns,
+    ...attributesKeys.map((attribute) => {
+      return columnHelper.accessor(attribute, {
+        id: attribute,
+        header: ({ column }) => {
+          const SortIcon =
+            (column.getIsSorted() === "desc" && IconSortDescending) ||
+            (column.getIsSorted() === "asc" && IconSortAscending) ||
+            IconArrowsSort;
+          return (
+            <TableHead>
+              <button type="button" onClick={column.getToggleSortingHandler()}>
+                {/* <Text className={classes.headerText}>{convertCamel(attribute)}</Text> */}
+                <Text>{attribute}</Text>
+                <SortIcon />
+              </button>
+            </TableHead>
+          );
+        },
+        cell: ({ row }) => (
+          <TableCell key={row.id}>
+            <Text variant="body-2">{attribute}</Text>
+          </TableCell>
+        ),
+      });
+    }),
     columnHelper.display({
       id: "actions",
       header: ({ column }) => (
@@ -138,7 +120,6 @@ const ProductPage = () => {
           <Text>{column.id}</Text>
         </TableHead>
       ),
-
       cell: ({ column }) => (
         <TableCell key={column.id}>
           <div>
@@ -150,21 +131,6 @@ const ProductPage = () => {
       ),
     }),
   ];
-
-  const productData =
-    productQuery?.data?.data?.map((item: any) => {
-      const { attributes, ...rest } = item;
-      return { ...rest, ...attributes };
-    }) || [];
-
-  const table = useReactTable({
-    data: productData,
-    columns, // col table
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
-
-  console.log(productData);
 
   return (
     <Box px={56}>
@@ -179,10 +145,10 @@ const ProductPage = () => {
         </Button>
 
         <Flex justify={"space-between"} align={"center"}>
-          <Text className="text-3xl font-medium">Products</Text>
+          <Text className="text-3xl font-medium">Product</Text>
           <Button leftSection={<IconPlus size={20} />}>Create new entry</Button>
         </Flex>
-        <Text className="text-gray-600">{productData?.length} entry found</Text>
+        <Text className="text-gray-600">1 entry found</Text>
         <Flex justify={"space-between"}>
           <Flex className="flex-1" columnGap={8}>
             {!searchOpened ? (
@@ -259,72 +225,47 @@ const ProductPage = () => {
             </Popover.Dropdown>
           </Popover>
         </Flex>
-
         <Card>
-          {productQuery.isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <React.Fragment key={header.id}>
-                          {flexRender(
+          <table className="border-solid bottom-1 border-gray-200">
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="px-1 py-0.5 border-r-[lightgray] border-b-[lightgray] border-b border-solid border-r"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                        </React.Fragment>
-                      ))}
-                    </TableRow>
-                  );
-                })}
-              </TableHeader>
-
-              {/* <TableBody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        console.log("cell", cell);
-                        return (
-                          <React.Fragment key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody> */}
-            </Table>
-          )}
-        </Card>
-
-        <Card>
-          {productData?.map((product: any, idx: string) => {
-            const { id } = product || {};
-
-            return (
-              <Button
-                key={idx}
-                onClick={() => router.push(`/admin/product/${id}`)}
-                variant="light"
-                className="self-start"
-              >
-                <Text>{id}</Text>
-              </Button>
-            );
-          })}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="border-b-[lightgray] border-b border-solid">
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
       </Flex>
     </Box>
-    // <TableCollection serviceName={ServiceName.Product} table={table}/>
   );
 };
 
-export default ProductPage;
+export default TableCollection;
