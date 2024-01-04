@@ -26,6 +26,7 @@ import {
   IconFilterPlus,
   IconMenu2,
   IconPlus,
+  IconRefresh,
   IconSearch,
   IconSettings,
   IconSortAscending,
@@ -69,173 +70,242 @@ type Person = {
   logo: any;
 };
 
-type UserApiResponse = {
-  data: Array<Person>;
-  meta: {
-    totalRowCount: number;
-  };
+//custom react-query hook
+const useGetUsers = ({
+  columnFilterFns,
+  columnFilters,
+  globalFilter,
+  sorting,
+  pagination,
+}: any) => {
+  //build the URL (https://www.mantine-react-table.com/api/data?start=0&size=10&filters=[]&globalFilter=&sorting=[])
+  const fetchURL = new URL(
+    "/api/products?populate=*",
+    "http://192.168.1.169:1337"
+  );
+  // fetchURL.searchParams.set(
+  //   "start",
+  //   `${pagination.pageIndex * pagination.pageSize}`
+  // );
+  // fetchURL.searchParams.set("size", `${pagination.pageSize}`);
+  // fetchURL.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
+  // fetchURL.searchParams.set(
+  //   "filterModes",
+  //   JSON.stringify(columnFilterFns ?? {})
+  // );
+  // fetchURL.searchParams.set("globalFilter", globalFilter ?? "");
+  // fetchURL.searchParams.set("sorting", JSON.stringify(sorting ?? []));
+
+  return useQuery({
+    queryKey: ["users", fetchURL.href], //refetch whenever the URL changes (columnFilters, globalFilter, sorting, pagination)
+    queryFn: () => fetch(fetchURL.href).then((res) => res.json()),
+    placeholderData: keepPreviousData, //useful for paginated queries by keeping data from previous pages on screen while fetching the next page
+    staleTime: 30_000, //don't refetch previously viewed pages until cache is more than 30 seconds old
+  });
 };
 
 const ProductPage = () => {
   useNProgress();
   const router = useNProgressRouter();
-  const [data, setData] = React.useState<Person[]>([]);
-  const [isError, setIsError] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isRefetching, setIsRefetching] = React.useState(false);
-  const [rowCount, setRowCount] = React.useState(0);
-
-  //table state
-  const [columnFilters, setColumnFilters] =
-    React.useState<MRT_ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const columns = React.useMemo<MRT_ColumnDef<any>[]>(
+    () => [
+      { accessorKey: "createdAt", header: "createdAt" },
+      { accessorKey: "id", header: "id" },
+      { accessorKey: "description", header: "description" },
+      { accessorKey: "price", header: "price" },
+      { accessorKey: "name", header: "Name" },
+      { accessorKey: "updatedAt", header: "updatedAt" },
+      { accessorKey: "publishedAt", header: "publishedAt" },
+    ],
+    []
+  );
+  const [columnFilterFns, setColumnFilterFns] = React.useState(
+    Object.fromEntries(
+      columns.map(({ accessorKey }) => [accessorKey, "contains"])
+    )
+  ); //default to "contains" for all columns
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [sorting, setSorting] = React.useState<MRT_SortingState>([]);
-  const [pagination, setPagination] = React.useState<MRT_PaginationState>({
+  const [sorting, setSorting] = React.useState([]);
+  const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
   });
 
-  const productQuery = useQuery({
-    queryKey: [ServiceName.Product],
-    queryFn: async () =>
-      await serviceProcessor({
-        serviceName: ServiceName.Product,
-        options: { querystring: "?populate=*" },
-      }),
-    staleTime: 10 * 1000,
+  // const productQuery = useQuery({
+  //   queryKey: [ServiceName.Product],
+  //   queryFn: async () =>
+  //     await serviceProcessor({
+  //       serviceName: ServiceName.Product,
+  //       options: { querystring: "?populate=*" },
+  //     }),
+  //   staleTime: 10 * 1000,
+  // });
+
+  const {
+    data: theData,
+    isError,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useGetUsers({
+    columnFilterFns,
+    columnFilters,
+    globalFilter,
+    pagination,
+    sorting,
   });
+
+  // const productData: Person[] =
+  //   data?.map((item: any) => {
+  //     const { attributes, ...rest } = item;
+  //     return { ...rest, ...attributes };
+  //   }) || [];
+
+  const data = React.useMemo(() => {
+    return Array.isArray(theData?.data) ? theData?.data : [];
+  }, [ServiceName.Product]);
 
   // const dataAttributes = Object.keys(
   //   productQuery?.data?.data?.[0]?.attributes || {}
   // );
   // const attributesKeys = ["id", ...dataAttributes];
-  // const productData: Person[] =
-  //   ((productQuery?.data as any)?.data as any)?.map((item: any) => {
-  //     const { attributes, ...rest } = item;
-  //     return { ...rest, ...attributes };
-  //   }) || [];
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      if (!data.length) {
-        setIsLoading(true);
-      } else {
-        setIsRefetching(true);
-      }
+  // console.log("productData", productData);
+  // console.log("data", data);
+  // console.log("theData", theData);
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (!data.length) {
+  //       setIsLoading(true);
+  //     } else {
+  //       setIsRefetching(true);
+  //     }
 
-      const url = new URL(
-        "/api/data",
-        process.env.NODE_ENV === "production"
-          ? "http://localhost:1337/api/products?populate=*"
-          : "http://localhost:3000"
-      );
-      url.searchParams.set(
-        "start",
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
-      url.searchParams.set("size", `${pagination.pageSize}`);
-      url.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
-      url.searchParams.set("globalFilter", globalFilter ?? "");
-      url.searchParams.set("sorting", JSON.stringify(sorting ?? []));
+  //     const url = new URL(
+  //       "/api/data",
+  //       process.env.NODE_ENV === "production"
+  //         ? "http://localhost:1337/api/products?populate=*"
+  //         : "http://localhost:3000"
+  //     );
+  //     url.searchParams.set(
+  //       "start",
+  //       `${pagination.pageIndex * pagination.pageSize}`
+  //     );
+  //     url.searchParams.set("size", `${pagination.pageSize}`);
+  //     url.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
+  //     url.searchParams.set("globalFilter", globalFilter ?? "");
+  //     url.searchParams.set("sorting", JSON.stringify(sorting ?? []));
 
-      try {
-        const response = await fetch(url.href);
-        const json = (await response.json()) as UserApiResponse;
-        setData(json.data);
-        setRowCount(json.meta.totalRowCount);
-      } catch (error) {
-        setIsError(true);
-        console.error(error);
-        return;
-      }
-      setIsError(false);
-      setIsLoading(false);
-      setIsRefetching(false);
-    };
+  //     try {
+  //       const response = await fetch(url.href);
+  //       const json = (await response.json()) as UserApiResponse;
+  //       setData(json.data);
+  //       setRowCount(json.meta.totalRowCount);
+  //     } catch (error) {
+  //       setIsError(true);
+  //       console.error(error);
+  //       return;
+  //     }
+  //     setIsError(false);
+  //     setIsLoading(false);
+  //     setIsRefetching(false);
+  //   };
 
-    return useQuery({
-      queryKey: [ServiceName.Product],
-      queryFn: () =>
-        serviceProcessor({
-          serviceName: ServiceName.Product,
-          options: { querystring: "?populate=*" },
-        }),
-      staleTime: 10 * 1000,
-    });
-  }, [
-    columnFilters, //refetch when column filters change
-    globalFilter, //refetch when global filter changes
-    pagination.pageIndex, //refetch when page index changes
-    pagination.pageSize, //refetch when page size changes
-    sorting, //refetch when sorting changes
-  ]);
+  //   return useQuery({
+  //     queryKey: [ServiceName.Product],
+  //     queryFn: () =>
+  //       serviceProcessor({
+  //         serviceName: ServiceName.Product,
+  //         options: { querystring: "?populate=*" },
+  //       }),
+  //     staleTime: 10 * 1000,
+  //   });
+  // }, [
+  //   columnFilters, //refetch when column filters change
+  //   globalFilter, //refetch when global filter changes
+  //   pagination.pageIndex, //refetch when page index changes
+  //   pagination.pageSize, //refetch when page size changes
+  //   sorting, //refetch when sorting changes
+  // ]);
 
-  // const columns = React.useMemo<MRT_ColumnDef<Person>[]>(
-  //   () => [
-  //     { accessorKey: "name", header: "Name" },
-  //     { accessorKey: "createdAt", header: "createdAt" },
-  //     { accessorKey: "updatedAt", header: "updatedAt" },
-  //     { accessorKey: "publishedAt", header: "publishedAt" },
-  //     { accessorKey: "description", header: "description" },
-  //     { accessorKey: "images", header: "images" },
-  //     { accessorKey: "logo", header: "logo" },
-  //   ],
-  //   []
-  // );
+  // console.log("useGetUsers", data);
+  //this will depend on your API response shape
+  const fetchedUsers = theData?.data ?? [];
+  const totalRowCount = data?.meta?.totalRowCount ?? 0;
 
-  const columns = React.useMemo<MRT_ColumnDef<Person>[]>(
-    () => [
-      {
-        accessorKey: "firstName",
-        header: "First Name",
-      },
+  const productData = (fetchedUsers as any[])?.map((item) => {
+    const { attributes, ...rest } = item || {};
+    return { ...rest, ...attributes };
+  });
 
-      {
-        accessorKey: "lastName",
-        header: "Last Name",
-      },
-      {
-        accessorKey: "address",
-        header: "Address",
-      },
-      {
-        accessorKey: "state",
-        header: "State",
-      },
-      {
-        accessorKey: "phoneNumber",
-        header: "Phone Number",
-      },
-    ],
-    []
-  );
+  console.log("productData", productData);
+  console.log("columns", columns);
+
+  // const aa = [
+  //   {
+  //     name: "string1",
+  //     createdAt: "string",
+  //     updatedAt: "anystring",
+  //     publishedAt: "anystring",
+  //     description: "anystring",
+  //     images: "anystring",
+  //     logo: "anystring",
+  //   },
+  //   {
+  //     name: "string2",
+  //     createdAt: "string",
+  //     updatedAt: "anystring",
+  //     publishedAt: "anystring",
+  //     description: "anystring",
+  //     images: "anystring",
+  //     logo: "anystring",
+  //   },
+  //   {
+  //     name: "string2",
+  //     createdAt: "string",
+  //     updatedAt: "anystring",
+  //     publishedAt: "anystring",
+  //     description: "anystring",
+  //     images: "anystring",
+  //     logo: "anystring",
+  //   },
+  // ];
 
   const table = useMantineReactTable({
     columns,
-    data,
-    enableRowSelection: true,
-    getRowId: (row) => row?.phoneNumber,
-    initialState: { showColumnFilters: true },
-    manualFiltering: true,
-    manualPagination: true,
+    data: productData,
+    // enableColumnFilterModes: true,
+    enableFullScreenToggle: false,
+    enableColumnFilters: false,
+    // manualPagination: true,
     manualSorting: true,
-    rowCount,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
-    onSortingChange: setSorting,
+    mantineToolbarAlertBannerProps: isError
+      ? { color: "red", children: "Error loading data" }
+      : undefined,
+    // onColumnFilterFnsChange: setColumnFilterFns,
+    // onColumnFiltersChange: setColumnFilters,
+    // onGlobalFilterChange: setGlobalFilter,
+    // onPaginationChange: setPagination,
+    // onSortingChange: setSorting,
+    // renderTopToolbarCustomActions: () => (
+    //   <Tooltip label="Refresh Data">
+    //     <ActionIcon onClick={() => refetch()}>
+    //       <IconRefresh />
+    //     </ActionIcon>
+    //   </Tooltip>
+    // ),
+    rowCount: totalRowCount,
     state: {
+      columnFilterFns,
       columnFilters,
       globalFilter,
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      showProgressBars: isFetching,
       sorting,
     },
-    mantineToolbarAlertBannerProps: isError
-      ? { color: "red", children: "Error loading data" }
-      : undefined,
   });
 
   return (
@@ -313,7 +383,6 @@ const ProductPage = () => {
             </Popover.Dropdown>
           </Popover>
         </Flex> */}
-        {/* {productData && <MantineReactTable table={table} />} */}
         <MantineReactTable table={table} />
 
         {/* <Card>
