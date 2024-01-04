@@ -28,9 +28,11 @@ import {
   IconPlus,
   IconRefresh,
   IconSearch,
+  IconSend,
   IconSettings,
   IconSortAscending,
   IconSortDescending,
+  IconTrash,
   IconTrashXFilled,
 } from "@tabler/icons-react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -58,6 +60,8 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
+  MRT_GlobalFilterTextInput,
+  MRT_TablePagination,
 } from "mantine-react-table";
 
 type Person = {
@@ -81,7 +85,7 @@ const useGetUsers = ({
   //build the URL (https://www.mantine-react-table.com/api/data?start=0&size=10&filters=[]&globalFilter=&sorting=[])
   const fetchURL = new URL(
     "/api/products?populate=*",
-    "http://192.168.1.169:1337"
+    "http://192.168.1.184:1337"
   );
   // fetchURL.searchParams.set(
   //   "start",
@@ -110,13 +114,13 @@ const ProductPage = () => {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const columns = React.useMemo<MRT_ColumnDef<any>[]>(
     () => [
-      { accessorKey: "createdAt", header: "createdAt" },
-      { accessorKey: "id", header: "id" },
-      { accessorKey: "description", header: "description" },
-      { accessorKey: "price", header: "price" },
+      { accessorKey: "id", header: "Id" },
       { accessorKey: "name", header: "Name" },
-      { accessorKey: "updatedAt", header: "updatedAt" },
-      { accessorKey: "publishedAt", header: "publishedAt" },
+      { accessorKey: "price", header: "Price" },
+      { accessorKey: "description", header: "Description" },
+      { accessorKey: "createdAt", header: "Created At" },
+      { accessorKey: "updatedAt", header: "Updated At" },
+      { accessorKey: "publishedAt", header: "Published At" },
     ],
     []
   );
@@ -142,13 +146,7 @@ const ProductPage = () => {
   //   staleTime: 10 * 1000,
   // });
 
-  const {
-    data: theData,
-    isError,
-    isFetching,
-    isLoading,
-    refetch,
-  } = useGetUsers({
+  const { data, isError, isFetching, isLoading, refetch } = useGetUsers({
     columnFilterFns,
     columnFilters,
     globalFilter,
@@ -156,145 +154,51 @@ const ProductPage = () => {
     sorting,
   });
 
-  // const productData: Person[] =
-  //   data?.map((item: any) => {
-  //     const { attributes, ...rest } = item;
-  //     return { ...rest, ...attributes };
-  //   }) || [];
-
-  const data = React.useMemo(() => {
-    return Array.isArray(theData?.data) ? theData?.data : [];
-  }, [ServiceName.Product]);
-
-  // const dataAttributes = Object.keys(
-  //   productQuery?.data?.data?.[0]?.attributes || {}
-  // );
-  // const attributesKeys = ["id", ...dataAttributes];
-
-  // console.log("productData", productData);
-  // console.log("data", data);
-  // console.log("theData", theData);
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (!data.length) {
-  //       setIsLoading(true);
-  //     } else {
-  //       setIsRefetching(true);
-  //     }
-
-  //     const url = new URL(
-  //       "/api/data",
-  //       process.env.NODE_ENV === "production"
-  //         ? "http://localhost:1337/api/products?populate=*"
-  //         : "http://localhost:3000"
-  //     );
-  //     url.searchParams.set(
-  //       "start",
-  //       `${pagination.pageIndex * pagination.pageSize}`
-  //     );
-  //     url.searchParams.set("size", `${pagination.pageSize}`);
-  //     url.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
-  //     url.searchParams.set("globalFilter", globalFilter ?? "");
-  //     url.searchParams.set("sorting", JSON.stringify(sorting ?? []));
-
-  //     try {
-  //       const response = await fetch(url.href);
-  //       const json = (await response.json()) as UserApiResponse;
-  //       setData(json.data);
-  //       setRowCount(json.meta.totalRowCount);
-  //     } catch (error) {
-  //       setIsError(true);
-  //       console.error(error);
-  //       return;
-  //     }
-  //     setIsError(false);
-  //     setIsLoading(false);
-  //     setIsRefetching(false);
-  //   };
-
-  //   return useQuery({
-  //     queryKey: [ServiceName.Product],
-  //     queryFn: () =>
-  //       serviceProcessor({
-  //         serviceName: ServiceName.Product,
-  //         options: { querystring: "?populate=*" },
-  //       }),
-  //     staleTime: 10 * 1000,
-  //   });
-  // }, [
-  //   columnFilters, //refetch when column filters change
-  //   globalFilter, //refetch when global filter changes
-  //   pagination.pageIndex, //refetch when page index changes
-  //   pagination.pageSize, //refetch when page size changes
-  //   sorting, //refetch when sorting changes
-  // ]);
-
-  // console.log("useGetUsers", data);
-  //this will depend on your API response shape
-  const fetchedUsers = theData?.data ?? [];
+  const fetchedUsers = data?.data ?? [];
   const totalRowCount = data?.meta?.totalRowCount ?? 0;
 
-  const productData = (fetchedUsers as any[])?.map((item) => {
-    const { attributes, ...rest } = item || {};
-    return { ...rest, ...attributes };
-  });
-
-  console.log("productData", productData);
-  console.log("columns", columns);
-
-  // const aa = [
-  //   {
-  //     name: "string1",
-  //     createdAt: "string",
-  //     updatedAt: "anystring",
-  //     publishedAt: "anystring",
-  //     description: "anystring",
-  //     images: "anystring",
-  //     logo: "anystring",
-  //   },
-  //   {
-  //     name: "string2",
-  //     createdAt: "string",
-  //     updatedAt: "anystring",
-  //     publishedAt: "anystring",
-  //     description: "anystring",
-  //     images: "anystring",
-  //     logo: "anystring",
-  //   },
-  //   {
-  //     name: "string2",
-  //     createdAt: "string",
-  //     updatedAt: "anystring",
-  //     publishedAt: "anystring",
-  //     description: "anystring",
-  //     images: "anystring",
-  //     logo: "anystring",
-  //   },
-  // ];
+  const productData = React.useMemo(() => {
+    return (fetchedUsers as any[])?.map((item) => {
+      const { attributes, ...rest } = item || {};
+      return { ...rest, ...attributes };
+    });
+  }, [fetchedUsers]);
 
   const table = useMantineReactTable({
     columns,
     data: productData,
-    // enableColumnFilterModes: true,
     enableFullScreenToggle: false,
+    // positionGlobalFilter: "left",
+    // mantineSearchTextInputProps: {
+    //   placeholder: "Search all data",
+    //   variant: "filled",
+    // },
+    enableRowSelection: true,
+    enableRowActions: true,
+    positionActionsColumn: "last",
+    renderRowActions: ({ row }) => (
+      <Flex columnGap={8}>
+        <ActionIcon color="blue" onClick={() => console.log("first")}>
+          <IconSend />
+        </ActionIcon>
+        <ActionIcon
+          color="orange"
+          onClick={() => {
+            table.setEditingRow(row);
+          }}
+        >
+          <IconEdit />
+        </ActionIcon>
+        <ActionIcon color="red" onClick={() => console.log("first")}>
+          <IconTrash />
+        </ActionIcon>
+      </Flex>
+    ),
+    mantinePaginationProps: {
+      rowsPerPageOptions: ["5", "10", "15"],
+    },
     enableColumnFilters: false,
-    // manualPagination: true,
     manualSorting: true,
-    mantineToolbarAlertBannerProps: isError
-      ? { color: "red", children: "Error loading data" }
-      : undefined,
-    // onColumnFilterFnsChange: setColumnFilterFns,
-    // onColumnFiltersChange: setColumnFilters,
-    // onGlobalFilterChange: setGlobalFilter,
-    // onPaginationChange: setPagination,
-    // onSortingChange: setSorting,
-    // renderTopToolbarCustomActions: () => (
-    //   <Tooltip label="Refresh Data">
-    //     <ActionIcon onClick={() => refetch()}>
-    //       <IconRefresh />
-    //     </ActionIcon>
-    //   </Tooltip>
-    // ),
     rowCount: totalRowCount,
     state: {
       columnFilterFns,
@@ -324,131 +228,10 @@ const ProductPage = () => {
           <Text className="text-3xl font-medium">Products</Text>
           <Button leftSection={<IconPlus size={20} />}>Create new entry</Button>
         </Flex>
-        {/* <Text className="text-gray-600">{productData?.length} entry found</Text> */}
-        {/* <Flex justify={"space-between"}>
-          <Flex className="flex-1" columnGap={8}>
-            {!searchOpened ? (
-              <ActionIcon
-                variant="default"
-                size={36}
-                aria-label="Searchs"
-                onClick={() => setSearchOpened(true)}
-              >
-                <IconSearch color="var(--mantine-color-gray-5)" size={20} />
-              </ActionIcon>
-            ) : (
-              <Input
-                onChange={(e) => setDebouncedSearchValue(e.target.value)}
-                onCompositionEnd={() => setDebouncedSearchValue("")}
-                color="#228BE6"
-                leftSection={<IconSearch size={20} />}
-                placeholder="Search..."
-              />
-            )}
-            <Button
-              leftSection={<IconFilterPlus size={20} />}
-              variant="default"
-            >
-              Filters
-            </Button>
-          </Flex>
 
-          <Popover position="bottom-end" withArrow shadow="md" width={250}>
-            <Popover.Target>
-              <Tooltip label="View settings" onClick={(prev) => !prev}>
-                <ActionIcon variant="default" size={36} aria-label="Settings">
-                  <IconSettings size={20} />
-                </ActionIcon>
-              </Tooltip>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <Flex justify={"center"} direction={"column"} rowGap={12}>
-                <Button
-                  leftSection={<IconAlignLeft size={20} />}
-                  variant="outline"
-                >
-                  Configure the view
-                </Button>
-                <Flex justify={"space-between"} align={"center"}>
-                  <Text>Display Field</Text>
-                  <Button
-                    variant="light"
-                    onClick={() => setColumnVisibility({})}
-                  >
-                    Reset
-                  </Button>
-                </Flex>
-                <Divider />
-              </Flex>
-            </Popover.Dropdown>
-          </Popover>
-        </Flex> */}
         <MantineReactTable table={table} />
-
-        {/* <Card>
-          {productQuery.isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <React.Fragment key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </TableRow>
-                  );
-                })}
-              </TableHeader>
-
-              <TableBody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        console.log("cell", cell);
-                        return (
-                          <React.Fragment key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
-        </Card> */}
-
-        {/* <Card>
-          {productData?.map((product: any, idx: string) => {
-            const { id } = product || {};
-
-            return (
-              <Button
-                key={idx}
-                onClick={() => router.push(`/admin/product/${id}`)}
-                variant="light"
-                className="self-start"
-              >
-                <Text>{id}</Text>
-              </Button>
-            );
-          })}
-        </Card> */}
       </Flex>
     </Box>
-    // <TableCollection serviceName={ServiceName.Product} table={table}/>
   );
 };
 
