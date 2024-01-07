@@ -1,9 +1,12 @@
+"use client";
+import { useMantineTheme } from "@mantine/core";
 import React from "react";
+import  { Header } from "./home/Header/page";
 
 const GuestLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <p className="text-red-500">Header</p>
+      <Header />
       {children}
       <p>Footer</p>
     </>

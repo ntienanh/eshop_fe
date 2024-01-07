@@ -6,6 +6,7 @@ import {
   Group,
   useComputedColorScheme,
   useMantineColorScheme,
+
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
@@ -17,10 +18,9 @@ export default function Home() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
-
   return (
     <Group>
-      <p className="text-3xl">Hoome</p>
+      <p className="text-3xl">Home</p>
       <Button variant="light" onClick={() => router.push("/admin")}>
         move to admin
       </Button>
