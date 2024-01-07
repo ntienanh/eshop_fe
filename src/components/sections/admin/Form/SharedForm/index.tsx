@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Card,
+  Divider,
   Flex,
   Grid,
   Group,
@@ -14,10 +15,15 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { useNProgressRouter } from "@/hooks/useNProgress";
-import TextInputDetail from "@/components/elements/admin/TextInputDetail";
+import TextInputDetail from "@/components/elements/formElements/TextInputDetail";
+import MediaDetail from "@/components/elements/formElements/MediaDetail";
+import DateInputDetail from "@/components/elements/formElements/DateInputDetail";
+import SelectDetail from "@/components/elements/formElements/SelectDetail";
+import MultiSelectDetail from "@/components/elements/formElements/MultiSelectDetail";
+import { Language } from "@/types/enum";
 
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
@@ -31,12 +37,26 @@ interface IStudentFormProps {
 }
 
 const validationSchema = z.object({
-  name: z
+  name: z.string().min(2, { message: "Name should have at least 2 letters" }),
+  price: z.coerce.number(),
+  description: z
     .string()
-    .nonempty("This field is required")
     .min(2, { message: "Name should have at least 2 letters" }),
-  // mssv: z.string().max(10, 'Max 10 characters').min(10, { message: 'Name should have at least 10 letters' }),
+  fromDate: z.any(),
+  toDate: z.any(),
+  select: z.any(),
+  multiSelect: z.any(),
 });
+
+interface IProductProps {
+  name: string;
+  price: number;
+  description: string;
+  fromDate: string;
+  toDate: string;
+  select: string;
+  multiSelect: string[];
+}
 
 const SharedForm = (props: IStudentFormProps) => {
   const params: any = useParams();
@@ -50,10 +70,13 @@ const SharedForm = (props: IStudentFormProps) => {
     control,
     handleSubmit,
     reset,
-    formState: { dirtyFields, isValid, isDirty },
-  } = useForm<any>({
-    defaultValues: data.attributes || {},
+    watch,
+    setValue,
+    formState: { isValid, isDirty },
+  } = useForm<IProductProps>({
+    defaultValues: data || {},
     resolver: zodResolver(validationSchema),
+    mode: "all",
   });
 
   const onSubmit = async (body: any) => {
@@ -63,15 +86,27 @@ const SharedForm = (props: IStudentFormProps) => {
     delete body.updatedBy;
     delete body.publishedAt;
 
-    if (isCreate) return onCreate(body);
-    return onUpdate(body);
+    if (isCreate) return onCreate({ data: body });
+    return onUpdate({ data: body });
   };
 
   React.useEffect(() => {
     if (data) {
-      reset(data, { keepValues: true });
+      reset(data);
     }
   }, [data]);
+
+  const valueFromDate = watch("fromDate");
+
+  React.useEffect(() => {
+    const valueToDate = watch("toDate");
+    const from = dayjs(valueFromDate);
+    const to = dayjs(valueToDate);
+
+    if (from.isAfter(to)) {
+      return setValue("toDate", valueFromDate);
+    }
+  }, [valueFromDate]);
 
   if (!data && !isCreate) {
     return null;
@@ -111,7 +146,7 @@ const SharedForm = (props: IStudentFormProps) => {
         </Flex>
 
         <Grid mt={24}>
-          <Grid.Col p={16} span={9}>
+          <Grid.Col span={9}>
             <Card>
               <Grid>
                 <Grid.Col span={6}>
@@ -123,41 +158,143 @@ const SharedForm = (props: IStudentFormProps) => {
                     placeholder="Please enter your name"
                   />
                 </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <TextInputDetail
+                    name={"price"}
+                    control={control}
+                    label="price"
+                    placeholder="Please enter your name"
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <DateInputDetail
+                    name="fromDate"
+                    control={control}
+                    label="From Date"
+                    placeholder="Input Date DD/MM/YYYY"
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <DateInputDetail
+                    name="toDate"
+                    control={control}
+                    label="To Date"
+                    placeholder="Input Date DD/MM/YYYY"
+                    minDate={new Date(valueFromDate)}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <SelectDetail
+                    name="select"
+                    control={control}
+                    label="Select"
+                    placeholder="Input Select"
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <MultiSelectDetail
+                    name="multiSelect"
+                    control={control}
+                    label="Multi Select"
+                    placeholder="Input Select"
+                    data={[
+                      { label: Language.Angular, value: "Angular" },
+                      { label: Language.Css, value: "Css" },
+                      { label: Language.Html, value: "Html" },
+                      { label: Language.React, value: "React" },
+                      { label: Language.Vue, value: "Vue" },
+                    ]}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <TextInputDetail
+                    name={"description"}
+                    control={control}
+                    label="description"
+                    placeholder="Please enter your name"
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                  <MediaDetail name="logo" control={control} />
+                </Grid.Col>
               </Grid>
             </Card>
           </Grid.Col>
 
-          <Grid.Col span={3} pt={16}>
+          <Grid.Col span={3}>
             <Stack>
-              <Text
-                className={`${
-                  isCreate ? "bg-green-200" : "bg-blue-200"
-                } w-full rounded-md p-3`}
+              <Card
+                bg={
+                  isCreate
+                    ? "var(--mantine-color-green-1)"
+                    : "var(--mantine-color-blue-1)"
+                }
+                withBorder
+                className={
+                  isCreate
+                    ? "border-green-400 flex items-center"
+                    : "border-blue-400 flex items-center"
+                }
               >
-                <strong color="red">{isCreate ? "Create" : "Detail"} version</strong>
-              </Text>
+                <Text
+                  fw={700}
+                  variant="gradient"
+                  gradient={{
+                    from: isCreate ? "lime" : "blue",
+                    to: isCreate ? "green" : "cyan",
+                    deg: 300,
+                  }}
+                >
+                  {isCreate ? "Create" : "Detail"} version
+                </Text>
+              </Card>
 
               <Card>
                 <Stack>
-                  <Text>INFORMATION</Text>
+                  <Text fw={600}>INFORMATION</Text>
+                  <Divider />
                   <Stack>
-                    <Group>
+                    <Flex
+                      justify={"space-between"}
+                      align={"center"}
+                      columnGap={8}
+                    >
                       <Text fw={500}>Created</Text>
                       <Text>
                         {!isCreate && data
-                          ? (
-                              dayjs(data?.attributes?.createdAt) as any
-                            ).fromNow()
+                          ? (dayjs(data?.createdAt) as any).fromNow()
                           : "-"}
                       </Text>
-                    </Group>
+                    </Flex>
 
-                    <Group>
+                    <Flex
+                      justify={"space-between"}
+                      align={"center"}
+                      columnGap={8}
+                    >
                       <Text fw={500}>Last update</Text>
                       {!isCreate && data
-                        ? (dayjs(data?.attributes?.updatedAt) as any).fromNow()
+                        ? (dayjs(data?.updatedAt) as any).fromNow()
                         : "-"}
-                    </Group>
+                    </Flex>
+
+                    <Flex
+                      justify={"space-between"}
+                      align={"center"}
+                      columnGap={8}
+                    >
+                      <Text fw={500}>Published At</Text>
+                      {!isCreate && data
+                        ? (dayjs(data?.publishedAt) as any).fromNow()
+                        : "-"}
+                    </Flex>
                   </Stack>
                 </Stack>
               </Card>

@@ -29,7 +29,7 @@ const ProductPage = () => {
     enabled: !isCreate,
   }) as any;
 
-  const productData = productQuery?.data?.data?.attributes || {};
+  const productData = productQuery?.data?.data || {};
 
   const createMutation = useMutation({
     mutationKey: [ServiceName.Product, slug],
@@ -84,11 +84,22 @@ const ProductPage = () => {
     },
   });
 
+  React.useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
+  }, [createMutation.isSuccess, updateMutation.isSuccess]);
+
+  // api call nhanh dẫn đến data und và form không lấy được value trước khi render UI
+  if (!isCreate && productData.isLoading) {
+    return null;
+  }
+
   return (
     <SharedForm
-      data={productData}
-      onCreate={() => null}
-      onUpdate={() => null}
+      data={productData?.attributes}
+      onUpdate={updateMutation.mutate}
+      onCreate={createMutation.mutate}
+      onDelete={deleteMutation.mutate}
+      isLoading={updateMutation.isPending || createMutation.isPending}
     />
   );
 };

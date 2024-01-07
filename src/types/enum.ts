@@ -1,6 +1,7 @@
 export enum ServiceName {
   User = "users",
   Product = "products",
+  File = "upload/files",
 }
 
 export enum StatusCode {
@@ -21,4 +22,12 @@ export enum HTTPMethod {
   Put = "PUT",
   Patch = "PATCH",
   Delete = "DELETE",
+}
+
+export enum Language {
+  Angular = "Angular",
+  React = "React",
+  Vue = "Vue",
+  Css = "Css",
+  Html = "Html",
 }
