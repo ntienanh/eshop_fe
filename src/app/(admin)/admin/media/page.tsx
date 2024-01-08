@@ -153,8 +153,27 @@ const MediaDetail = (props: IMediaDetailProps) => {
   const { close, opened } = props || {};
 
   return (
-    <Modal opened={opened} onClose={close} title="Authentication" centered>
+    <Modal
+      opened={opened}
+      onClose={close}
+      title="Detail Image"
+      centered
+      size={"xl"}
+    >
       {/* Modal content */}
+      <Flex>
+        <Flex direction={'column'} className="flex-1 bg-gray-100">
+          <Text>1</Text>
+          <Image
+            fit="contain"
+            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png`}
+            height={122}
+            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+          />
+          <Text>1</Text>
+        </Flex>
+        <Flex className="flex-1">2</Flex>
+      </Flex>
     </Modal>
   );
 };

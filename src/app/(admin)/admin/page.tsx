@@ -18,6 +18,15 @@ import CountUp from "react-countup";
 const AdminPage = () => {
   useNProgress();
   const router = useNProgressRouter();
+  // const productQuery = useQuery({
+  //   queryKey: [ServiceName.Product],
+  //   queryFn: async () =>
+  //     await serviceProcessor({
+  //       serviceName: ServiceName.Product,
+  //       options: { querystring: "?populate=*" },
+  //     }),
+  //   staleTime: 10 * 1000,
+  // });
 
   return (
     <Box className="w-4/5 mx-[auto] my-[0]">
