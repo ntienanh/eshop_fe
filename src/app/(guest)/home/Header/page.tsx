@@ -7,7 +7,6 @@ import {
   Group,
   Text,
   Menu,
-  Tabs,
   Burger,
   rem,
   useMantineTheme,
@@ -32,6 +31,7 @@ import {
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './HeaderTabs.module.css';
+import { headerMenu } from '@/utils/home';
 
 const user = {
   name: 'Jane Spoonfighter',
@@ -39,16 +39,7 @@ const user = {
   image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png',
 };
 
-const tabs = [
-  'Home',
-  'Orders',
-  'Education',
-  'Community',
-  'Forums',
-  'Support',
-  'Account',
-  'Helpdesk',
-];
+
 
 export function HeaderTabs() {
   const theme = useMantineTheme();
@@ -58,20 +49,26 @@ export function HeaderTabs() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
-  const items = tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab}>
-      {tab}
-    </Tabs.Tab>
-  ));
+
 
   return (
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
         <Group justify="space-between">
-          <Box className='text-[28px]'>Cellina Glasses</Box>
+          <Box className='text-[28px]  font-bold'>Cellina Glasses</Box>
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-
+          <Box>
+            <nav className={`${classes.navLinks}`}>
+              {headerMenu.map((item) => (
+                <a key={item.href} href={item.href} className={classes.navLink}>
+                  {item.page}
+                </a>
+              ))}
+            </nav>
+          </Box>
+        {/* Burger Menu */}
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
           <Menu
             width={260}
             position="bottom-end"
@@ -185,19 +182,9 @@ export function HeaderTabs() {
           </Menu>
         </Group>
       </Container>
-      <Container size="md">
-        <Tabs
-          defaultValue="Home"
-          variant="outline"
-          visibleFrom="sm"
-          classNames={{
-            root: classes.tabs,
-            list: classes.tabsList,
-            tab: classes.tab,
-          }}
-        >
-          <Tabs.List>{items}</Tabs.List>
-        </Tabs>
+      {/* Navigation Links */}
+      <Container>
+        
       </Container>
     </div>
   );

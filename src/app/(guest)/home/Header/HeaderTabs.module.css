@@ -33,7 +33,16 @@
       display: none;
     }
   }
-  
+  /* HeaderTabs.module.css */
+.navLinks {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+.navLink {
+  text-decoration: none;
+  color: inherit;
+}
   .tab {
     font-weight: 500;
     height: rem(38);
