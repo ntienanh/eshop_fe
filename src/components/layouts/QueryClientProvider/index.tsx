@@ -26,7 +26,7 @@ const QueryClientProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <BaseQueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       {children}
     </BaseQueryClientProvider>
   );

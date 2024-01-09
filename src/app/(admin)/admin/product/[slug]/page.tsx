@@ -3,9 +3,8 @@ import SharedForm from "@/components/sections/admin/Form/SharedForm";
 import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
 import { serviceProcessor } from "@/services/servicesProcessor";
 import { HTTPMethod, ServiceName } from "@/types/enum";
-import { Box, Button, Card } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -19,7 +18,7 @@ const ProductPage = () => {
   const isCreate = slug === "create";
 
   const productQuery = useQuery({
-    queryKey: [ServiceName.Product],
+    queryKey: [ServiceName.Product, params],
     queryFn: () =>
       serviceProcessor({
         serviceName: ServiceName.Product,
@@ -45,6 +44,7 @@ const ProductPage = () => {
         color: "green",
         icon: <IconCheck size="1.1rem" />,
       });
+      router.back();
     },
   });
 
@@ -74,13 +74,14 @@ const ProductPage = () => {
         method: HTTPMethod.Delete,
         options: { params: { slug } },
       }),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
       notifications.show({
-        message: `Deleted successfully!`,
+        message: `${id} Deleted successfully!`,
         color: "green",
         icon: <IconCheck size="1.1rem" />,
       });
+      router.back();
     },
   });
 

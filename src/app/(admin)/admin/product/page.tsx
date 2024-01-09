@@ -1,8 +1,12 @@
 "use client";
 
 import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
-import { ActionIcon, Box, Button, Flex, Text, Tooltip } from "@mantine/core";
+import { serviceProcessor } from "@/services/servicesProcessor";
+import { HTTPMethod, ServiceName } from "@/types/enum";
+import { ActionIcon, Box, Button, Flex, Stack, Text, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
+import { IconAlertCircle, IconCheck } from "@tabler/icons-react";
 import {
   IconArrowLeft,
   IconEdit,
@@ -10,7 +14,7 @@ import {
   IconSend,
   IconTrash,
 } from "@tabler/icons-react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import {
   MantineReactTable,
@@ -19,19 +23,14 @@ import {
   MRT_Row,
   MRT_RowSelectionState,
 } from "mantine-react-table";
+import { useParams } from "next/navigation";
 import React from "react";
 
 // render api fetching
-const useGetProducts = ({
-  columnFilterFns,
-  columnFilters,
-  globalFilter,
-  sorting,
-  pagination,
-}: any) => {
+const useGetProducts = () => {
   const fetchURL = new URL(
     "/api/products?populate=*",
-    "http://192.168.1.169:1337"
+    "http://192.168.1.184:1337"
   );
 
   return useQuery({
@@ -44,6 +43,9 @@ const useGetProducts = ({
 
 const ProductPage = () => {
   useNProgress();
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const { slug } = params || {};
   const router = useNProgressRouter();
   const [rowSelection, setRowSelection] = React.useState<MRT_RowSelectionState>(
     {}
@@ -95,11 +97,7 @@ const ProductPage = () => {
   );
 
   // loading data
-  const { data, isError, isFetching, isLoading, refetch } = useGetProducts({
-    // globalFilter,
-    // pagination,
-    // sorting,
-  });
+  const { data, isError, isFetching, isLoading } = useGetProducts();
 
   const fetchedUsers = data?.data ?? [];
   // const totalRowCount = data?.meta?.totalRowCount ?? 0;
@@ -124,24 +122,26 @@ const ProductPage = () => {
     // add row actions for edit or del row
     enableRowActions: true,
     positionActionsColumn: "last",
-    renderRowActions: ({ row, cell, table }) => (
-      <Flex columnGap={8}>
-        <Tooltip label="Update">
-          <ActionIcon
-            color="blue"
-            onClick={() => router.push(`/admin/product/${row.original.id}`)}
-          >
-            <IconEdit />
-          </ActionIcon>
-        </Tooltip>
+    renderRowActions: ({ row }) => {
+      return (
+        <Flex columnGap={8}>
+          <Tooltip label="Update">
+            <ActionIcon
+              color="blue"
+              onClick={() => router.push(`/admin/product/${row.original.id}`)}
+            >
+              <IconEdit />
+            </ActionIcon>
+          </Tooltip>
 
-        <Tooltip label="Delete">
-          <ActionIcon color="red" onClick={() => openDeleteConfirmModal(row)}>
-            <IconTrash />
-          </ActionIcon>
-        </Tooltip>
-      </Flex>
-    ),
+          <Tooltip label="Delete">
+            <ActionIcon color="red" onClick={() => openDeleteConfirmModal(row.original.id)}>
+              <IconTrash />
+            </ActionIcon>
+          </Tooltip>
+        </Flex>
+      );
+    },
     enableColumnFilters: false,
     state: {
       isLoading,
@@ -151,20 +151,41 @@ const ProductPage = () => {
     },
   });
 
-  const openDeleteConfirmModal = (row: MRT_Row<any>) =>
-    modals.openConfirmModal({
-      title: "Are you sure you want to delete this user?",
-      children: (
-        <Text>
-          Are you sure you want to delete {row.original.firstName}{" "}
-          {row.original.lastName}? This action cannot be undone.
-        </Text>
-      ),
-      labels: { confirm: "Delete", cancel: "Cancel" },
-      confirmProps: { color: "red" },
-      onConfirm: () => console.log("delete success"),
+
+  const deleteMutation = useMutation({
+    mutationKey: [ServiceName.Product],
+    mutationFn: async () =>
+      serviceProcessor({
+        serviceName: ServiceName.Product,
+        method: HTTPMethod.Delete,
+        options: { params: { slug } },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
+      notifications.show({
+        message: `Deleted successfully!`,
+        color: "green",
+        icon: <IconCheck size="1.1rem" />,
+      });
+    },
+  });
+
+  const openDeleteConfirmModal = (id: any) => {
+    return modals.openConfirmModal({
       centered: true,
+      title: 'Confirmation',
+      children: (
+        <Stack h={140} justify='center' align='center' bg={'var(--mantine-color-gray-2)'} mb={12}>
+          <IconAlertCircle color='red' size='2.5rem' />
+          <Text>Are you sure you want to delete this?</Text>
+        </Stack>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onCancel: () => null,
+      onConfirm: () => deleteMutation.mutate(id),
     });
+  };
 
   return (
     <Box px={56}>
