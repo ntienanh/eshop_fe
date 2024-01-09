@@ -38,10 +38,8 @@ interface IStudentFormProps {
 
 const validationSchema = z.object({
   name: z.string().min(2, { message: "Name should have at least 2 letters" }),
-  price: z.coerce.number(),
-  description: z
-    .string()
-    .min(2, { message: "Name should have at least 2 letters" }),
+  price: z.any(),
+  description: z.any(),
   fromDate: z.any(),
   toDate: z.any(),
   select: z.any(),

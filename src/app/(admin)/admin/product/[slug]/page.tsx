@@ -87,7 +87,12 @@ const ProductPage = () => {
 
   React.useEffect(() => {
     queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
-  }, [createMutation.isSuccess, updateMutation.isSuccess]);
+    console.log("deleteMutationisSuccess");
+  }, [
+    createMutation.isSuccess,
+    updateMutation.isSuccess,
+    deleteMutation.isSuccess,
+  ]);
 
   // api call nhanh dẫn đến data und và form không lấy được value trước khi render UI
   if (!isCreate && productData.isLoading) {

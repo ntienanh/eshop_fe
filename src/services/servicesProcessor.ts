@@ -54,6 +54,6 @@ const buildUrl = (
 const buildParam = <T extends keyof ResponseData>(params: IParams<T>) => {
   const sub = Object.values(params || {})[0] as any;
   if (!sub) return "";
-  if (sub.startsWith("/")) return sub;
+  // if (sub?.startsWith("/")) return sub;
   return `/${sub}`;
 };
