@@ -1,9 +1,10 @@
 "use client";
+
+import MediaDetail from "@/components/sections/admin/MediaDetail";
 import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
 import { serviceProcessor } from "@/services/servicesProcessor";
 import { ServiceName } from "@/types/enum";
 import {
-  Accordion,
   ActionIcon,
   Badge,
   Box,
@@ -14,27 +15,25 @@ import {
   Divider,
   Flex,
   Grid,
-  Group,
   Image,
   Input,
-  Modal,
   Select,
-  Text,
+  Text
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconArrowLeft,
-  IconBrandAmongUs,
   IconFilter,
   IconPlus,
-  IconSearch,
+  IconSearch
 } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 const MediaPage = () => {
   useNProgress();
   const router = useNProgressRouter();
   const [opened, { open, close }] = useDisclosure(false);
+  const [img, setImg] = React.useState();
 
   // useQuery File
   const fileQuery = useQuery({
@@ -95,22 +94,29 @@ const MediaPage = () => {
           />
         </Flex>
 
-        <MediaDetail close={close} opened={opened} />
+        <MediaDetail close={close} opened={opened} img={img} />
 
         <Grid pt={20}>
           {result?.map((item: any, idx: any) => {
             const format = (item.name.split(".").pop() as string).toUpperCase();
+            console.log("item", item);
 
             return (
               <Grid.Col key={idx} span={{ base: 12, xs: 12, lg: 3, sm: 6 }}>
                 <Card shadow="sm" radius="md" withBorder>
-                  <Card.Section onClick={open} className="cursor-pointer">
+                  <Card.Section className="relative">
                     <Box
                       className="bg-transparent flex justify-center items-center"
                       p={16}
                     >
+                      <Checkbox className="absolute top-3 left-3" />
                       <Image
-                        fit="cover"
+                      className="cursor-pointer"
+                        onClick={() => {
+                          open();
+                          setImg(item);
+                        }}
+                        fit="contain"
                         src={`http://localhost:1337${item?.url}`}
                         h={142}
                         fallbackSrc="https://placehold.co/600x400?text=Placeholder"
@@ -146,44 +152,3 @@ const MediaPage = () => {
 };
 
 export default MediaPage;
-
-interface IMediaDetailProps {
-  opened: boolean;
-  close: () => void;
-}
-
-const MediaDetail = (props: IMediaDetailProps) => {
-  const { close, opened } = props || {};
-
-  return (
-    <Modal
-      opened={opened}
-      onClose={close}
-      title="Detail Image"
-      centered
-      size={"xl"}
-    >
-      <Flex columnGap={16}>
-        <Flex direction={"column"} className="flex-1 bg-gray-100">
-          <Card withBorder>
-            <Card.Section h={52} className="bg-red-100">
-              <Text>Header</Text>
-            </Card.Section>
-            <Card.Section inheritPadding p="md">
-              <Image
-                fit="contain"
-                src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png`}
-                height={122}
-                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-              />
-            </Card.Section>
-            <Card.Section h={52} className="bg-red-100">
-              <Text>Footer</Text>
-            </Card.Section>
-          </Card>
-        </Flex>
-        <Flex className="flex-1">2</Flex>
-      </Flex>
-    </Modal>
-  );
-};

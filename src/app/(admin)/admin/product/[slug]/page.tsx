@@ -10,7 +10,8 @@ import { useParams } from "next/navigation";
 import React from "react";
 
 const ProductPage = () => {
-  useNProgress();
+  
+  useNProgress(); 
   const queryClient = useQueryClient();
   const router = useNProgressRouter();
   const params = useParams();

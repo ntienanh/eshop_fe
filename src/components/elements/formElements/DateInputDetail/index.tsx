@@ -1,7 +1,4 @@
-import { DateInput, DateInputProps, DateValue } from "@mantine/dates";
-import dayjs from "dayjs";
-import { RSC_ACTION_VALIDATE_ALIAS } from "next/dist/lib/constants";
-import React from "react";
+import { DateInput } from "@mantine/dates";
 import { Control, useController } from "react-hook-form";
 
 interface IDateInputDetailProps {

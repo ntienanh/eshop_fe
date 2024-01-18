@@ -8,19 +8,13 @@ import {
   Box,
   Button,
   Flex,
-  Stack,
   Text,
-  Tooltip,
+  Tooltip
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import { IconAlertCircle, IconCheck } from "@tabler/icons-react";
 import {
-  IconArrowLeft,
-  IconEdit,
-  IconPlus,
-  IconSend,
-  IconTrash,
+  IconCheck, IconEdit,
+  IconPlus, IconTrash
 } from "@tabler/icons-react";
 import {
   keepPreviousData,
@@ -30,27 +24,25 @@ import {
 } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import {
+  MRT_Row,
+  MRT_RowSelectionState,
   MantineReactTable,
   useMantineReactTable,
   type MRT_ColumnDef,
-  MRT_Row,
-  MRT_RowSelectionState,
 } from "mantine-react-table";
-import { useParams } from "next/navigation";
 import React from "react";
 
 // render api fetching
 const useGetProducts = () => {
   const fetchURL = new URL(
     "/api/products?populate=*",
-    "http://192.168.1.169:1337"
+    "http://192.168.1.184:1337"
   );
 
   return useQuery({
-    queryKey: ["users", fetchURL.href], //refetch whenever the URL changes (columnFilters, globalFilter, sorting, pagination)
+    queryKey: [ServiceName.Product], //refetch whenever the URL changes (columnFilters, globalFilter, sorting, pagination)
     queryFn: () => fetch(fetchURL.href).then((res) => res.json()),
     placeholderData: keepPreviousData, //useful for paginated queries by keeping data from previous pages on screen while fetching the next page
-    staleTime: 30_000, //don't refetch previously viewed pages until cache is more than 30 seconds old
   });
 };
 
