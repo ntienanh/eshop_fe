@@ -44,7 +44,7 @@ const MediaPage = () => {
         serviceName: ServiceName.File,
       }),
     staleTime: 10 * 1000,
-    isPreviousData: true,
+    // isPreviousData: true,
   });
 
   const result = fileQuery?.data || [];
@@ -105,11 +105,14 @@ const MediaPage = () => {
               <Grid.Col key={idx} span={{ base: 12, xs: 12, lg: 3, sm: 6 }}>
                 <Card shadow="sm" radius="md" withBorder>
                   <Card.Section onClick={open} className="cursor-pointer">
-                    <Box className="bg-transparent" p={16}>
+                    <Box
+                      className="bg-transparent flex justify-center items-center"
+                      p={16}
+                    >
                       <Image
-                        fit="contain"
+                        fit="cover"
                         src={`http://localhost:1337${item?.url}`}
-                        height={142}
+                        h={142}
                         fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                       />
                     </Box>
@@ -160,17 +163,24 @@ const MediaDetail = (props: IMediaDetailProps) => {
       centered
       size={"xl"}
     >
-      {/* Modal content */}
-      <Flex>
-        <Flex direction={'column'} className="flex-1 bg-gray-100">
-          <Text>1</Text>
-          <Image
-            fit="contain"
-            src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png`}
-            height={122}
-            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-          />
-          <Text>1</Text>
+      <Flex columnGap={16}>
+        <Flex direction={"column"} className="flex-1 bg-gray-100">
+          <Card withBorder>
+            <Card.Section h={52} className="bg-red-100">
+              <Text>Header</Text>
+            </Card.Section>
+            <Card.Section inheritPadding p="md">
+              <Image
+                fit="contain"
+                src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png`}
+                height={122}
+                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+              />
+            </Card.Section>
+            <Card.Section h={52} className="bg-red-100">
+              <Text>Footer</Text>
+            </Card.Section>
+          </Card>
         </Flex>
         <Flex className="flex-1">2</Flex>
       </Flex>

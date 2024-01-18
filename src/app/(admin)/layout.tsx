@@ -18,7 +18,7 @@ import {
   Stack,
   Text,
   Tooltip,
-  rem
+  rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -32,10 +32,12 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import classes from "./admin.module.css";
+import Error from "./admin/error";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [opened, { toggle }] = useDisclosure();
-  const [changePassOpened, { open: changePassOpen ,close:changePassClose}] = useDisclosure();
+  const [changePassOpened, { open: changePassOpen, close: changePassClose }] =
+    useDisclosure();
   const [popoverOpened, { toggle: popoverToggle, close: popoverClose }] =
     useDisclosure();
   const router = useNProgressRouter();
@@ -162,6 +164,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <AppShell.Navbar p="md">
         <Navbar />
       </AppShell.Navbar>
+
       <AppShell.Main className={classes.main}>{children}</AppShell.Main>
     </AppShell>
   );
