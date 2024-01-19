@@ -152,6 +152,41 @@ const ProductPage = () => {
     enableSorting: true,
     initialState: { density: "md" },
     enableRowSelection: true,
+    positionToolbarAlertBanner: "bottom",
+    mantineTopToolbarProps: {
+      px: 8,
+    },
+    renderTopToolbarCustomActions: ({ table }) => {
+      const values: string[] = table
+        .getSelectedRowModel()
+        .flatRows.map((item) => item.id);
+      if (!values.length) return null;
+
+      const handleDeleteSelected = () =>
+        values.map((value) => deleteUser(value));
+
+      return (
+        <Flex>
+          <Tooltip label={`Delete ${values}`}>
+            <Button
+              onClick={handleDeleteSelected}
+              leftSection={<IconTrash />}
+              bg="var(--mantine-color-red-5)"
+            >
+              Delete {values.length}{" "}
+              {values.length > 1 ? "products" : "product"}
+            </Button>
+          </Tooltip>
+          <Flex pl={12} columnGap={8} align={"center"}>
+            <Text>ID Selected:</Text>
+            {values.map((value) => (
+              <Button disabled>{value}</Button>
+            ))}
+          </Flex>
+        </Flex>
+      );
+    },
+
     onRowSelectionChange: setRowSelection,
     // add row actions for edit or del row
     enableRowActions: true,
@@ -184,6 +219,7 @@ const ProductPage = () => {
     editDisplayMode: "modal", //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
     getRowId: (row) => row.id,
+    // positionPagination: "both",
     state: {
       isLoading,
       showAlertBanner: isError,
@@ -222,7 +258,7 @@ const ProductPage = () => {
   return (
     <Box px={56}>
       <Flex rowGap={8} direction={"column"}>
-        <Flex justify={"space-between"} align={"center"}>
+        <Flex justify={"space-between"} align={"center"} pb={16}>
           <Text className="text-3xl font-medium">Products</Text>
           <Button
             leftSection={<IconPlus size={20} />}
