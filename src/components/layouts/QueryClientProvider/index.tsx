@@ -21,7 +21,7 @@ const QueryClientProvider = ({ children }: { children: React.ReactNode }) => {
         defaultOptions: { queries: { staleTime: config.staleTime } },
         queryCache: new QueryCache({ onError }),
         mutationCache: new MutationCache({ onError }),
-      })
+       })
   );
 
   return (
@@ -36,7 +36,7 @@ export default QueryClientProvider;
 
 const onError = (error: Error) =>
   notifications.show({
-    message: error.message,
+    message: error.message || "Có lỗi xảy ra!!!",
     color: "red",
     icon: <IconX size="1.1rem" />,
   });

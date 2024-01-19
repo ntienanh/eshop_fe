@@ -8,13 +8,18 @@ import {
   Box,
   Button,
   Flex,
+  Stack,
   Text,
-  Tooltip
+  Tooltip,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import {
-  IconCheck, IconEdit,
-  IconPlus, IconTrash
+  IconAlertCircle,
+  IconCheck,
+  IconEdit,
+  IconPlus,
+  IconTrash,
 } from "@tabler/icons-react";
 import {
   keepPreviousData,
@@ -24,7 +29,6 @@ import {
 } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import {
-  MRT_Row,
   MRT_RowSelectionState,
   MantineReactTable,
   useMantineReactTable,
@@ -36,7 +40,7 @@ import React from "react";
 const useGetProducts = () => {
   const fetchURL = new URL(
     "/api/products?populate=*",
-    "http://192.168.1.184:1337"
+    "http://192.168.1.169:1337"
   );
 
   return useQuery({
@@ -51,6 +55,7 @@ function useDeleteUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: [ServiceName.Product],
     mutationFn: async (productId: string) => {
       serviceProcessor({
         serviceName: ServiceName.Product,
@@ -58,32 +63,14 @@ function useDeleteUser() {
         options: { params: { productId } },
       });
     },
-    // onSettled: (productId) => {
-    //   queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
-    //   notifications.show({
-    //     message: `Deleted ${productId} successfully!`,
-    //     color: "green",
-    //     icon: <IconCheck size="1.1rem" />,
-    //   });
-    // },
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: [ServiceName.Product] }), //refetch users after mutation, disabled for demo
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
+    onSuccess: (_, id) => {
       notifications.show({
-        message: `Deleted successfully!`,
+        message: `Deleted (${id}) successfully!`,
         color: "green",
         icon: <IconCheck size="1.1rem" />,
       });
-    },
-    onMutate: async (productId: string) => {
-      await queryClient.setQueryData(
-        [ServiceName.Product],
-        (prevProduct: any) =>
-          prevProduct?.filter((product: any) => {
-            return product.id !== productId;
-          })
-      );
     },
   });
 }
@@ -141,17 +128,13 @@ const ProductPage = () => {
   );
 
   // loading data
-  const { data, isError, isFetching, isLoading, refetch } = useGetProducts();
+  const { data, isError, isFetching, isLoading } = useGetProducts();
   //call DELETE hook
   const { mutateAsync: deleteUser, isPending: isDeletingUser } =
     useDeleteUser();
 
   const fetchedUsers = data?.data ?? [];
   // const totalRowCount = data?.meta?.totalRowCount ?? 0;
-
-  // React.useEffect(() => {
-  //   refetch();
-  // }, [data]);
 
   const productData = React.useMemo(() => {
     return fetchedUsers?.map((item: any) => {
@@ -188,8 +171,7 @@ const ProductPage = () => {
           <Tooltip label="Delete">
             <ActionIcon
               color="red"
-              // onClick={() => openDeleteConfirmModal(row.original.id)}
-              onClick={() => openDeleteConfirmModal(row)}
+              onClick={() => openDeleteConfirmModal(row.original.id)}
             >
               <IconTrash />
             </ActionIcon>
@@ -211,52 +193,30 @@ const ProductPage = () => {
     },
   });
 
-  // const deleteMutation = useMutation({
-  //   mutationKey: [ServiceName.Product],
-  //   mutationFn: async () =>
-  //     serviceProcessor({
-  //       serviceName: ServiceName.Product,
-  //       method: HTTPMethod.Delete,
-  //       options: { params: { slug } },
-  //     }),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
-  //     notifications.show({
-  //       message: `Deleted successfully!`,
-  //       color: "green",
-  //       icon: <IconCheck size="1.1rem" />,
-  //     });
-  //   },
-  // });
-
-  // const openDeleteConfirmModal = (id: any) => {
-  //   return modals.openConfirmModal({
-  //     centered: true,
-  //     title: "Confirmation",
-  //     children: (
-  //       <Stack
-  //         h={140}
-  //         justify="center"
-  //         align="center"
-  //         bg={"var(--mantine-color-gray-2)"}
-  //         mb={12}
-  //       >
-  //         <IconAlertCircle color="red" size="2.5rem" />
-  //         <Text>Are you sure you want to delete this?</Text>
-  //       </Stack>
-  //     ),
-  //     labels: { confirm: "Confirm", cancel: "Cancel" },
-  //     confirmProps: { color: "red" },
-  //     onCancel: () => null,
-  //     onConfirm: () => deleteUser(id),
-  //   });
-  // };
-
   //DELETE action
-  const openDeleteConfirmModal = (row: MRT_Row<any>) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      deleteUser(row.original.id);
-    }
+
+  const openDeleteConfirmModal = (id: any) => {
+    return modals.openConfirmModal({
+      centered: true,
+      title: "Confirmation",
+      children: (
+        <Stack
+          h={140}
+          justify="center"
+          align="center"
+          bg={"var(--mantine-color-gray-1)"}
+          className="border-2"
+          mb={12}
+        >
+          <IconAlertCircle color="red" size="2.5rem" />
+          <Text>Are you sure you want to delete - {id}?</Text>
+        </Stack>
+      ),
+      labels: { confirm: "Confirm", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => null,
+      onConfirm: () => deleteUser(id),
+    });
   };
 
   return (

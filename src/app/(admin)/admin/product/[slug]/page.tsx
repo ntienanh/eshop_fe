@@ -10,8 +10,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 
 const ProductPage = () => {
-  
-  useNProgress(); 
+  useNProgress();
   const queryClient = useQueryClient();
   const router = useNProgressRouter();
   const params = useParams();
@@ -70,15 +69,14 @@ const ProductPage = () => {
   const deleteMutation = useMutation({
     mutationKey: [ServiceName.Product, slug],
     mutationFn: async () =>
-      serviceProcessor({
+      await serviceProcessor({
         serviceName: ServiceName.Product,
         method: HTTPMethod.Delete,
         options: { params: { slug } },
       }),
     onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
       notifications.show({
-        message: `${id} Deleted successfully!`,
+        message: ` Deleted (${id}) successfully!`,
         color: "green",
         icon: <IconCheck size="1.1rem" />,
       });
@@ -88,12 +86,7 @@ const ProductPage = () => {
 
   React.useEffect(() => {
     queryClient.invalidateQueries({ queryKey: [ServiceName.Product] });
-    console.log("deleteMutationisSuccess");
-  }, [
-    createMutation.isSuccess,
-    updateMutation.isSuccess,
-    deleteMutation.isSuccess,
-  ]);
+  }, [createMutation.isSuccess, updateMutation.isSuccess]);
 
   // api call nhanh dẫn đến data und và form không lấy được value trước khi render UI
   if (!isCreate && productData.isLoading) {
