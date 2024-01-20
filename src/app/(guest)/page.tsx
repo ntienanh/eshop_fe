@@ -8,6 +8,7 @@ import {
   Image,
   useComputedColorScheme,
   useMantineColorScheme,
+
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
@@ -19,9 +20,9 @@ export default function Home() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
-
   return (
     <Group>
+<<<<<<< HEAD
       <p className="text-4xl text-red-700">Hoome</p>
       <Image
         radius="md"
@@ -33,6 +34,9 @@ export default function Home() {
         h={200}
         src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
       />
+=======
+      <p className="text-3xl">Home</p>
+>>>>>>> 226bb71d714be7a8faf913a45765e8daa9769d92
       <Button variant="light" onClick={() => router.push("/admin")}>
         move to admin
       </Button>
