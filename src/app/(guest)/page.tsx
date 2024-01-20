@@ -2,8 +2,8 @@
 import {
   Group,
 } from "@mantine/core";
+import { Header } from "./home/header";
 
-import Header from "./home/header";
 export default function Home() {
   return (
     <Group>
