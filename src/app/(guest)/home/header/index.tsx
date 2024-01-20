@@ -109,29 +109,13 @@ export function Header() {
 
                     <Group h="100%" gap={0} visibleFrom="md" flex={1}>
                         <a href="#" className={classes.link}>
-                            Home
-                        </a>
-                        <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
-                            <HoverCard.Target>
-                                <a href="#" className={classes.link}>
-                                    <Center inline>
-                                        <Box component="span" mr={5}>
-                                            Features
-                                        </Box>
-                                        <IconChevronDown
-                                            style={{ width: rem(16), height: rem(16) }}
-                                            color={theme.colors.blue[6]}
-                                        />
-                                    </Center>
-                                </a>
-                            </HoverCard.Target>
-
-                        </HoverCard>
-                        <a href="#" className={classes.link}>
-                            Learn
+                            Shop
                         </a>
                         <a href="#" className={classes.link}>
-                            Academy
+                            Offer
+                        </a>
+                        <a href="#" className={classes.link}>
+                            Contact
                         </a>
                         <Input
                             placeholder="Search"
@@ -188,25 +172,14 @@ export function Header() {
                     <Divider my="sm" />
 
                     <a href="#" className={classes.link}>
-                        Home
+                        Shop
                     </a>
-                    <UnstyledButton className={classes.link} onClick={toggleLinks}>
-                        <Center inline>
-                            <Box component="span" mr={5}>
-                                Features
-                            </Box>
-                            <IconChevronDown
-                                style={{ width: rem(16), height: rem(16) }}
-                                color={theme.colors.blue[6]}
-                            />
-                        </Center>
-                    </UnstyledButton>
                     <Collapse in={linksOpened}>{links}</Collapse>
                     <a href="#" className={classes.link}>
-                        Learn
+                        Offer
                     </a>
                     <a href="#" className={classes.link}>
-                        Academy
+                        Contact
                     </a>
 
 
