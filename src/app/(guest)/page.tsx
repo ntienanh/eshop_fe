@@ -1,13 +1,16 @@
-"use client";
-import {
-  Group,
-} from "@mantine/core";
-import { Header } from "./home/header";
+// home.tsx
+import { Group } from "@mantine/core";
+import Shop from "./shop/page";
+import Header from "./home/header";
 
-export default function Home() {
+const Home = () => {
   return (
     <Group>
-      <Header></Header>
-    </Group >
+      <Header>
+        <Shop />
+      </Header>
+    </Group>
   );
-}
+};
+
+export default Home;

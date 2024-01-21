@@ -1,3 +1,4 @@
+"use client"
 import {
     HoverCard,
     Group,
@@ -21,9 +22,11 @@ import {
     useMantineColorScheme,
     useComputedColorScheme,
     ActionIcon,
+    NavLink,
 } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
+import { useRouter } from 'next/navigation'
 import {
     IconNotification,
     IconCode,
@@ -37,7 +40,10 @@ import {
     IconSun,
 } from '@tabler/icons-react';
 import classes from './Header.module.css';
-import { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
+import Link from 'next/link';
+import Shop from '../../shop/page';
+import { useQueryClient } from '@tanstack/react-query';
 
 const mockdata = [
     {
@@ -71,8 +77,11 @@ const mockdata = [
         description: 'Combusken battles with the intensely hot flames it spews',
     },
 ];
+interface HeaderProps {
+    children?: ReactNode;
+}
 
-export function Header() {
+const Header: React.FC<HeaderProps> = ({ children }) => {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
@@ -81,6 +90,7 @@ export function Header() {
     const computedColorScheme = useComputedColorScheme("light", {
         getInitialValueInEffect: true,
     });
+    const router = useRouter()
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
             <Group wrap="nowrap" align="flex-start">
@@ -101,22 +111,13 @@ export function Header() {
 
     return (
         <Box pb={120} flex={"content"}>
-            <header className={classes.header}>
+            <header className={classes.header} >
                 <Group justify="space-between" h="100%">
-                    <a href="#" className={"text-[25px]"}>
-                        CELLINA GLASSESS
-                    </a>
-
+                    <Link href="/" className={"text-[25px]"}>CELLINA GLASSESS</Link>
                     <Group h="100%" gap={0} visibleFrom="md" flex={1}>
-                        <a href="#" className={classes.link}>
-                            Shop
-                        </a>
-                        <a href="#" className={classes.link}>
-                            Offer
-                        </a>
-                        <a href="#" className={classes.link}>
-                            Contact
-                        </a>
+                        <a className={classes.link} onClick={() => router.push('/shop')}>Shop</a>
+                        <Link href="/offer" className={classes.link}>Offer</Link>
+                        <Link href="/contact" className={classes.link}>Contact</Link>
                         <Input
                             placeholder="Search"
                             value={value}
@@ -192,6 +193,8 @@ export function Header() {
                     </Group>
                 </ScrollArea>
             </Drawer>
+            {children}
         </Box>
     );
 }
+export default Header
