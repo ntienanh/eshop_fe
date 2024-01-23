@@ -6,7 +6,7 @@ export interface MenuItem {
 export const headerMenu: MenuItem[] = [
   { path: '/shop', label: 'Shop' },
   { path: '/offers', label: 'Shop' },
-  { path: '/warranty', label: 'Order' },
+  { path: '/warranty', label: 'Warranty' },
   { path: '/info', label: 'Info' },
   { path: '/contact', label: 'Contact' },
   // Add more items as needed
