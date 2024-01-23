@@ -27,9 +27,9 @@ const Header = () => {
                 </div>
             </div>
             <div className='2xl:w-2xl xl:w-xl mx-auto'>
-                <div className='flex items-center justify-between m cursor-pointer p-5'>
+                <div className='flex items-center justify-between cursor-pointer p-5'>
                     <Menu menuItems={headerMenu} />
-                    <div className='flex items-center gap-5 mr-3'>
+                    <div className='flex 2xl:flex xl:flex lg:flex md:flex sm:flex xs:hidden items-center gap-5 mr-3'>
                         <div className="relative">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
