@@ -1,15 +1,13 @@
 // home.tsx
-import { Group } from "@mantine/core";
 import Shop from "./shop/page";
 import Header from "./home/header";
+import Footer from "./home/footer";
 
 const Home = () => {
   return (
-    <Group>
-      <Header>
-        <Shop />
-      </Header>
-    </Group>
+    <div className="bg-white max-w-full h-full">
+      <Header />
+    </div>
   );
 };
 

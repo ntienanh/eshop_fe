@@ -28,6 +28,8 @@
     "react-countup": "^6.5.0",
     "react-dom": "^18",
     "react-hook-form": "^7.49.2",
+    "react-icon": "^1.0.0",
+    "react-icons": "^5.0.1",
     "react-scripts": "^5.0.1",
     "zod": "^3.22.4"
   },

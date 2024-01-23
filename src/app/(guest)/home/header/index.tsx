@@ -1,200 +1,51 @@
-"use client"
-import {
-    HoverCard,
-    Group,
-    Button,
-    UnstyledButton,
-    Text,
-    SimpleGrid,
-    ThemeIcon,
-    Anchor,
-    Divider,
-    Center,
-    Box,
-    Burger,
-    Drawer,
-    Collapse,
-    ScrollArea,
-    rem,
-    useMantineTheme,
-    Input,
-    CloseButton,
-    useMantineColorScheme,
-    useComputedColorScheme,
-    ActionIcon,
-    NavLink,
-} from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
-import { useDisclosure } from '@mantine/hooks';
-import { useRouter } from 'next/navigation'
-import {
-    IconNotification,
-    IconCode,
-    IconBook,
-    IconChartPie3,
-    IconFingerprint,
-    IconCoin,
-    IconChevronDown,
-    IconSearch,
-    IconMoonStars,
-    IconSun,
-} from '@tabler/icons-react';
-import classes from './Header.module.css';
-import React, { ReactNode, useState } from 'react';
-import Link from 'next/link';
-import Shop from '../../shop/page';
-import { useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import { MenuItem } from '@/utils/home';
+import { headerLogin, headerMenu } from '@/utils/home';
+import { FaRegHeart } from "react-icons/fa";
+import { AiOutlineShopping } from "react-icons/ai";
 
-const mockdata = [
-    {
-        icon: IconCode,
-        title: 'Open source',
-        description: 'This Pokémon’s cry is very loud and distracting',
-    },
-    {
-        icon: IconCoin,
-        title: 'Free for everyone',
-        description: 'The fluid of Smeargle’s tail secretions changes',
-    },
-    {
-        icon: IconBook,
-        title: 'Documentation',
-        description: 'Yanma is capable of seeing 360 degrees without',
-    },
-    {
-        icon: IconFingerprint,
-        title: 'Security',
-        description: 'The shell’s rounded shape and the grooves on its.',
-    },
-    {
-        icon: IconChartPie3,
-        title: 'Analytics',
-        description: 'This Pokémon uses its flying ability to quickly chase',
-    },
-    {
-        icon: IconNotification,
-        title: 'Notifications',
-        description: 'Combusken battles with the intensely hot flames it spews',
-    },
-];
-interface HeaderProps {
-    children?: ReactNode;
-}
-
-const Header: React.FC<HeaderProps> = ({ children }) => {
-    const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-    const theme = useMantineTheme();
-    const [value, setValue] = useState('Search');
-    const { colorScheme, setColorScheme } = useMantineColorScheme();
-    const computedColorScheme = useComputedColorScheme("light", {
-        getInitialValueInEffect: true,
-    });
-    const router = useRouter()
-    const links = mockdata.map((item) => (
-        <UnstyledButton className={classes.subLink} key={item.title}>
-            <Group wrap="nowrap" align="flex-start">
-                <ThemeIcon size={34} variant="default" radius="md">
-                    <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
-                </ThemeIcon>
-                <div>
-                    <Text size="sm" fw={500}>
-                        {item.title}
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                        {item.description}
-                    </Text>
-                </div>
-            </Group>
-        </UnstyledButton>
-    ));
-
+const Menu: React.FC<{ menuItems: MenuItem[] }> = ({ menuItems }) => {
     return (
-        <Box pb={120} flex={"content"}>
-            <header className={classes.header} >
-                <Group justify="space-between" h="100%">
-                    <Link href="/" className={"text-[25px]"}>CELLINA GLASSESS</Link>
-                    <Group h="100%" gap={0} visibleFrom="md" flex={1}>
-                        <a className={classes.link} onClick={() => router.push('/shop')}>Shop</a>
-                        <Link href="/offer" className={classes.link}>Offer</Link>
-                        <Link href="/contact" className={classes.link}>Contact</Link>
-                        <Input
-                            placeholder="Search"
-                            value={value}
-                            onChange={(event) => setValue(event.currentTarget.value)}
-                            rightSectionPointerEvents="all"
-                            flex={1}
-                            visibleFrom='md'
-                            rightSection={
-                                value ? <CloseButton
-                                    aria-label="Search"
-                                    onClick={() => setValue('')}
-                                    style={{ display: value ? undefined : 'none' }}
-                                /> : <IconSearch />
-                            }
-                            pointer
-                        />
-
-                    </Group>
-
-                    <Group visibleFrom="sm">
-                        <ActionIcon
-                            onClick={() =>
-                                setColorScheme(computedColorScheme === "light" ? "dark" : "light")
-                            }
-                            variant="default"
-                            size="lg"
-                            aria-label="Toggle color scheme"
-                        >
-                            {colorScheme === "light" ? (
-                                <IconMoonStars color="var(--mantine-color-blue-7)" />
-                            ) : (
-                                <IconSun color="var(--mantine-color-yellow-4)" />
-                            )}
-                        </ActionIcon>
-                        <Button variant="default">Log in</Button>
-                        <Button>Sign up</Button>
-                    </Group>
-
-                    <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
-                </Group>
-            </header>
-
-            <Drawer
-                opened={drawerOpened}
-                onClose={closeDrawer}
-                size="100%"
-                padding="md"
-                title="CELLINA GLASSES"
-                hiddenFrom="sm"
-                zIndex={1000000}
-            >
-                <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-                    <Divider my="sm" />
-
-                    <a href="#" className={classes.link}>
-                        Shop
-                    </a>
-                    <Collapse in={linksOpened}>{links}</Collapse>
-                    <a href="#" className={classes.link}>
-                        Offer
-                    </a>
-                    <a href="#" className={classes.link}>
-                        Contact
-                    </a>
-
-
-
-                    <Divider my="sm" />
-
-                    <Group justify="center" grow pb="xl" px="md">
-                        <Button variant="default">Log in</Button>
-                        <Button>Sign up</Button>
-                    </Group>
-                </ScrollArea>
-            </Drawer>
-            {children}
-        </Box>
+        <div>
+            {menuItems.map((item, index) => (
+                <div key={index} className='2xl:inline-block xl:inline-block lg:inline-block md:inline-block sm:inline-block xs:hidden mr-3 '>
+                    <a href={item.path}>{item.label}</a>
+                </div>
+            ))}
+        </div>
     );
-}
-export default Header
+};
+
+const Header = () => {
+    return (
+        <>
+            <div className='2xl:w-2xl xl:w-xl mx-auto'>
+                <div className='flex items-center justify-between cursor-pointer p-5'>
+                    <div>CELLINA GLASSES</div>
+                    <Menu menuItems={headerLogin} />
+                </div>
+            </div>
+            <div className='2xl:w-2xl xl:w-xl mx-auto'>
+                <div className='flex items-center justify-between m cursor-pointer p-5'>
+                    <Menu menuItems={headerMenu} />
+                    <div className='flex items-center gap-5 mr-3'>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                </svg>
+                            </div>
+                            <input type="search" id="default-search" className="block w-[150px] p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        </div>
+                        <div className='flex items-center gap-3'>
+                            <FaRegHeart size={15} />
+                            <AiOutlineShopping size={25} className='mb-[5px]' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Header;
