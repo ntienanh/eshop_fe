@@ -68,11 +68,11 @@ const Header = () => {
       <div className="flex bg-secondary">
         <div className="2xl:w-2xl relative flex">
           <div className="mx-auto relative w-[100%]">
-            <div className="flex flex-col cursor-pointer absolute top-[150px] 3xl:left-[200px] 2xl:left-[60px] xl:left-[40px] lg:left-[30px] left-[20px]">
-              <h1 className="4xl:text-[40px] 3xl:text-[35] 2xl:text-[35px] xl:text-[30px] lg:text-[30px] xs:text-[25px] text-[20px] font-bold text-secondary1">
+            <div className="flex flex-col cursor-pointer absolute top-[150px] 3xl:left-[220px] 2xl:left-[80px] xl:left-[40px] lg:left-[30px] left-[20px]">
+              <h1 className="4xl:text-[40px] 3xl:text-[35] 2xl:text-[35px] xl:text-[30px] lg:text-[30px] xs:text-[25px] xs:text-white font-bold text-secondary1">
                 Spring Sale
               </h1>
-              <p className="text-[30px] font-serif text-secondary1">
+              <p className="text-[30px] font-serif text-secondary1 xs:text-white">
                 Up to -40%
               </p>
               <button className="w-[200px] mt-3  bg-secondary1 p-3 text-white rounded-lg hover:bg-orange-300 hover:text-slate-700">
@@ -86,7 +86,7 @@ const Header = () => {
             <img
               src={Hero.src}
               alt="hero"
-              className="object-cover w-[50%] h-[500px]"
+              className="object-cover w-[50%] xs:w-[100%] h-[500px]"
             />
           </div>
         </div>
