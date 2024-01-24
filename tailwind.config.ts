@@ -8,28 +8,29 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      'xs': '500px',
+      xs: "500px",
       // => @media (min-width: 640px) { ... }
-      'sm': '640px',
+      sm: "640px",
       // => @media (min-width: 640px) { ... }
-
-      'md': '768px',
+      md: "768px",
       // => @media (min-width: 768px) { ... }
-
-      'lg': '1024px',
+      lg: "1024px",
       // => @media (min-width: 1024px) { ... }
-
-      'xl': '1280px',
+      xl: "1280px",
       // => @media (min-width: 1280px) { ... }
-      '2xl': '1536px',
+      "2xl": "1536px",
+      // => @media (min-width: 1765px) { ... }
+      "3xl": "1765px",
       // => @media (min-width: 1536px) { ... }
+      "4xl": "1980px",
+      "5xl": "2050px",
     },
     width: {
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
       backgroundImage: {
@@ -38,8 +39,8 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        'secondary': '#EADFD8',
-        'secondary1':'#025162'
+        secondary: "#EADFD8",
+        secondary1: "#025162",
       },
     },
   },
