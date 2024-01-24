@@ -21,6 +21,8 @@ const Header = () => {
     return (
         <>
             <div className='2xl:w-2xl xl:w-xl mx-auto'>
+
+
                 <div className='flex items-center justify-between cursor-pointer p-5'>
                     <h1 className='text-[30px] font-bold'>CELLINA <span className='text-lg text-[28px] font-normal'>GLASSES</span></h1>
                     <Menu menuItems={headerLogin} />
