@@ -48,8 +48,6 @@ const MediaPage = () => {
 
   const result = fileQuery?.data || [];
 
-  console.log("result", result);
-
   return (
     <Box px={56}>
       <Flex rowGap={8} direction={"column"} pt={12}>
@@ -99,7 +97,6 @@ const MediaPage = () => {
         <Grid pt={20}>
           {result?.map((item: any, idx: any) => {
             const format = (item.name.split(".").pop() as string).toUpperCase();
-            console.log("item", item);
 
             return (
               <Grid.Col key={idx} span={{ base: 12, xs: 12, lg: 3, sm: 6 }}>

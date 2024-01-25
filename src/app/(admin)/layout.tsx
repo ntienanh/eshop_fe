@@ -5,10 +5,12 @@ import { useNProgressRouter } from "@/hooks/useNProgress";
 import { spotlightActions } from "@/jsons/spotlight";
 import {
   ActionIcon,
+  Affix,
   AppShell,
   Avatar,
   Badge,
   Burger,
+  Button,
   Flex,
   Group,
   Input,
@@ -18,13 +20,16 @@ import {
   Stack,
   Text,
   Tooltip,
+  Transition,
   rem,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import {
+  IconArrowNarrowUp,
+  IconArrowUp,
   IconCheck,
   IconCurrentLocation,
   IconLogout,
@@ -32,15 +37,15 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import classes from "./admin.module.css";
-import Error from "./admin/error";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useNProgressRouter();
+  const [scroll, scrollTo] = useWindowScroll();
   const [opened, { toggle }] = useDisclosure();
   const [changePassOpened, { open: changePassOpen, close: changePassClose }] =
     useDisclosure();
   const [popoverOpened, { toggle: popoverToggle, close: popoverClose }] =
     useDisclosure();
-  const router = useNProgressRouter();
 
   return (
     <AppShell
@@ -146,6 +151,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           </Flex>
         </Flex>
         <Spotlight
+          shortcut={["Ctrl + K", "/"]}
           actions={spotlightActions}
           nothingFound="Nothing found..."
           highlightQuery
@@ -166,6 +172,25 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       </AppShell.Navbar>
 
       <AppShell.Main className={classes.main}>{children}</AppShell.Main>
+      <Affix position={{ bottom: 16, right: 16 }}>
+        <Transition transition="slide-up" mounted={scroll.y > 0}>
+          {(transitionStyles) => (
+            <ActionIcon
+              onClick={() => scrollTo({ y: 0 })}
+              variant="filled"
+              color="yellow"
+              size="xl"
+              radius="xs"
+              style={transitionStyles}
+            >
+              <IconArrowNarrowUp
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          )}
+        </Transition>
+      </Affix>
     </AppShell>
   );
 };

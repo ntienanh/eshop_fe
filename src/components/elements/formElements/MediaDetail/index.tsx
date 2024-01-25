@@ -1,11 +1,7 @@
-import { serviceProcessor } from "@/services/servicesProcessor";
-import { ServiceName } from "@/types/enum";
-import { Card, Center, Flex, Image, Stack, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconPhotoPlus } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { Control, useController } from "react-hook-form";
+import { ActionIcon, Box, Card, Center, Flex, Group, Image, Modal, Text, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconPencil, IconPhotoPlus, IconPlus, IconTrash } from '@tabler/icons-react';
+import { Control, useController } from 'react-hook-form';
 
 interface IMediaDetailProps {
   name: string;
@@ -16,8 +12,7 @@ interface IMediaDetailProps {
 
 const MediaDetail = (props: IMediaDetailProps) => {
   const { control, name } = props || {};
-  const [listOpened, { open: listOpen, close: onCancel }] =
-    useDisclosure(false);
+  const [modalOpened, { open: modalOpen, close }] = useDisclosure(false);
   const { field } = useController({ control, name });
   const { value, onChange } = field || {};
 
@@ -35,33 +30,25 @@ const MediaDetail = (props: IMediaDetailProps) => {
   // const { results } = fileQuery?.data || {};
 
   return (
-    <div>
+    <>
       {!value?.data ? (
         <Flex
           rowGap={2}
-          direction={"column"}
-          className="cursor-pointer"
-          onClick={() => console.log("Click to dropzone")}
+          direction={'column'}
+          className='cursor-pointer'
+          onClick={() => console.log('Click to dropzone')}
         >
-          <Text size="sm" fw={500} pt={3}>
+          <Text size='sm' fw={500} pt={3}>
             {name}
           </Text>
-          <Card withBorder bg={"#f6f6f9"} padding={"lg"} h={166}>
-            <Flex
-              direction={"column"}
-              justify={"center"}
-              h={"100%"}
-              rowGap={12}
-            >
+          <Card withBorder bg={'#f6f6f9'} padding={'lg'} h={166}>
+            <Flex direction={'column'} justify={'center'} h={'100%'} rowGap={12}>
               <Center>
-                <IconPhotoPlus
-                  size="2rem"
-                  color="var(--mantine-color-green-8)"
-                />
+                <IconPhotoPlus size='2rem' color='var(--mantine-color-green-8)' />
               </Center>
 
               <Center>
-                <Text size="sm" fw={500} lineClamp={1}>
+                <Text size='sm' fw={500} lineClamp={1}>
                   Click to add an asset or drag and drop one in this area
                 </Text>
               </Center>
@@ -69,29 +56,51 @@ const MediaDetail = (props: IMediaDetailProps) => {
           </Card>
         </Flex>
       ) : (
-        <Flex
-          rowGap={2}
-          direction={"column"}
-          className="cursor-pointer"
-          onClick={() => console.log("Click to dropzone")}
-        >
-          <Text size="sm" fw={500} pt={3}>
-            {name}
-          </Text>
-          <Card withBorder bg={"#f6f6f9"} padding={"sm"} h={166}>
-            <Center h={"100%"}>
-              <Image
-                radius="md"
-                h={"100%"}
-                maw={"75%"}
-                src={`http://localhost:1337${value?.data?.attributes.url}`}
-                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-              />
-            </Center>
-          </Card>
-        </Flex>
+        <Box className='relative'>
+          <Flex rowGap={2} direction={'column'}>
+            <Text size='sm' fw={500} pt={3}>
+              {name}
+            </Text>
+            <Card withBorder bg={'#f6f6f9'} padding={'sm'} h={166}>
+              <Center h={'100%'}>
+                <Image
+                  radius='md'
+                  h={'100%'}
+                  maw={'75%'}
+                  fit='contain'
+                  src={`http://localhost:1337${value?.data?.attributes.url}`}
+                  fallbackSrc='https://placehold.co/600x400?text=Placeholder'
+                />
+              </Center>
+            </Card>
+          </Flex>
+
+          <Group className='absolute bottom-3 flex justify-center w-full px-4'>
+            <Tooltip label='Add'>
+              <ActionIcon color='orange' size={'md'} variant='light' onClick={modalOpen}>
+                <IconPlus />
+              </ActionIcon>
+            </Tooltip>
+
+            <Tooltip label={`Delete`}>
+              <ActionIcon color='orange' size={'md'} variant='light'>
+                <IconTrash />
+              </ActionIcon>
+            </Tooltip>
+
+            <Tooltip label={`Edit`}>
+              <ActionIcon color='orange' size={'md'} variant='light'>
+                <IconPencil />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </Box>
       )}
-    </div>
+
+      <Modal opened={modalOpened} onClose={close} title='Detail Image' centered size={'xl'}>
+        12312
+      </Modal>
+    </>
   );
 };
 

@@ -28,6 +28,7 @@ const DateInputDetail = (props: IDateInputDetailProps) => {
     field,
     fieldState: { error },
   } = useController({ name, control });
+
   const value = field.value ? new Date(field.value) : null;
 
   return (

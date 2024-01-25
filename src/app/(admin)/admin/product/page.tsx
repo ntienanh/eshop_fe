@@ -40,7 +40,7 @@ import React from "react";
 const useGetProducts = () => {
   const fetchURL = new URL(
     "/api/products?populate=*",
-    "http://192.168.1.169:1337"
+    "http://192.168.1.184:1337"
   );
 
   return useQuery({
