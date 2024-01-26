@@ -1,4 +1,22 @@
-import { ActionIcon, Box, Card, Center, Flex, Group, Image, Modal, Text, Tooltip } from '@mantine/core';
+'use client';
+
+import MediaDetail from '@/components/sections/admin/MediaDetail';
+import ModalSelect from '@/components/sections/admin/ModalSelect';
+import {
+  ActionIcon,
+  Box,
+  Card,
+  Center,
+  Divider,
+  Flex,
+  Group,
+  Image,
+  Modal,
+  Tabs,
+  Text,
+  Tooltip,
+  useMantineColorScheme,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPhotoPlus, IconPlus, IconTrash } from '@tabler/icons-react';
 import { Control, useController } from 'react-hook-form';
@@ -10,11 +28,13 @@ interface IMediaDetailProps {
   // setEmbla?: React.Dispatch<React.SetStateAction<EmblaCarouselType>>;
 }
 
-const MediaDetail = (props: IMediaDetailProps) => {
+const MediaFormDetail = (props: IMediaDetailProps) => {
   const { control, name } = props || {};
-  const [modalOpened, { open: modalOpen, close }] = useDisclosure(false);
+  const [modalOpened, { open: modalOpen, close: modalClose }] = useDisclosure(false);
+  const [imgDetailOpened, { open: detailOpen, close: detailClose }] = useDisclosure(false);
   const { field } = useController({ control, name });
   const { value, onChange } = field || {};
+  const { colorScheme } = useMantineColorScheme();
 
   // useQuery File
   // const fileQuery = useQuery({
@@ -41,7 +61,7 @@ const MediaDetail = (props: IMediaDetailProps) => {
           <Text size='sm' fw={500} pt={3}>
             {name}
           </Text>
-          <Card withBorder bg={'#f6f6f9'} padding={'lg'} h={166}>
+          <Card withBorder padding={'lg'} h={166} bg={'var(--mantine-color-gray-2)'}>
             <Flex direction={'column'} justify={'center'} h={'100%'} rowGap={12}>
               <Center>
                 <IconPhotoPlus size='2rem' color='var(--mantine-color-green-8)' />
@@ -61,7 +81,7 @@ const MediaDetail = (props: IMediaDetailProps) => {
             <Text size='sm' fw={500} pt={3}>
               {name}
             </Text>
-            <Card withBorder bg={'#f6f6f9'} padding={'sm'} h={166}>
+            <Card withBorder bg={'var(--mantine-color-gray-2)'} padding={'sm'} h={166}>
               <Center h={'100%'}>
                 <Image
                   radius='md'
@@ -77,19 +97,19 @@ const MediaDetail = (props: IMediaDetailProps) => {
 
           <Group className='absolute bottom-3 flex justify-center w-full px-4'>
             <Tooltip label='Add'>
-              <ActionIcon color='orange' size={'md'} variant='light' onClick={modalOpen}>
+              <ActionIcon color='green' variant='filled' size={'md'} onClick={modalOpen}>
                 <IconPlus />
               </ActionIcon>
             </Tooltip>
 
             <Tooltip label={`Delete`}>
-              <ActionIcon color='orange' size={'md'} variant='light'>
+              <ActionIcon color='red' variant='filled' size={'md'} onClick={() => onChange({})}>
                 <IconTrash />
               </ActionIcon>
             </Tooltip>
 
             <Tooltip label={`Edit`}>
-              <ActionIcon color='orange' size={'md'} variant='light'>
+              <ActionIcon color='blue' variant='filled' size={'md'} onClick={detailOpen}>
                 <IconPencil />
               </ActionIcon>
             </Tooltip>
@@ -97,11 +117,10 @@ const MediaDetail = (props: IMediaDetailProps) => {
         </Box>
       )}
 
-      <Modal opened={modalOpened} onClose={close} title='Detail Image' centered size={'xl'}>
-        12312
-      </Modal>
+      <ModalSelect opened={modalOpened} onClose={modalClose} />
+      <MediaDetail close={detailClose} opened={imgDetailOpened} img={value?.data} />
     </>
   );
 };
 
-export default MediaDetail;
+export default MediaFormDetail;

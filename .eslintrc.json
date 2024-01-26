@@ -1,5 +1,5 @@
 {
-  "plugins": ["prettier", "@tanstack/query", "@typescript-eslint","prettier-plugin-organize-imports"],
+  "plugins": ["prettier", "@tanstack/query", "@typescript-eslint", "prettier-plugin-organize-imports"],
   "parser": "@typescript-eslint/parser",
   "extends": ["next/core-web-vitals", "eslint:recommended", "prettier", "plugin:@typescript-eslint/recommended"],
   "rules": {

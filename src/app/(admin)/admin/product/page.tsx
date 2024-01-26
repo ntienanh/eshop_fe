@@ -1,51 +1,29 @@
-"use client";
+'use client';
 
-import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
-import { serviceProcessor } from "@/services/servicesProcessor";
-import { HTTPMethod, ServiceName } from "@/types/enum";
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Flex,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { notifications } from "@mantine/notifications";
-import {
-  IconAlertCircle,
-  IconCheck,
-  IconEdit,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import dayjs from "dayjs";
+import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
+import { serviceProcessor } from '@/services/servicesProcessor';
+import { HTTPMethod, ServiceName } from '@/types/enum';
+import { ActionIcon, Box, Button, Flex, Stack, Text, Tooltip } from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+import { IconAlertCircle, IconCheck, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import {
   MRT_RowSelectionState,
   MantineReactTable,
   useMantineReactTable,
   type MRT_ColumnDef,
-} from "mantine-react-table";
-import React from "react";
+} from 'mantine-react-table';
+import React from 'react';
 
 // render api fetching
 const useGetProducts = () => {
-  const fetchURL = new URL(
-    "/api/products?populate=*",
-    "http://192.168.1.184:1337"
-  );
+  const fetchURL = new URL('/api/products?populate=*', `${process.env.NEXT_PUBLIC_API_URL}`);
 
   return useQuery({
     queryKey: [ServiceName.Product], //refetch whenever the URL changes (columnFilters, globalFilter, sorting, pagination)
-    queryFn: () => fetch(fetchURL.href).then((res) => res.json()),
+    queryFn: () => fetch(fetchURL.href).then(res => res.json()),
     placeholderData: keepPreviousData, //useful for paginated queries by keeping data from previous pages on screen while fetching the next page
   });
 };
@@ -63,13 +41,12 @@ function useDeleteUser() {
         options: { params: { productId } },
       });
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: [ServiceName.Product] }), //refetch users after mutation, disabled for demo
+    onSettled: () => queryClient.invalidateQueries({ queryKey: [ServiceName.Product] }), //refetch users after mutation, disabled for demo
     onSuccess: (_, id) => {
       notifications.show({
         message: `Deleted (${id}) successfully!`,
-        color: "green",
-        icon: <IconCheck size="1.1rem" />,
+        color: 'green',
+        icon: <IconCheck size='1.1rem' />,
       });
     },
   });
@@ -78,60 +55,55 @@ function useDeleteUser() {
 const ProductPage = () => {
   useNProgress();
   const router = useNProgressRouter();
-  const [rowSelection, setRowSelection] = React.useState<MRT_RowSelectionState>(
-    {}
-  );
+  const [rowSelection, setRowSelection] = React.useState<MRT_RowSelectionState>({});
 
   const columns = React.useMemo<MRT_ColumnDef<any>[]>(
     () => [
-      { accessorKey: "id", header: "Id", maxSize: 60, enableHiding: false },
-      { accessorKey: "name", header: "Name", size: 60, enableHiding: false },
-      { accessorKey: "price", header: "Price", size: 50 },
+      { accessorKey: 'id', header: 'Id', maxSize: 60, enableHiding: false },
+      { accessorKey: 'name', header: 'Name', size: 60, enableHiding: false },
+      { accessorKey: 'price', header: 'Price', size: 50 },
       {
-        accessorKey: "description",
-        header: "Description",
+        accessorKey: 'description',
+        header: 'Description',
         size: 300,
         maxSize: 400,
-        Cell: ({ row }) => (
-          <Text lineClamp={2}>{row.original.description}</Text>
-        ),
+        Cell: ({ row }) => <Text lineClamp={2}>{row.original.description}</Text>,
       },
       {
-        accessorKey: "createdAt",
-        header: "Created At",
+        accessorKey: 'createdAt',
+        header: 'Created At',
         Cell: ({ row }) => {
           const day = row.original.createdAt;
-          return <Text>{dayjs(day).format("DD/MM/YYYY")}</Text>;
+          return <Text>{dayjs(day).format('DD/MM/YYYY')}</Text>;
         },
         size: 120,
       },
       {
-        accessorKey: "updatedAt",
-        header: "Updated At",
+        accessorKey: 'updatedAt',
+        header: 'Updated At',
         Cell: ({ row }) => {
           const day = row.original.createdAt;
-          return <Text>{dayjs(day).format("DD/MM/YYYY")}</Text>;
+          return <Text>{dayjs(day).format('DD/MM/YYYY')}</Text>;
         },
         size: 120,
       },
       {
-        accessorKey: "publishedAt",
-        header: "Published At",
+        accessorKey: 'publishedAt',
+        header: 'Published At',
         Cell: ({ row }) => {
           const day = row.original.createdAt;
-          return <Text>{dayjs(day).format("DD/MM/YYYY")}</Text>;
+          return <Text>{dayjs(day).format('DD/MM/YYYY')}</Text>;
         },
         size: 120,
       },
     ],
-    []
+    [],
   );
 
   // loading data
   const { data, isError, isFetching, isLoading } = useGetProducts();
   //call DELETE hook
-  const { mutateAsync: deleteUser, isPending: isDeletingUser } =
-    useDeleteUser();
+  const { mutateAsync: deleteUser, isPending: isDeletingUser } = useDeleteUser();
 
   const fetchedUsers = data?.data ?? [];
   // const totalRowCount = data?.meta?.totalRowCount ?? 0;
@@ -150,36 +122,28 @@ const ProductPage = () => {
     // tắt DensityToggle và set init size md
     enableDensityToggle: false,
     enableSorting: true,
-    initialState: { density: "md" },
+    initialState: { density: 'md' },
     enableRowSelection: true,
-    positionToolbarAlertBanner: "bottom",
+    positionToolbarAlertBanner: 'bottom',
     mantineTopToolbarProps: {
       px: 8,
     },
     renderTopToolbarCustomActions: ({ table }) => {
-      const values: string[] = table
-        .getSelectedRowModel()
-        .flatRows.map((item) => item.id);
+      const values: string[] = table.getSelectedRowModel().flatRows.map(item => item.id);
       if (!values.length) return null;
 
-      const handleDeleteSelected = () =>
-        values.map((value) => deleteUser(value));
+      const handleDeleteSelected = () => values.map(value => deleteUser(value));
 
       return (
         <Flex>
           <Tooltip label={`Delete ${values}`}>
-            <Button
-              onClick={handleDeleteSelected}
-              leftSection={<IconTrash />}
-              bg="var(--mantine-color-red-5)"
-            >
-              Delete {values.length}{" "}
-              {values.length > 1 ? "products" : "product"}
+            <Button onClick={handleDeleteSelected} leftSection={<IconTrash />} bg='var(--mantine-color-red-5)'>
+              Delete {values.length} {values.length > 1 ? 'products' : 'product'}
             </Button>
           </Tooltip>
-          <Flex pl={12} columnGap={8} align={"center"}>
+          <Flex pl={12} columnGap={8} align={'center'}>
             <Text>ID Selected:</Text>
-            {values.map((value) => (
+            {values.map(value => (
               <Button disabled>{value}</Button>
             ))}
           </Flex>
@@ -190,24 +154,18 @@ const ProductPage = () => {
     onRowSelectionChange: setRowSelection,
     // add row actions for edit or del row
     enableRowActions: true,
-    positionActionsColumn: "last",
+    positionActionsColumn: 'last',
     renderRowActions: ({ row }) => {
       return (
         <Flex columnGap={8}>
-          <Tooltip label="Update">
-            <ActionIcon
-              color="blue"
-              onClick={() => router.push(`/admin/product/${row.original.id}`)}
-            >
+          <Tooltip label='Update'>
+            <ActionIcon color='blue' onClick={() => router.push(`/admin/product/${row.original.id}`)}>
               <IconEdit />
             </ActionIcon>
           </Tooltip>
 
-          <Tooltip label="Delete">
-            <ActionIcon
-              color="red"
-              onClick={() => openDeleteConfirmModal(row.original.id)}
-            >
+          <Tooltip label='Delete'>
+            <ActionIcon color='red' onClick={() => openDeleteConfirmModal(row.original.id)}>
               <IconTrash />
             </ActionIcon>
           </Tooltip>
@@ -216,9 +174,9 @@ const ProductPage = () => {
     },
     enableColumnFilters: false,
     // delete
-    editDisplayMode: "modal", //default ('row', 'cell', 'table', and 'custom' are also available)
+    editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
-    getRowId: (row) => row.id,
+    getRowId: row => row.id,
     // positionPagination: "both",
     state: {
       isLoading,
@@ -234,22 +192,15 @@ const ProductPage = () => {
   const openDeleteConfirmModal = (id: any) => {
     return modals.openConfirmModal({
       centered: true,
-      title: "Confirmation",
+      title: 'Confirmation',
       children: (
-        <Stack
-          h={140}
-          justify="center"
-          align="center"
-          bg={"var(--mantine-color-gray-1)"}
-          className="border-2"
-          mb={12}
-        >
-          <IconAlertCircle color="red" size="2.5rem" />
+        <Stack h={140} justify='center' align='center' bg={'var(--mantine-color-gray-1)'} className='border-2' mb={12}>
+          <IconAlertCircle color='red' size='2.5rem' />
           <Text>Are you sure you want to delete - {id}?</Text>
         </Stack>
       ),
-      labels: { confirm: "Confirm", cancel: "Cancel" },
-      confirmProps: { color: "red" },
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
       onCancel: () => null,
       onConfirm: () => deleteUser(id),
     });
@@ -257,13 +208,10 @@ const ProductPage = () => {
 
   return (
     <Box px={56}>
-      <Flex rowGap={8} direction={"column"}>
-        <Flex justify={"space-between"} align={"center"} pb={16}>
-          <Text className="text-3xl font-medium">Products</Text>
-          <Button
-            leftSection={<IconPlus size={20} />}
-            onClick={() => router.push("/admin/product/create")}
-          >
+      <Flex rowGap={8} direction={'column'}>
+        <Flex justify={'space-between'} align={'center'} pb={16}>
+          <Text className='text-3xl font-medium'>Products</Text>
+          <Button leftSection={<IconPlus size={20} />} onClick={() => router.push('/admin/product/create')}>
             Create new entry
           </Button>
         </Flex>
