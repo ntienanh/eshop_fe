@@ -16,8 +16,6 @@ const MediaDetail = (props: IMediaDetailProps) => {
   const { close, opened, img } = props || {};
   const clipboard = useClipboard({ timeout: 500 });
 
-  console.log('img detail', img);
-
   return (
     <Modal opened={opened} onClose={close} title='Detail Image' centered size={'xl'}>
       <Flex columnGap={16}>
