@@ -1,7 +1,7 @@
 'use client';
 
-import MediaDetail from '@/components/sections/admin/MediaDetail';
-import ModalSelect from '@/components/sections/admin/ModalSelect';
+import MediaDetail from '@/components/sections/admin/Media/MediaDetail';
+import ModalSelect from '@/components/sections/admin/Media/ModalSelect';
 import {
   ActionIcon,
   Box,
@@ -56,7 +56,7 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
           rowGap={2}
           direction={'column'}
           className='cursor-pointer'
-          onClick={() => console.log('Click to dropzone')}
+          onClick={modalOpen}
         >
           <Text size='sm' fw={500} pt={3}>
             {name}
@@ -117,7 +117,7 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
         </Box>
       )}
 
-      <ModalSelect opened={modalOpened} onClose={modalClose} />
+      <ModalSelect data={field.value} opened={modalOpened} onClose={modalClose} />
       <MediaDetail close={detailClose} opened={imgDetailOpened} img={value?.data} />
     </>
   );

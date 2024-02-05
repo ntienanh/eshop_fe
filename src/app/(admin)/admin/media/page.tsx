@@ -1,6 +1,6 @@
 'use client';
 
-import MediaDetail from '@/components/sections/admin/MediaDetail';
+import MediaDetail from '@/components/sections/admin/Media/MediaDetail';
 import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
 import { ServiceName } from '@/types/enum';
 import {

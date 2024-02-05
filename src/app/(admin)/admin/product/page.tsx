@@ -101,12 +101,11 @@ const ProductPage = () => {
   );
 
   // loading data
-  const { data, isError, isFetching, isLoading } = useGetProducts();
+  const { data, isError, isFetching, isLoading, refetch } = useGetProducts();
   //call DELETE hook
   const { mutateAsync: deleteUser, isPending: isDeletingUser } = useDeleteUser();
 
   const fetchedUsers = data?.data ?? [];
-  // const totalRowCount = data?.meta?.totalRowCount ?? 0;
 
   const productData = React.useMemo(() => {
     return fetchedUsers?.map((item: any) => {
@@ -124,15 +123,20 @@ const ProductPage = () => {
     enableSorting: true,
     initialState: { density: 'md' },
     enableRowSelection: true,
-    positionToolbarAlertBanner: 'bottom',
-    mantineTopToolbarProps: {
-      px: 8,
+    onRowSelectionChange: setRowSelection,
+    mantinePaginationProps: {
+      rowsPerPageOptions: ['5', '10', '20'],
     },
+    positionToolbarAlertBanner: 'bottom',
+    mantineTopToolbarProps: { px: 8 },
     renderTopToolbarCustomActions: ({ table }) => {
       const values: string[] = table.getSelectedRowModel().flatRows.map(item => item.id);
       if (!values.length) return null;
 
-      const handleDeleteSelected = () => values.map(value => deleteUser(value));
+      const handleDeleteSelected = () => {
+        setRowSelection({});
+        return values.map(value => deleteUser(value));
+      };
 
       return (
         <Flex>
@@ -150,8 +154,6 @@ const ProductPage = () => {
         </Flex>
       );
     },
-
-    onRowSelectionChange: setRowSelection,
     // add row actions for edit or del row
     enableRowActions: true,
     positionActionsColumn: 'last',
@@ -174,10 +176,9 @@ const ProductPage = () => {
     },
     enableColumnFilters: false,
     // delete
-    editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
+    // editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
     getRowId: row => row.id,
-    // positionPagination: "both",
     state: {
       isLoading,
       showAlertBanner: isError,
