@@ -1,11 +1,13 @@
-import React from "react";
+import FooterGuest from '@/components/sections/client/Footer';
+import HeaderGuest from '@/components/sections/client/Header';
+import React from 'react';
 
 const GuestLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <p className="text-red-500">Header</p>
-      {children}
-      <p>Footer</p>
+      <HeaderGuest />
+      <main>{children}</main>
+      <FooterGuest />
     </>
   );
 };
