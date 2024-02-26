@@ -2,30 +2,36 @@
 
 import { Box, Card, Checkbox, Divider, Flex, Image, Text } from '@mantine/core';
 import React from 'react';
+import MediaDetail from '../MediaDetail';
 
 interface IMediaCardProps {
   image?: any;
   onDelete?: () => void;
-  onCheckboxChange?: any;
+  onCheckboxChange: any;
   checked?: boolean;
   disabled?: boolean;
 }
 
 const MediaCard = (props: IMediaCardProps) => {
-  const { url, name, width, height, checked } = props?.image || {};
-  console.log('checked', checked);
+  const { url, name, width, height } = props?.image || {};
+  console.log('MediaCard image', props?.image);
 
   return (
     <Card shadow='sm' radius='md' withBorder>
       <Card.Section className='relative'>
         <Box className='bg-transparent flex justify-center items-center' p={16}>
-          <Checkbox className='absolute top-3 left-3' checked={false} />
+          <Checkbox
+            className='absolute top-3 left-3'
+            checked={props.checked}
+            // onClick={()=>onCheckboxChange()}
+          />
           <Image
             className='cursor-pointer'
-            // onClick={() => {
-            //   // open();
-            //   // setImg(item);
-            // }}
+            onClick={() => {
+              console.log('12312')
+              // open();
+              // setImg(item);
+            }}
             fit='contain'
             src={`http://localhost:1337${url}`}
             h={60}

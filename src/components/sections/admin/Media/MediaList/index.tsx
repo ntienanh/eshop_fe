@@ -2,7 +2,7 @@
 
 interface IMediaListProps {
   //   data: IFile[];
-  data: [];
+  data: any[];
   selectedData: any;
   onChange: (event: any) => void;
 }
@@ -12,24 +12,28 @@ import MediaCard from '../MediaCard';
 const MediaList = (props: IMediaListProps) => {
   const { data, onChange, selectedData } = props || {};
 
-  if (!!selectedData.length) {
+  console.log('data', data);
+  console.log('selectedData', selectedData);
+  if (Array.isArray(selectedData)) {
     return (
-      <Grid>
-        {data?.map((image: any) => {
-          // const checked = selectedData?.includes(image.id);
-          console.log(image.id);
-
-          console.log('selectedData', selectedData);
-          console.log('image.id', image.id);
+      <Grid pr={12}>
+        {data?.map(image => {
+          const checked: boolean = selectedData === image?.id;
 
           return (
             <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={image.id}>
               <MediaCard
                 image={image}
-                // checked={checked}
+                checked={checked}
                 // onCheckboxChange={() => {
                 //   onChange(checked ? selectedData?.filter(val => val !== image.id) : [...selectedData, image.id]);
                 // }}
+                // thay đổi giá trị selected trong RHF
+                onCheckboxChange={() => {
+                  // onChange(checked ?? selectedData === image.id);
+                  console.log('onCheckboxChangeonCheckboxChange');
+                  // onChange(selectedData === 1);
+                }}
               />
             </Grid.Col>
           );
@@ -39,18 +43,13 @@ const MediaList = (props: IMediaListProps) => {
   }
 
   return (
-    <Grid pr={12}>
-      {data?.map(image => {
-        console.log('image', image);
-        const checked: boolean = selectedData === image?.id;
-
-        console.log('checked', checked);
-
+    <Grid>
+      {data?.map((image: any) => {
         return (
           <Grid.Col span={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={image.id}>
             <MediaCard
               image={image}
-              checked={checked}
+              checked={image.id === selectedData}
               // onCheckboxChange={() => {
               //   onChange(checked ? selectedData?.filter(val => val !== image.id) : [...selectedData, image.id]);
               // }}

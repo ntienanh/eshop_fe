@@ -24,8 +24,7 @@ import { Control, useController } from 'react-hook-form';
 interface IMediaDetailProps {
   name: string;
   control: Control<any, any>;
-  // embla?: EmblaCarouselType;
-  // setEmbla?: React.Dispatch<React.SetStateAction<EmblaCarouselType>>;
+
 }
 
 const MediaFormDetail = (props: IMediaDetailProps) => {
@@ -35,6 +34,8 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
   const { field } = useController({ control, name });
   const { value, onChange } = field || {};
   const { colorScheme } = useMantineColorScheme();
+
+  console.log('MediaFormDetail', name);
 
   // useQuery File
   // const fileQuery = useQuery({
@@ -52,12 +53,7 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
   return (
     <>
       {!value?.data ? (
-        <Flex
-          rowGap={2}
-          direction={'column'}
-          className='cursor-pointer'
-          onClick={modalOpen}
-        >
+        <Flex rowGap={2} direction={'column'} className='cursor-pointer' onClick={modalOpen}>
           <Text size='sm' fw={500} pt={3}>
             {name}
           </Text>
@@ -117,8 +113,8 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
         </Box>
       )}
 
-      <ModalSelect data={field.value} opened={modalOpened} onClose={modalClose} />
-      <MediaDetail close={detailClose} opened={imgDetailOpened} img={value?.data} />
+      <ModalSelect control={control} data={field.value} opened={modalOpened} onClose={modalClose} />
+      <MediaDetail control={control} close={detailClose} opened={imgDetailOpened} img={value?.data} />
     </>
   );
 };

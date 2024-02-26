@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Card,
+  Center,
   Checkbox,
   Divider,
   Flex,
@@ -21,12 +22,13 @@ import {
   Select,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from '@mantine/core';
 import { useDebouncedState, useDisclosure, useLocalStorage } from '@mantine/hooks';
-import { IconCaretDownFilled, IconFilter, IconPlus, IconSearch } from '@tabler/icons-react';
+import { IconCaretDownFilled, IconFilter, IconPlus, IconSearch, IconX } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 
 const MediaPage = () => {
   useNProgress();
@@ -102,7 +104,9 @@ const MediaPage = () => {
             placeholder='Search image...'
           />
         </Flex>
+
         <MediaDetail close={close} opened={opened} img={img} />
+
         <Pagination
           className='flex flex-1 justify-end'
           total={result?.meta?.pagination?.pageCount}
@@ -159,9 +163,17 @@ const MediaPage = () => {
         )}
 
         {result?.data?.length === 0 && (
-          <Text tt={'uppercase'} size='lg' className='flex justify-center'>
-            No image found
-          </Text>
+          <Center>
+            <Text
+              tt='uppercase'
+              size='xl'
+              fw={900}
+              variant='gradient'
+              gradient={{ from: 'rgba(176, 77, 77, 1)', to: 'rgba(133, 48, 127, 1)', deg: 0 }}
+            >
+              No image found
+            </Text>
+          </Center>
         )}
 
         <Flex>

@@ -1,11 +1,11 @@
 'use client';
 
-import { Button, Center, Divider, Flex, Modal, Pagination, ScrollArea, Stack, Tabs, Text } from '@mantine/core';
-import React from 'react';
-import { Control } from 'react-hook-form';
-import MediaList from '../MediaList';
-import { useQuery } from '@tanstack/react-query';
 import { ServiceName } from '@/types/enum';
+import { Button, Flex, Modal, Pagination, ScrollArea, Stack, Tabs, Text } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { Control, useController } from 'react-hook-form';
+import MediaList from '../MediaList';
 
 interface IModalSelectProps {
   onClose?: any;
@@ -15,8 +15,10 @@ interface IModalSelectProps {
 }
 
 const ModalSelect = (props: IModalSelectProps) => {
-  const { opened, control, onClose,data } = props || {};
+  const { opened, control, onClose, data } = props || {};
   const [activePage, setActivePage] = React.useState(1);
+  const { field } = useController({ control, name: 'logo' });
+  const { value, onChange } = field || {};
 
   const fileApiEndPoint = `${process.env.NEXT_PUBLIC_API_URL}upload/files?pagination[page]=${activePage}&populate=*`;
 
@@ -28,44 +30,49 @@ const ModalSelect = (props: IModalSelectProps) => {
   });
   const result = fileQuery?.data;
 
-  // console.log('ModalSelect all data', result);
-  // console.log(' ModalSelect data selected', data);
-
-  // console.log(data)
+  console.log('sêlecetlele', value);
 
   return (
-    <Modal size={830} opened={opened} onClose={onClose} title='Add new assets' centered>
+    <Modal size={840} opened={opened} onClose={onClose} title='Add new assets' centered>
       <Tabs defaultValue='browse'>
         <Flex justify={'space-between'} align={'center'}>
           <Tabs.List>
-            <Tabs.Tab value='browse'>First tab</Tabs.Tab>
-            <Tabs.Tab value='selected'>Second tab</Tabs.Tab>
+            <Tabs.Tab tt={'uppercase'} value='browse'>
+              Browse
+            </Tabs.Tab>
+            <Tabs.Tab tt={'uppercase'} value='selected'>
+              Selected files
+            </Tabs.Tab>
           </Tabs.List>
           <Button>Add new assets</Button>
         </Flex>
 
         <Tabs.Panel pt={24} value='browse'>
           <ScrollArea.Autosize mah={640} type='always' offsetScrollbars>
-            <Stack mih={700}>
-              <MediaList onChange={() => null} selectedData={data?.data?.id} data={result?.data} />
-              <Pagination
-                className='flex flex-1 justify-end'
-                total={result?.meta?.pagination?.pageCount}
-                value={activePage}
-                onChange={setActivePage}
-              />
+            <Stack mih={540}>
+              <MediaList onChange={onChange} selectedData={data?.data?.id} data={result?.data} />
             </Stack>
+
+            <Pagination
+              className='flex flex-1 justify-end pt-4'
+              total={result?.meta?.pagination?.pageCount}
+              value={activePage}
+              onChange={setActivePage}
+            />
           </ScrollArea.Autosize>
         </Tabs.Panel>
         <Tabs.Panel pt={24} value='selected'>
           <ScrollArea.Autosize mah={640} type='always' offsetScrollbars>
             <Stack>
               <Text fz={14}>
-                {/* {value?.length} */}
-                <strong>asset ready to upload</strong> Manage the assets before adding them to the Media Library
+                <strong>{!Array.isArray(value) ? '01' : value?.length} &nbsp;asset ready to upload</strong> Manage the
+                assets before adding them to the Media Library
               </Text>
-              {/* <MediaList onChange={onChange} selectedData={data?.map(item => item.id)} data={data} /> */}
-              <MediaList onChange={() => null} selectedData={[]} data={[]} />
+              <MediaList
+                onChange={onChange}
+                selectedData={data?.data?.id}
+                data={result?.data?.filter(item => item.id === data?.data?.id)}
+              />
             </Stack>
           </ScrollArea.Autosize>
         </Tabs.Panel>

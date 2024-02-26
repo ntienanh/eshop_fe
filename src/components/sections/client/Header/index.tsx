@@ -13,18 +13,18 @@ const HeaderGuest = () => {
             <p>Việc làm IT</p>
             <IconChevronDown />
           </div>
-          <div className='p-7 cursor-pointer font-bold capitalize'>Công ty IT</div>
+          <div className='p-7 cursor-pointer font-bold capitalize hover:text-red-600'>Công ty IT</div>
         </div>
 
         <div className='flex gap-x-4 items-center'>
-          <IconBellFilled className='cursor-pointer' />
+          <IconBellFilled className='cursor-pointer rounded text-center transition-all hover:bg-gray-200 focus:bg-gray-200' />
           <div className='p-4 flex gap-x-4 cursor-pointer'>
             <IconUserCircle />
             <p className='font-bold capitalize'>Nguyễn Tiến Ánh</p>
             <IconChevronDown className='cursor-pointer' />
           </div>
 
-          <div className='p-4 cursor-pointer font-bold capitalize'>Theme | VI</div>
+          <div className='p-4 cursor-pointer font-bold capitalize hover:text-red-600'>Theme | VI</div>
         </div>
       </div>
     </header>

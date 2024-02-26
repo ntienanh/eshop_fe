@@ -3,7 +3,7 @@
 import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
 import { serviceProcessor } from '@/services/servicesProcessor';
 import { HTTPMethod, ServiceName } from '@/types/enum';
-import { ActionIcon, Box, Button, Flex, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Button, Flex, LoadingOverlay, Stack, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconAlertCircle, IconCheck, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
@@ -216,7 +216,6 @@ const ProductPage = () => {
             Create new entry
           </Button>
         </Flex>
-
         <MantineReactTable table={table} />
       </Flex>
     </Box>
