@@ -1,7 +1,7 @@
 export enum ServiceName {
-  User = "users",
-  Product = "products",
-  File = "upload/files",
+  User = 'users',
+  Product = 'products',
+  File = 'upload/files',
 }
 
 export enum StatusCode {
@@ -17,17 +17,35 @@ export enum StatusCode {
 }
 
 export enum HTTPMethod {
-  Get = "GET",
-  Post = "POST",
-  Put = "PUT",
-  Patch = "PATCH",
-  Delete = "DELETE",
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
 }
 
 export enum Language {
-  Angular = "Angular",
-  React = "React",
-  Vue = "Vue",
-  Css = "Css",
-  Html = "Html",
+  Angular = 'Angular',
+  React = 'React',
+  Vue = 'Vue',
+  Css = 'Css',
+  Html = 'Html',
+}
+
+export enum Position {
+  Intern = 'Intern',
+  Fresher = 'Fresher',
+  Junior = 'Junior',
+  Middle = 'Middle',
+  Senior = 'Senior',
+  Leader = 'Leader',
+  Manager = 'Manager',
+  AllLevels = 'All Levels',
+}
+
+export enum JobType {
+  Office = 'Office',
+  Hybird = 'Hybird',
+  Remote = 'Remote',
+  Oversea = 'Oversea',
 }

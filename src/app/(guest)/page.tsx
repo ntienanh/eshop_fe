@@ -21,7 +21,7 @@ export default function Home() {
   });
 
   return (
-    <Group>
+    <Group h={800}>
       <p className="text-4xl text-red-700">Hoome</p>
       <Image
         radius="md"
