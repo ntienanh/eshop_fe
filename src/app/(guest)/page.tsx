@@ -1,65 +1,153 @@
-"use client";
-import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
+'use client';
+
+import JobsToday from '@/components/sections/client/JobsToday';
+import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
+import { JobType } from '@/types/enum';
 import {
   ActionIcon,
+  Badge,
+  Box,
   Button,
+  Flex,
   Grid,
   Group,
   Image,
+  Input,
+  MultiSelect,
+  Select,
+  Text,
   useComputedColorScheme,
   useMantineColorScheme,
-} from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconSun, IconMoonStars } from "@tabler/icons-react";
+} from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconSun, IconMoonStars, IconFilterDown, IconFilterX } from '@tabler/icons-react';
+import React from 'react';
 
 export default function Home() {
   useNProgress();
   const router = useNProgressRouter();
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", {
-    getInitialValueInEffect: true,
-  });
+
+  const dataLocation = [
+    { label: 'All Locations', value: 'all' },
+    { label: 'Hồ Chí Minh', value: 'hochiminh' },
+    { label: 'Hà Nội', value: 'hanoi' },
+    { label: 'Đà Nẵng', value: 'danang' },
+    { label: 'Cần Thơ', value: 'cantho' },
+  ];
+
+  const dataLevels = [
+    { label: 'All Levels', value: 'all' },
+    { label: 'Hồ Chí Minh', value: 'hochiminh' },
+    { label: 'Hà Nội', value: 'hanoi' },
+    { label: 'Đà Nẵng', value: 'danang' },
+    { label: 'Cần Thơ', value: 'cantho' },
+  ];
+
+  const dataTypes = [
+    { label: JobType.Office, value: 'office' },
+    { label: JobType.Hybird, value: 'hybird' },
+    { label: JobType.Oversea, value: 'oversea' },
+    { label: JobType.Remote, value: 'remote' },
+  ];
+
+  const dataContracts = [
+    { label: 'Fulltime', value: 'fulltime' },
+    { label: 'Part-time', value: 'parttime' },
+    { label: 'Freelance', value: 'freelance' },
+  ];
 
   return (
-    <Group h={800}>
-      <p className="text-4xl text-red-700">Hoome</p>
-      <Image
-        radius="md"
-        h={200}
-        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png"
-      />
-      <Image
-        radius="md"
-        h={200}
-        src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
-      />
-      <Button variant="light" onClick={() => router.push("/admin")}>
-        move to admin
-      </Button>
-      <Button
-        onClick={() =>
-          notifications.show({
-            title: "Default notification",
-            message: "Hey there, your code is awesome! 🤥",
-          })
-        }
+    <Box>
+      <div
+        className='bg-no-repeat py-8 h-auto'
+        style={{
+          backgroundImage: `url("https://c.topdevvn.com/v4/assets/images/bg-search.jpg")`,
+          backgroundRepeat: 'no-repeat',
+        }}
       >
-        Show notification
-      </Button>
-      <ActionIcon
-        onClick={() =>
-          setColorScheme(computedColorScheme === "light" ? "dark" : "light")
-        }
-        variant="default"
-        size="lg"
-        aria-label="Toggle color scheme"
-      >
-        {colorScheme === "light" ? (
-          <IconMoonStars color="var(--mantine-color-blue-7)" />
-        ) : (
-          <IconSun color="var(--mantine-color-yellow-4)" />
-        )}
-      </ActionIcon>
-    </Group>
+        <div className='container mx-auto flex items-center gap-x-2'>
+          <Text fz={25} fw={500}>
+            Search your
+          </Text>
+
+          <Badge color='#DD3F24' size='xl' radius='xs'>
+            Something
+          </Badge>
+        </div>
+
+        {/* Form */}
+        <div className='container mx-auto flex flex-col gap-y-4 pt-5'>
+          <Input
+            className='shadow-[2px_6px_22px_0px_rgba(0,0,0,0.45)]'
+            size='xl'
+            placeholder='Search by Skills, Position, Company,...'
+            rightSection={
+              <Button color='#DD3F24' className='hover:cursor-pointer pointer-events-auto mr-3' size='lg'>
+                Search
+              </Button>
+            }
+            rightSectionPointerEvents='auto'
+            rightSectionWidth={140}
+          />
+
+          <Box className='flex justify-between items-center gap-x-3'>
+            <Select
+              className='flex-1'
+              size='lg'
+              placeholder='Locations'
+              defaultValue={dataLocation[0].value}
+              data={dataLocation}
+            />
+            <MultiSelect
+              className='flex-1'
+              size='lg'
+              placeholder='Levels'
+              defaultValue={[dataLevels[0].value]}
+              data={dataLevels}
+            />
+            <MultiSelect
+              className='flex-1'
+              size='lg'
+              placeholder='Job types'
+              defaultValue={[dataTypes[0].value]}
+              data={dataTypes}
+            />
+
+            <MultiSelect
+              className='flex-1'
+              size='lg'
+              placeholder='Job types'
+              defaultValue={[dataContracts[0].value]}
+              data={dataContracts}
+            />
+
+            <Button
+              color='var(--mantine-color-gray-7)                                     '
+              size='lg'
+              leftSection={<IconFilterX />}
+            >
+              Clear filter
+            </Button>
+          </Box>
+        </div>
+
+        <Box className='container mx-auto pt-5 flex justify-center'>
+          <Flex align={'center'} columnGap={8}>
+            <Text>Suggested keywords:</Text>
+            <Button variant='default'>Java</Button>
+            <Button variant='default'>C++</Button>
+            <Button variant='default'>Javascript</Button>
+            <Button variant='default'>UI/UX</Button>
+            <Button variant='default'>C#</Button>
+            <Button variant='default'>Fresher</Button>
+            <Button variant='default'>Python</Button>
+            <Button variant='default'>PHP</Button>
+            <Button variant='default'>Mobile</Button>
+          </Flex>
+        </Box>
+      </div>
+
+      <JobsToday />
+    </Box>
   );
 }

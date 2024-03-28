@@ -6,6 +6,7 @@ import '@mantine/nprogress/styles.css';
 import '@mantine/dates/styles.css';
 import 'mantine-react-table/styles.css'; //import MRT styles
 import '@mantine/spotlight/styles.css';
+import '@mantine/carousel/styles.css';
 import './globals.css';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
