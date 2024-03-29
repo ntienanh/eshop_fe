@@ -13,7 +13,7 @@ const CarouselBase = (props: ICarouselBaseProps) => {
 
   return (
     <Carousel
-      slideSize='25%'
+      slideSize='33%'
       slideGap='xl'
       align='start'
       loop

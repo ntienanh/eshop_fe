@@ -62,11 +62,11 @@ const HeaderGuest = () => {
             <img src='https://cdn.topdev.vn/v4/assets/images/td-logo.png' alt='img' className='h-[30px]' />
           </div>
 
-          <div className='p-7 cursor-pointer flex gap-x-2 font-bold capitalize hover:text-red-600 group relative'>
+          <div className='p-7 cursor-pointer flex gap-x-2 font-bold capitalize hover:text-red-600 group relative '>
             <button>Việc làm IT</button>
             <IconChevronDown className='group-hover:text-red-600' />
 
-            <ul className='mt-12 absolute invisible text-gray-700 group-hover:visible bg-white w-72 box-border border p-4 list-none text-sm font-semibold'>
+            <ul className='shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] mt-12 absolute invisible text-gray-700 group-hover:visible bg-white w-72 box-border border p-4 list-none text-sm font-semibold'>
               <li className='group/item pb-2'>
                 <a className='rounded bg-[#F4F5F5] group-hover/item:bg-slate-300 hover:text-red-600 group-hover/item:text-red-600 py-2 px-4 whitespace-no-wrap flex justify-between items-center relative group'>
                   <p className='flex justify-between gap-x-4 text-sm font-semibold items-center'>

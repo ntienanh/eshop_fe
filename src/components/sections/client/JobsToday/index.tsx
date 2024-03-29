@@ -1,53 +1,57 @@
-import { Box } from '@mantine/core';
+import { Box, Button, Card, Flex, Image, Text } from '@mantine/core';
 import React from 'react';
 import { Carousel } from '@mantine/carousel';
 import CarouselBase from '@/components/elements/client/Carousel';
 
-async function getData() {
-  const res = await fetch(
+async function getJob() {
+  const data = await fetch(
     'https://api.topdev.vn/td/v2/jobs?features=superhotjob,superhotjobweb&ordering=newest_job&page_size=12&locale=en_US&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url,slug',
   );
+  return data.json();
+}
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
-
-  // https://api.topdev.vn/td/v2/taxonomies?fields=skills
-  return res.json();
+async function getSkills() {
+  const data = await fetch('https://api.topdev.vn/td/v2/taxonomies?fields=skills');
+  return data.json();
 }
 
 const JobsToday = async () => {
-  const data = await getData();
+  const data = await getJob();
+  const dataSkills = await getSkills();
+
+  const listSkills = dataSkills?.data?.skills;
 
   const topCompanies = data.data?.map((item: any, idx: any) => {
     const { company, title, skills_ids } = item || {};
     const { display_name, image_logo, detail_url, slug } = company || {};
 
     return (
-      <Carousel.Slide
-        className='flex flex-row justify-between items-center hover:shadow-[0_10px_30px_rgba(14,166,59,0.2)]'
-        key={idx}
-      >
-        <div className='bg-white hover:shadow-[0_10px_30px_rgba(14,166,59,0.2)] hover:border-[#33c172] border boder-solid broder-gray-200 rounded-xl h-52 w-full flex justify-center items-center relative p-4'>
-          <div className='flex flex-col gap-y-4 pt-4'>
-            <img
-              className='h-20 w-full object-contain px-4 cursor-pointer'
-              src={image_logo}
-              alt='Logo'
-              // onClick={() => router.push(`/company/${item.id}`)}
-            />
-            <h3 className='flex text-center justify-center items-center text-[#212f3f] font-bold text-sm leading-5'>
-              {display_name}
-            </h3>
-            {title}
-            <div className='flex gap-x-4'>
-              {skills_ids.map((item: any) => (
-                <p>{item}</p>
+      <Carousel.Slide className='flex w-full' key={idx}>
+        <Card
+          shadow='sm'
+          padding='lg'
+          radius='md'
+          withBorder
+          w={400}
+          className='flex flex-col gap-y-2 justify-start items-center py-10'
+        >
+          <Card.Section>
+            <Image src={image_logo} h={60} alt='No way!' />
+          </Card.Section>
+
+          <Text fz={15}>{display_name}</Text>
+          <Text fw={700}>{title}</Text>
+
+          <Flex columnGap={4} h={'100%'} className='flex-wrap justify-center gap-y-2'>
+            {listSkills
+              .filter((item: any, idx: string) => skills_ids.includes(item.id))
+              .map((val: any) => (
+                <Button variant='default' key={item.slug}>
+                  {val.text}
+                </Button>
               ))}
-            </div>
-          </div>
-        </div>
+          </Flex>
+        </Card>
       </Carousel.Slide>
     );
   });
