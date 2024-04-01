@@ -1,4 +1,4 @@
-import { MotionDiv } from '@/lib/framer';
+import { MotionDiv } from '@/libs/framer';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   return (

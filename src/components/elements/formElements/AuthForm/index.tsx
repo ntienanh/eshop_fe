@@ -1,15 +1,22 @@
 'use client';
+
 import React from 'react';
+import axios from 'axios';
+import { signIn, useSession } from 'next-auth/react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import TextInputDetail from '../TextInputDetail';
 import { Button, Divider, Flex, Text } from '@mantine/core';
 import AuthSocialButton from '../AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { useRouter } from 'next/navigation';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
 const AuthForm = () => {
-  const [variant, setVariant] = React.useState<Variant>('REGISTER');
+  const router = useRouter();
+  const [variant, setVariant] = React.useState<Variant>('LOGIN');
   const [isLoading, setIsLoading] = React.useState(false);
 
   const {
@@ -26,7 +33,62 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
     setIsLoading(true);
-    console.log(data);
+
+    if (variant === 'REGISTER') {
+      axios
+        .post('/api/register', data)
+        .then(() =>
+          signIn('credentials', {
+            ...data,
+            redirect: false,
+          }),
+        )
+        .then(callback => {
+          if (callback?.error) {
+            notifications.show({
+              message: `Account created fail!`,
+              color: 'red',
+              icon: <IconCheck size='1.1rem' />,
+            });
+          }
+
+          if (callback?.ok) {
+            notifications.show({
+              message: `Account created successfully!`,
+              color: 'green',
+              icon: <IconCheck size='1.1rem' />,
+            });
+            router.push('/admin');
+          }
+        })
+        .finally(() => setIsLoading(false));
+    }
+
+    if (variant === 'LOGIN') {
+      signIn('credentials', {
+        ...data,
+        redirect: false,
+      })
+        .then(callback => {
+          if (callback?.error) {
+            notifications.show({
+              message: `Account or password was wrong!`,
+              color: 'red',
+              icon: <IconCheck size='1.1rem' />,
+            });
+          }
+
+          if (callback?.ok) {
+            notifications.show({
+              message: `Loggin successfully!`,
+              color: 'green',
+              icon: <IconCheck size='1.1rem' />,
+            });
+            router.push('/admin');
+          }
+        })
+        .finally(() => setIsLoading(false));
+    }
   };
 
   const toggleVariant = React.useCallback(() => {
