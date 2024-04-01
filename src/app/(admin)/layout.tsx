@@ -10,6 +10,7 @@ import {
   Avatar,
   Badge,
   Burger,
+  Button,
   Flex,
   Group,
   Input,
@@ -39,9 +40,12 @@ import {
 } from '@tabler/icons-react';
 import React from 'react';
 import classes from './admin.module.css';
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const router = useNProgressRouter();
+  const session = useSession();
+  const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', {
@@ -50,6 +54,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [opened, { toggle }] = useDisclosure();
   const [changePassOpened, { open: changePassOpen, close: changePassClose }] = useDisclosure();
   const [popoverOpened, { toggle: popoverToggle, close: popoverClose }] = useDisclosure();
+
+  const isAuthen = session?.data;
+
+  console.log(isAuthen);
 
   return (
     <AppShell
@@ -86,6 +94,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   <IconSun color='var(--mantine-color-yellow-4)' />
                 )}
               </ActionIcon>
+
               <Input
                 readOnly
                 onClick={spotlight.open}
@@ -99,6 +108,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   </>
                 }
               />
+
               <Modal opened={changePassOpened} onClose={changePassClose} title='Change password'>
                 123
               </Modal>
@@ -112,9 +122,16 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 shadow='md'
               >
                 <Popover.Target>
-                  <Avatar color='cyan' radius='xl' className='cursor-pointer' onClick={popoverToggle}>
-                    <Text>Ad</Text>
-                  </Avatar>
+                  {!!isAuthen ? (
+                    <Flex align={'center'} columnGap={4}>
+                      {isAuthen.user?.name}-{isAuthen.user?.email}
+                      <Avatar color='cyan' radius='xl' className='cursor-pointer' onClick={popoverToggle}>
+                        <Text>Ad</Text>
+                      </Avatar>
+                    </Flex>
+                  ) : (
+                    <Button onClick={() => router.push('/')}>Login</Button>
+                  )}
                 </Popover.Target>
                 <Popover.Dropdown>
                   <Stack gap={'sm'}>
@@ -133,7 +150,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                     <Group
                       className='cursor-pointer hover:bg-slate-200 rounded p-2 justify-between'
                       onClick={() => {
-                        // signOut();
+                        signOut();
                         notifications.show({
                           message: `Logout successfully`,
                           color: 'green',
@@ -163,6 +180,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           }}
         />
       </AppShell.Header>
+
       <AppShell.Navbar p='md'>
         <Navbar />
       </AppShell.Navbar>
