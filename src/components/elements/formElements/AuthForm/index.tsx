@@ -99,6 +99,34 @@ const AuthForm = () => {
     }
   }, [variant]);
 
+  const socialAction = (action: string) => {
+    console.log('loggin with social');
+    setIsLoading(true);
+    signIn(action, {
+      redirect: false,
+    })
+      .then(callback => {
+        if (callback?.error) {
+          notifications.show({
+            message: `Loggin with ${action} was wrong!`,
+            color: 'red',
+            icon: <IconCheck size='1.1rem' />,
+          });
+          router.push('/');
+        }
+
+        if (callback?.ok && !callback?.error) {
+          notifications.show({
+            message: `Loggin with ${action} successfully!`,
+            color: 'green',
+            icon: <IconCheck size='1.1rem' />,
+          });
+          router.push('/admin');
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
       <div
@@ -141,8 +169,8 @@ const AuthForm = () => {
           <Divider my='xs' label='Or continue with' labelPosition='center' className='pt-2' />
 
           <div className='flex gap-x-4'>
-            <AuthSocialButton classNames={'w-full'} onClick={() => console.log('first')} icon={BsGithub} />
-            <AuthSocialButton onClick={() => console.log('second')} icon={BsGoogle} />
+            <AuthSocialButton classNames={'w-full'} onClick={() => socialAction('github')} icon={BsGithub} />
+            <AuthSocialButton onClick={() => socialAction('google')} icon={BsGoogle} />
           </div>
 
           <div
