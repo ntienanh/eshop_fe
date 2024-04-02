@@ -4,10 +4,13 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { pages } from '@/app/auth/config/page';
+
 interface NextAuthUserWithStringId extends NextAuthUser {
   id: string;
 }
 import prisma from '@/libs/prismadb';
+import { PAGES_DIR_ALIAS } from 'next/dist/lib/constants';
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -68,6 +71,7 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  pages: pages,
 };
 
 const handler = NextAuth(authOptions);

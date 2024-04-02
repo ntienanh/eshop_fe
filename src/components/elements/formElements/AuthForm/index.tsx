@@ -103,7 +103,9 @@ const AuthForm = () => {
     console.log('loggin with social');
     setIsLoading(true);
     signIn(action, {
-      redirect: false,
+      redirect: true,
+      // Check role rồi redirect tới đâu đó
+      callbackUrl: '/admin',
     })
       .then(callback => {
         if (callback?.error) {
@@ -116,6 +118,7 @@ const AuthForm = () => {
         }
 
         if (callback?.ok && !callback?.error) {
+          console.log('login social success');
           notifications.show({
             message: `Loggin with ${action} successfully!`,
             color: 'green',

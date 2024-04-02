@@ -34,6 +34,7 @@ import {
   IconCheck,
   IconCurrentLocation,
   IconLogout,
+  IconMessage2,
   IconMoonStars,
   IconSearch,
   IconSun,
@@ -42,6 +43,8 @@ import React from 'react';
 import classes from './admin.module.css';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { IconBell } from '@tabler/icons-react';
+import ActionIconBadge from '@/components/elements/ActionIconBadge';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
@@ -80,8 +83,27 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             </Tooltip>
           </Group>
 
+          <Modal opened={changePassOpened} onClose={changePassClose} title='Change password'>
+            123
+          </Modal>
+
           <Flex justify={'flex-end'} className='flex-1'>
             <Group>
+              <Input
+                component='button'
+                onClick={spotlight.open}
+                w={200}
+                leftSection={<IconSearch size={16} />}
+                rightSectionWidth={60}
+                rightSection={
+                  <>
+                    <Kbd>⌘</Kbd>+ <Kbd>K</Kbd>
+                  </>
+                }
+              >
+                Tìm kiếm...
+              </Input>
+
               <ActionIcon
                 onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
                 variant='default'
@@ -89,29 +111,20 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 aria-label='Toggle color scheme'
               >
                 {colorScheme === 'light' ? (
-                  <IconMoonStars color='var(--mantine-color-blue-7)' />
+                  <IconMoonStars color='var(--mantine-color-blue-7)' stroke={1.5} />
                 ) : (
-                  <IconSun color='var(--mantine-color-yellow-4)' />
+                  <IconSun color='var(--mantine-color-yellow-4)' stroke={1.5} />
                 )}
               </ActionIcon>
 
-              <Input
-                readOnly
-                onClick={spotlight.open}
-                w={200}
-                leftSection={<IconSearch size={16} />}
-                placeholder='Tìm kiếm...'
-                rightSectionWidth={60}
-                rightSection={
-                  <>
-                    <Kbd>⌘</Kbd>+ <Kbd>K</Kbd>
-                  </>
-                }
+              <ActionIconBadge data='1' size='lg' radius={'xl'} icon={IconBell} />
+              <ActionIconBadge
+                onClick={() => router.push('/conversation')}
+                data='2'
+                size='lg'
+                radius={'xl'}
+                icon={IconMessage2}
               />
-
-              <Modal opened={changePassOpened} onClose={changePassClose} title='Change password'>
-                123
-              </Modal>
 
               <Popover
                 opened={popoverOpened}
@@ -124,8 +137,17 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 <Popover.Target>
                   {!!isAuthen ? (
                     <Flex align={'center'} columnGap={4}>
-                      {isAuthen.user?.name}-{isAuthen.user?.email}
-                      <Avatar color='cyan' radius='xl' className='cursor-pointer' onClick={popoverToggle}>
+                      <Badge variant='light' color='yellow' size='lg' radius='xs'>
+                        {isAuthen.user?.name}
+                      </Badge>
+
+                      <Avatar
+                        src={isAuthen?.user?.image}
+                        color='cyan'
+                        radius='xl'
+                        className='cursor-pointer'
+                        onClick={popoverToggle}
+                      >
                         <Text>Ad</Text>
                       </Avatar>
                     </Flex>
@@ -133,19 +155,22 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                     <Button onClick={() => router.push('/')}>Login</Button>
                   )}
                 </Popover.Target>
+
                 <Popover.Dropdown>
                   <Stack gap={'sm'}>
                     <Text className='cursor-pointer hover:bg-slate-200 rounded p-2'>Profile</Text>
 
-                    <Text
-                      onClick={() => {
-                        changePassOpen();
-                        popoverClose();
-                      }}
-                      className='cursor-pointer hover:bg-slate-200 rounded p-2'
-                    >
-                      Change Password
-                    </Text>
+                    {!isAuthen && (
+                      <Text
+                        onClick={() => {
+                          changePassOpen();
+                          popoverClose();
+                        }}
+                        className='cursor-pointer hover:bg-slate-200 rounded p-2'
+                      >
+                        Change Password
+                      </Text>
+                    )}
 
                     <Group
                       className='cursor-pointer hover:bg-slate-200 rounded p-2 justify-between'
