@@ -10,11 +10,11 @@ interface IActionIconBadgeProps extends ActionIconProps {
   data?: string;
 }
 
-const ActionIconBadge = (props: IActionIconBadgeProps) => {
+const ActionIconBadge = React.forwardRef((props: IActionIconBadgeProps, ref: any) => {
   const { icon: ICon, onClick, data, ...rest } = props || {};
 
   return (
-    <div className='relative' onClick={onClick}>
+    <div className='relative' onClick={onClick} ref={ref}>
       <ActionIcon variant='default' {...rest}>
         <ICon color='var(--mantine-color-blue-8)' stroke={1.5} />
       </ActionIcon>
@@ -26,6 +26,6 @@ const ActionIconBadge = (props: IActionIconBadgeProps) => {
       )}
     </div>
   );
-};
+});
 
 export default ActionIconBadge;

@@ -13,6 +13,7 @@ import {
   Button,
   Flex,
   Group,
+  HoverCard,
   Input,
   Kbd,
   Modal,
@@ -49,6 +50,7 @@ import ActionIconBadge from '@/components/elements/ActionIconBadge';
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const router = useRouter();
+  // useNProgressRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', {
@@ -57,6 +59,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [opened, { toggle }] = useDisclosure();
   const [changePassOpened, { open: changePassOpen, close: changePassClose }] = useDisclosure();
   const [popoverOpened, { toggle: popoverToggle, close: popoverClose }] = useDisclosure();
+  const [popoverOpened2, { toggle: popoverToggle2, close: popoverClose2 }] = useDisclosure();
 
   const isAuthen = session?.data;
 
@@ -69,7 +72,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       padding='md'
     >
       <AppShell.Header>
-        <Flex px='md' h={'100%'} align={'center'}>
+        <Flex px='md' h={'100%'} align={'center'} className='relative'>
           <Group h='100%' px='md'>
             <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' />
             <MantineLogo size={30} />
@@ -117,7 +120,15 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 )}
               </ActionIcon>
 
-              <ActionIconBadge data='1' size='lg' radius={'xl'} icon={IconBell} />
+              <Popover width={200} position='bottom' withArrow shadow='md'>
+                <Popover.Target>
+                  <ActionIconBadge data='1' size='lg' radius={'xl'} icon={IconBell} />
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Text size='xs'>This is uncontrolled popover, it is opened when button is clicked</Text>
+                </Popover.Dropdown>
+              </Popover>
+
               <ActionIconBadge
                 onClick={() => router.push('/conversation')}
                 data='2'
@@ -126,7 +137,65 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 icon={IconMessage2}
               />
 
-              <Popover
+              <Group justify='center'>
+                <HoverCard width={'auto'} shadow='md'>
+                  <HoverCard.Target>
+                    {!!isAuthen ? (
+                      <Flex align={'center'} columnGap={4}>
+                        <Avatar
+                          src={isAuthen?.user?.image}
+                          color='cyan'
+                          radius='xl'
+                          className='cursor-pointer'
+                          onClick={popoverToggle}
+                        >
+                          <Text>Ad</Text>
+                        </Avatar>
+
+                        <Badge variant='light' color='yellow' size='lg' radius='xs'>
+                          {isAuthen.user?.name}
+                        </Badge>
+                      </Flex>
+                    ) : (
+                      <Button onClick={() => router.push('/')}>Login</Button>
+                    )}
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Stack gap={'sm'}>
+                      <Text className='cursor-pointer hover:bg-slate-200 rounded p-2'>Profile</Text>
+
+                      {!isAuthen && (
+                        <Text
+                          onClick={() => {
+                            changePassOpen();
+                            popoverClose();
+                          }}
+                          className='cursor-pointer hover:bg-slate-200 rounded p-2'
+                        >
+                          Change Password
+                        </Text>
+                      )}
+
+                      <Group
+                        className='cursor-pointer hover:bg-slate-200 rounded p-2 justify-between'
+                        onClick={() => {
+                          signOut();
+                          notifications.show({
+                            message: `Logout successfully`,
+                            color: 'green',
+                            icon: <IconCheck size='1.1rem' />,
+                          });
+                        }}
+                      >
+                        <Text c='var(--mantine-color-red-7)'>Logout</Text>
+                        <IconLogout color='var(--mantine-color-red-7)' />
+                      </Group>
+                    </Stack>
+                  </HoverCard.Dropdown>
+                </HoverCard>
+              </Group>
+
+              {/* <Popover
                 opened={popoverOpened}
                 onClose={popoverClose}
                 width={200}
@@ -188,7 +257,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                     </Group>
                   </Stack>
                 </Popover.Dropdown>
-              </Popover>
+              </Popover> */}
             </Group>
           </Flex>
         </Flex>

@@ -1,6 +1,6 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { nprogress } from "@mantine/nprogress";
-import React from "react";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { nprogress } from '@mantine/nprogress';
+import React from 'react';
 
 export const useNProgress = () => {
   const pathname = usePathname();
