@@ -130,7 +130,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
               </Popover>
 
               <ActionIconBadge
-                onClick={() => router.push('/conversation')}
+                onClick={() => router.push('/conversations')}
                 data='2'
                 size='lg'
                 radius={'xl'}

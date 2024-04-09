@@ -26,6 +26,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.0",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "7.1.0",

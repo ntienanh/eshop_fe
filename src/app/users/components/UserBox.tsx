@@ -14,13 +14,13 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
 
   const handleClick = useCallback(() => {
     console.log('move to chat conservation to someone');
-    // setIsLoading(true);
-    // axios
-    //   .post('/api/conversations', { userId: data.id })
-    //   .then(data => {
-    //     router.push(`/conversations/${data.data.id}`);
-    //   })
-    //   .finally(() => setIsLoading(false));
+    setIsLoading(true);
+    axios
+      .post('/api/conversations', { userId: data.id })
+      .then(data => {
+        router.push(`/conversations/${data.data.id}`);
+      })
+      .finally(() => setIsLoading(false));
   }, [data, router]);
 
   return (

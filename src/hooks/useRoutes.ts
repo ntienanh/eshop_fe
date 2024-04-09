@@ -13,13 +13,13 @@ const useRoutes = () => {
       {
         label: 'Messenger',
         toolTip: 'Messenger',
-        href: '/conversation',
+        href: '/conversations',
         icon: IconMessage2,
         active: pathname === '/conversations' || !!conversationId,
       },
       {
-        label: 'Frineds',
-        toolTip: 'Frineds',
+        label: 'Friends',
+        toolTip: 'Friends',
         href: '/users',
         icon: IconUsers,
         active: pathname === '/users',

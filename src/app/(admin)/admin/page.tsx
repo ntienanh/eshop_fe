@@ -32,6 +32,7 @@ const AdminPage = () => {
             Role
           </Badge>
         </Flex>
+
         <Grid gutter={{ base: 8 }}>
           {['1', '2', '3', '4', '5', '6'].map((item, idx) => {
             return (
