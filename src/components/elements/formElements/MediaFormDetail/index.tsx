@@ -35,8 +35,6 @@ const MediaFormDetail = (props: IMediaDetailProps) => {
   const { value, onChange } = field || {};
   const { colorScheme } = useMantineColorScheme();
 
-  console.log('MediaFormDetail', name);
-
   // useQuery File
   // const fileQuery = useQuery({
   //   queryKey: [ServiceName.File],

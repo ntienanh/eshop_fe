@@ -100,7 +100,6 @@ const AuthForm = () => {
   }, [variant]);
 
   const socialAction = (action: string) => {
-    console.log('loggin with social');
     setIsLoading(true);
     signIn(action, {
       redirect: true,
@@ -118,7 +117,6 @@ const AuthForm = () => {
         }
 
         if (callback?.ok && !callback?.error) {
-          console.log('login social success');
           notifications.show({
             message: `Loggin with ${action} successfully!`,
             color: 'green',

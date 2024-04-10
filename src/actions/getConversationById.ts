@@ -10,17 +10,12 @@ const getConversationById = async (conversationId: string) => {
     }
 
     const conversation = await prisma.conversation.findUnique({
-      where: {
-        id: conversationId,
-      },
-      include: {
-        users: true,
-      },
+      where: { id: conversationId },
+      include: { users: true },
     });
 
     return conversation;
   } catch (error: any) {
-    console.log(error, 'SERVER_ERROR');
     return null;
   }
 };

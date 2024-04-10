@@ -63,8 +63,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   const isAuthen = session?.data;
 
-  console.log(isAuthen);
-
   return (
     <AppShell
       header={{ height: 60 }}

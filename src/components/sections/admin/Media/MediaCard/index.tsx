@@ -14,7 +14,6 @@ interface IMediaCardProps {
 
 const MediaCard = (props: IMediaCardProps) => {
   const { url, name, width, height } = props?.image || {};
-  console.log('MediaCard image', props?.image);
 
   return (
     <Card shadow='sm' radius='md' withBorder>
@@ -28,7 +27,6 @@ const MediaCard = (props: IMediaCardProps) => {
           <Image
             className='cursor-pointer'
             onClick={() => {
-              console.log('12312')
               // open();
               // setImg(item);
             }}

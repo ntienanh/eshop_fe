@@ -74,8 +74,6 @@ const SharedForm = (props: IStudentFormProps) => {
     delete body.updatedBy;
     delete body.publishedAt;
 
-    console.log('concarete', dayjs(body.fromDate).date);
-
     if (isCreate) return onCreate({ data: body });
     return onUpdate({ data: body });
   };

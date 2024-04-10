@@ -21,18 +21,13 @@ const ConversationList = (props: IConversationListProps) => {
   const { initialItems, title, users } = props || {};
 
   const [items, setItems] = React.useState(initialItems);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-  const router = useRouter();
-  const session = useSession();
-
   const { conversationId, isOpen } = useConversation();
 
   return (
     <div className='min-w-80 p-2 border-r-gray-200 border-r border-solid'>
       <Box className='flex justify-between items-center px-3'>
         <Text fz={24} fw={600} color='gray'>
-          Messages
+          {title}
         </Text>
 
         <ActionIcon radius='lg' variant='light' color='gray' size='md'>
@@ -40,7 +35,7 @@ const ConversationList = (props: IConversationListProps) => {
         </ActionIcon>
       </Box>
 
-      {items.map((item, idx) => (
+      {items.map(item => (
         <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
       ))}
     </div>
