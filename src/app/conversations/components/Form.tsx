@@ -1,12 +1,11 @@
 'use client';
+
 import useConversation from '@/hooks/useConversation';
-import { IconPhotoPlus, IconSend2, IconUpload } from '@tabler/icons-react';
+import { IconSend2 } from '@tabler/icons-react';
 import axios from 'axios';
-import React from 'react';
+import clsx from 'clsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import MessageInput from './MessageInput';
-import ActionIconBadge from '@/components/elements/ActionIconBadge';
-import clsx from 'clsx';
 
 const Form = (props: any) => {
   const { conversationId } = useConversation();
@@ -26,18 +25,17 @@ const Form = (props: any) => {
   };
 
   const handleUpload = (result: any) => {
-    axios.post('/api/messages', {
+    const aaa = axios.post('/api/messages', {
       image: result.info.secure_url,
       conversationId: conversationId,
     });
   };
 
   return (
-    <div className={clsx('flex items-center gap-x-4 w-full', props?.className)}>
-      {/* <CldUploadButton options={{ maxFiles: 1 }} onUpload={handleUpload} uploadPreset='pgc9ehd5'>
-        <HiPhoto size={30} className='text-sky-500' />
-      </CldUploadButton> */}
-      <ActionIconBadge icon={IconPhotoPlus} className='h-10 w-10' />
+    <div className={clsx('flex items-center gap-x-4', props?.className)}>
+      {/* Can upload but is block in chorme */}
+      {/* <ButtonCld onClick={handleUpload} /> */}
+
       <form onSubmit={handleSubmit(onSubmit)} className='flex items-center gap-2 lg:gap-4 w-full'>
         <MessageInput
           className='flex-1'
@@ -47,17 +45,8 @@ const Form = (props: any) => {
           required
           placeholder='Write a message'
         />
-        <button
-          type='submit'
-          className='
-            rounded-full 
-            p-2 
-            bg-sky-500 
-            cursor-pointer 
-            hover:bg-sky-600 
-            transition
-          '
-        >
+
+        <button type='submit' className='rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition'>
           <IconSend2 color='var(--mantine-color-white)' />
         </button>
       </form>
