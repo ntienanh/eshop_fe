@@ -30,14 +30,16 @@ const Header = (props: IHeaderProps) => {
   }, [conversation, isActive]);
 
   return (
-    <div
-      className={clsx(
-        'p-2 gap-x-4 flex items-center border-b-[var(--mantine-color-gray-3)] border-b border-solid',
-        className,
-      )}
-    >
-      <AvatarBadge />
-      {conversation?.name || otherUser?.name}
+    <div className={clsx('p-2 gap-x-4 items-center border-b-[var(--mantine-color-gray-3)] border-b border-solid', className)}>
+      <AvatarBadge user={otherUser} status={statusText} />
+
+      <div className='text-black'>
+        {conversation?.name || otherUser?.name}
+
+        <p className='text-[12px]'>{statusText}</p>
+
+      </div>
+
     </div>
   );
 };

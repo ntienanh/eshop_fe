@@ -8148,6 +8148,11 @@ prettier-plugin-organize-imports@^3.2.4:
   resolved "https://registry.npmjs.org/prettier-plugin-organize-imports/-/prettier-plugin-organize-imports-3.2.4.tgz"
   integrity sha512-6m8WBhIp0dfwu0SkgfOxJqh+HpdyfqSSLfKKRZSFbDuEQXDDndb8fTpRWkUrX/uBenkex3MgnVk0J3b3Y5byog==
 
+prettier-plugin-tailwindcss@^0.5.14:
+  version "0.5.14"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.5.14.tgz#4482eed357d5e22eac259541c70aca5a4c7b9d5c"
+  integrity sha512-Puaz+wPUAhFp8Lo9HuciYKM2Y2XExESjeT+9NQoVFXZsPPnc9VYss2SpxdQ6vbatmt8/4+SN0oe0I1cPDABg9Q==
+
 pretty-bytes@^5.3.0, pretty-bytes@^5.4.1:
   version "5.6.0"
   resolved "https://registry.npmjs.org/pretty-bytes/-/pretty-bytes-5.6.0.tgz"

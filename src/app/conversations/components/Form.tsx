@@ -24,12 +24,12 @@ const Form = (props: any) => {
     axios.post('/api/messages', { ...data, conversationId: conversationId });
   };
 
-  const handleUpload = (result: any) => {
-    const aaa = axios.post('/api/messages', {
-      image: result.info.secure_url,
-      conversationId: conversationId,
-    });
-  };
+  // const handleUpload = (result: any) => {
+  //   const aaa = axios.post('/api/messages', {
+  //     image: result.info.secure_url,
+  //     conversationId: conversationId,
+  //   });
+  // };
 
   return (
     <div className={clsx('flex items-center gap-x-4', props?.className)}>
