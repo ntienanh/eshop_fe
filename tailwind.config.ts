@@ -7,7 +7,18 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        upDown: {
+          '0%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(15px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+      },
+      backgroundImage:{
+        'header-logo': "https://gaviaspreview.com/wp/gowilds/wp-content/uploads/2022/12/pattern-topbar.png",
+      }
+    },
   },
   plugins: [],
 };
