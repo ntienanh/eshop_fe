@@ -24,7 +24,6 @@ import { Control, useController } from 'react-hook-form';
 interface IMediaDetailProps {
   name: string;
   control: Control<any, any>;
-
 }
 
 const MediaFormDetail = (props: IMediaDetailProps) => {

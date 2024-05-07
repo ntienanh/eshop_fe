@@ -19,7 +19,7 @@ interface ConversationBoxProps {
 
 const ConversationBox = (props: ConversationBoxProps) => {
   const { data, selected } = props || {};
-  const params = useParams()
+  const params = useParams();
 
   const otherUser = useOtherUser(data);
   const session = useSession();
@@ -66,7 +66,8 @@ const ConversationBox = (props: ConversationBoxProps) => {
   return (
     <div
       onClick={handleClick}
-      className={clsx(`w-full relative flex items-center space-x-3  p-3  hover:bg-neutral-100 rounded-lg transition cursor-pointer`,
+      className={clsx(
+        `w-full relative flex items-center space-x-3  p-3  hover:bg-neutral-100 rounded-lg transition cursor-pointer`,
         selected ? 'bg-neutral-100' : 'bg-white',
       )}
     >
@@ -87,8 +88,7 @@ const ConversationBox = (props: ConversationBoxProps) => {
           </p>
         </div>
 
-        <div>
-        </div>
+        <div></div>
       </div>
     </div>
   );

@@ -23,7 +23,6 @@ const MessageBox = (props: IMessageBoxProps) => {
     .map(user => user.name)
     .join(', ');
 
-
   return (
     <div className='flex justify-start w-full'>
       {/* <AvatarBadge user={data.sender} /> */}

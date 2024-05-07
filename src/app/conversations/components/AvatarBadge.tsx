@@ -7,7 +7,7 @@ import React from 'react';
 
 interface IAvatarBadgeProps {
   user: User;
-  status?: string
+  status?: string;
 }
 
 const AvatarBadge = (props: IAvatarBadgeProps) => {
@@ -19,7 +19,12 @@ const AvatarBadge = (props: IAvatarBadgeProps) => {
   return (
     <div className='relative inline-block'>
       <Avatar src={user?.image} alt='no image here' />
-      <Badge className='absolute top-0 right-[-8px]' size='xs' circle color={status === 'Offline' || !isActive ? 'gray' : 'green'} />
+      <Badge
+        className='absolute top-0 right-[-8px]'
+        size='xs'
+        circle
+        color={status === 'Offline' || !isActive ? 'gray' : 'green'}
+      />
     </div>
   );
 };

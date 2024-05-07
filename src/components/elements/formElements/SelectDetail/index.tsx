@@ -1,6 +1,6 @@
-import { Select } from "@mantine/core";
-import React from "react";
-import { Control, useController } from "react-hook-form";
+import { Select } from '@mantine/core';
+import React from 'react';
+import { Control, useController } from 'react-hook-form';
 
 interface ISelectDetailProps {
   control: Control<any, any>;
@@ -21,7 +21,7 @@ const SelectDetail = (props: ISelectDetailProps) => {
       {...field}
       label={label}
       placeholder={placeholder}
-      data={["React", "Angular", "Vue", "Svelte"]}
+      data={['React', 'Angular', 'Vue', 'Svelte']}
       value={field.value ?? []}
       onChange={field.onChange}
     />

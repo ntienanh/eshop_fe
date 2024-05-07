@@ -1,4 +1,4 @@
-import { ServiceName } from "./enum";
+import { ServiceName } from './enum';
 
 export interface IPagination<T = any> {
   results: T[];
@@ -40,10 +40,7 @@ export interface IPopulate<T> {
 }
 
 export type IQuerystring<T extends keyof ResponseData> = {
-  populate?:
-    | (keyof IQuery<T>)[]
-    | object[]
-    | IPopulate<ResponseData[T]["results"][number]>[];
+  populate?: (keyof IQuery<T>)[] | object[] | IPopulate<ResponseData[T]['results'][number]>[];
   sort?: any;
   select?: (keyof IQuery<T>)[] | string[];
   limit?: number;
@@ -51,10 +48,9 @@ export type IQuerystring<T extends keyof ResponseData> = {
   where?: Partial<IQuery<T>>;
 };
 
-export type IQuery<T extends keyof ResponseData> =
-  ResponseData[T] extends IPagination
-    ? IContent<ResponseData[T]["results"][number]>
-    : IContent<ResponseData[T]>;
+export type IQuery<T extends keyof ResponseData> = ResponseData[T] extends IPagination
+  ? IContent<ResponseData[T]['results'][number]>
+  : IContent<ResponseData[T]>;
 
 type IContent<T> = {
   [K in keyof T]: T[K] | IOperator<T[K]>;
@@ -73,7 +69,6 @@ type IOperator<T> = {
   _gte?: T;
 };
 
-export type IParams<T extends keyof ResponseData> =
-  ResponseData[T] extends IPagination
-    ? ResponseData[T]["results"][number]
-    : ResponseData[T];
+export type IParams<T extends keyof ResponseData> = ResponseData[T] extends IPagination
+  ? ResponseData[T]['results'][number]
+  : ResponseData[T];

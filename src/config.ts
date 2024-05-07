@@ -1,4 +1,4 @@
-import { ServiceName } from "./types/enum";
+import { ServiceName } from './types/enum';
 
 export const config = {
   [ServiceName.User]: '/users',

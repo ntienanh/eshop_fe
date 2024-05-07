@@ -12,7 +12,7 @@ const AuthSocialButton = (props: IAuthSocialButtonProps) => {
 
   return (
     <Button fullWidth classNames={classNames} variant='default' onClick={onClick}>
-      <ICon  style={{ width: '80%', height: '80%' }}  stroke={1.5} className={'text-gray-600'} />
+      <ICon style={{ width: '80%', height: '80%' }} stroke={1.5} className={'text-gray-600'} />
     </Button>
   );
 };

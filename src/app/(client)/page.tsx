@@ -57,8 +57,6 @@ export default function Home() {
     { label: 'Freelance', value: 'freelance' },
   ];
 
-  
-
   return (
     <Box>
       <div

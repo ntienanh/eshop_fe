@@ -15,9 +15,9 @@ const config: Config = {
           '100%': { transform: 'translateY(0)' },
         },
       },
-      backgroundImage:{
-        'header-logo': "https://gaviaspreview.com/wp/gowilds/wp-content/uploads/2022/12/pattern-topbar.png",
-      }
+      backgroundImage: {
+        'header-logo': 'https://gaviaspreview.com/wp/gowilds/wp-content/uploads/2022/12/pattern-topbar.png',
+      },
     },
   },
   plugins: [],

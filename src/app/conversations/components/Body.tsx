@@ -1,23 +1,18 @@
 'use client';
 
 import useConversation from '@/hooks/useConversation';
-import { pusherClient } from '@/libs/pusher';
 import { FullMessageType } from '@/types';
-import axios from 'axios';
-import React from 'react';
-import { find } from 'lodash';
-import MessageBox from './MessageBox';
 import { Avatar, Divider } from '@mantine/core';
-import { format } from 'date-fns'
 import { Conversation, User } from '@prisma/client';
-import { IconDots, IconPoint } from '@tabler/icons-react';
+import { IconPoint } from '@tabler/icons-react';
+import { format } from 'date-fns';
+import React from 'react';
 
 interface IBodyProps {
   initialMessages: FullMessageType[];
   conversation?: Conversation & {
     users: User[];
   };
-
 }
 
 const Body = (props: IBodyProps) => {
@@ -28,8 +23,7 @@ const Body = (props: IBodyProps) => {
 
   const doiphuong = conversation?.users?.[1];
 
-  console.log('messages', messages)
-
+  console.log('messages', messages);
 
   // React.useEffect(() => {
   //   axios.post(`/api/conversations/${conversationId}/seen`);
@@ -71,29 +65,31 @@ const Body = (props: IBodyProps) => {
 
       <div className='flex flex-col gap-y-1 pl-3 w-full pt-3'>
         {messages?.map((message, i) => {
-
           return (
-            <div className='flex gap-x-3'>
-              <Avatar src={messages?.[i]?.sender.image} radius="xl" size={'md'} className='cursor-pointer' />
+            <div className=''>
+              {messages[i - 1] && messages[i - 1].senderId === message.senderId ? null : (
+                <Avatar src={messages?.[i]?.sender.image} radius='xl' size={'md'} className='cursor-pointer' />
+              )}
 
-              <div className='flex flex-col gap-y-2 w-full'>
-                <div className='flex gap-x-2 justify-start items-center'>
-                  <p className='font-semibold text-md hover:text-blue-400 hover:underline cursor-pointer'>
-                    {messages?.[i]?.sender.name}</p>
-                  <IconPoint className='w-2 h-2' />
-                  <p className='text-sm font-light'>
-                    {format(new Date(messages?.[i]?.createdAt), 'p')}</p>
-                  <IconPoint className='w-2 h-2' />
-                  <p className='text-sm font-light'>
-                    {format(new Date(messages?.[i]?.createdAt), 'dd/mm/yyyy')}</p>
+              <div className='flex flex-col w-full'>
+                <div className='flex  justify-start items-center'>
+                  {messages[i - 1] && messages[i - 1].senderId === message.senderId ? null : (
+                    <div className='flex justify-start items-center'>
+                      <p className='font-semibold text-md hover:text-blue-400 hover:underline cursor-pointer'>
+                        {messages?.[i]?.sender.name}
+                      </p>
+                      <IconPoint className='w-2 h-2' />
+                      <p className='text-sm font-light'>{format(new Date(messages?.[i]?.createdAt), 'p')}</p>
+                      <IconPoint className='w-2 h-2' />
+                      <p className='text-sm font-light'>{format(new Date(messages?.[i]?.createdAt), 'dd/mm/yyyy')}</p>
+                    </div>
+                  )}
                 </div>
 
-                <p className='font-light hover:bg-slate-300 w-full py-2'>
-                  {message.body}
-                </p>
+                <p className='font-light hover:bg-slate-300'>{message.body}</p>
               </div>
             </div>
-          )
+          );
         })}
       </div>
 

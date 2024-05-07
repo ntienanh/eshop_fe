@@ -1,6 +1,6 @@
 export default {
-    // ...other configuration
-    experimental: {
-      optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
-    },
-  };
+  // ...other configuration
+  experimental: {
+    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+  },
+};

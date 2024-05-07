@@ -1,13 +1,13 @@
-"use client";
-import SharedForm from "@/components/sections/admin/Form/SharedForm";
-import { useNProgress, useNProgressRouter } from "@/hooks/useNProgress";
-import { serviceProcessor } from "@/services/servicesProcessor";
-import { HTTPMethod, ServiceName } from "@/types/enum";
-import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import React from "react";
+'use client';
+import SharedForm from '@/components/sections/admin/Form/SharedForm';
+import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
+import { serviceProcessor } from '@/services/servicesProcessor';
+import { HTTPMethod, ServiceName } from '@/types/enum';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import React from 'react';
 
 const ProductPage = () => {
   useNProgress();
@@ -15,14 +15,14 @@ const ProductPage = () => {
   const router = useNProgressRouter();
   const params = useParams();
   const { slug } = params || {};
-  const isCreate = slug === "create";
+  const isCreate = slug === 'create';
 
   const productQuery = useQuery({
     queryKey: [ServiceName.Product, params],
     queryFn: () =>
       serviceProcessor({
         serviceName: ServiceName.Product,
-        options: { params: { slug }, querystring: "?populate=*" },
+        options: { params: { slug }, querystring: '?populate=*' },
       }),
     staleTime: 10 * 1000,
     enabled: !isCreate,
@@ -38,11 +38,11 @@ const ProductPage = () => {
         method: HTTPMethod.Post,
         body,
       }),
-    onSuccess: (data) => {
+    onSuccess: data => {
       notifications.show({
         message: `Product created successfully!`,
-        color: "green",
-        icon: <IconCheck size="1.1rem" />,
+        color: 'green',
+        icon: <IconCheck size='1.1rem' />,
       });
       router.back();
     },
@@ -57,11 +57,11 @@ const ProductPage = () => {
         body,
         options: { params: { slug } },
       }),
-    onSuccess: (data) => {
+    onSuccess: data => {
       notifications.show({
         message: `Updated successfully!`,
-        color: "green",
-        icon: <IconCheck size="1.1rem" />,
+        color: 'green',
+        icon: <IconCheck size='1.1rem' />,
       });
     },
   });
@@ -77,8 +77,8 @@ const ProductPage = () => {
     onSuccess: (_, id) => {
       notifications.show({
         message: ` Deleted (${id}) successfully!`,
-        color: "green",
-        icon: <IconCheck size="1.1rem" />,
+        color: 'green',
+        icon: <IconCheck size='1.1rem' />,
       });
       router.back();
     },

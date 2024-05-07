@@ -28,7 +28,7 @@ const MediaDetail = (props: IMediaDetailProps) => {
     } else {
       console.log('ko có id > tạo mới');
     }
-    console.log(isNew)
+    console.log(isNew);
   };
 
   console.log('MediaDetail', img);

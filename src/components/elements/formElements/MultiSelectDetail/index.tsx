@@ -1,6 +1,6 @@
-import { MultiSelect, Select } from "@mantine/core";
-import React from "react";
-import { Control, useController } from "react-hook-form";
+import { MultiSelect, Select } from '@mantine/core';
+import React from 'react';
+import { Control, useController } from 'react-hook-form';
 
 interface IMultiSelectDetailProps {
   control: Control<any, any>;

@@ -1,5 +1,5 @@
-import { DateInput } from "@mantine/dates";
-import { Control, useController } from "react-hook-form";
+import { DateInput } from '@mantine/dates';
+import { Control, useController } from 'react-hook-form';
 
 interface IDateInputDetailProps {
   name: string;
@@ -7,22 +7,13 @@ interface IDateInputDetailProps {
   label: string;
   placeholder: string;
   disabled?: boolean;
-  variant?: "filled" | "unstyled";
+  variant?: 'filled' | 'unstyled';
   withAsterisk?: boolean;
   minDate?: Date;
 }
 
 const DateInputDetail = (props: IDateInputDetailProps) => {
-  const {
-    control,
-    label,
-    name,
-    placeholder,
-    disabled,
-    variant,
-    withAsterisk,
-    minDate,
-  } = props || {};
+  const { control, label, name, placeholder, disabled, variant, withAsterisk, minDate } = props || {};
 
   const {
     field,
@@ -40,7 +31,7 @@ const DateInputDetail = (props: IDateInputDetailProps) => {
       variant={variant}
       disabled={disabled}
       withAsterisk={withAsterisk}
-      valueFormat="DD/MM/YYYY"
+      valueFormat='DD/MM/YYYY'
       onChange={field.onChange}
       onBlur={field.onBlur}
       value={value}
