@@ -32,15 +32,16 @@ const JobsToday = async () => {
           padding='lg'
           radius='md'
           withBorder
-          w={400}
-          className='flex flex-col gap-y-2 justify-start items-center py-10'
+          className='flex flex-col items-center justify-center gap-y-2 py-10'
         >
           <Card.Section>
             <Image src={image_logo} h={60} alt='No way!' />
           </Card.Section>
 
           <Text fz={15}>{display_name}</Text>
-          <Text fw={700}>{title}</Text>
+          <Text fw={700} className='min-h-[50px] w-full'>
+            {title}
+          </Text>
 
           <Flex columnGap={4} h={'100%'} className='flex-wrap justify-center gap-y-2'>
             {listSkills
@@ -63,7 +64,7 @@ const JobsToday = async () => {
       }}
       className='min-h-[332px] lg:min-h-[485px]'
     >
-      <div className='py-6 container mx-auto flex flex-col gap-4 lg:gap-8'>
+      <div className='container mx-auto flex flex-col gap-4 py-6 lg:gap-8'>
         <h2 className='text-xl font-bold lg:text-4xl'>
           🔥
           <span>Super hot jobs</span>

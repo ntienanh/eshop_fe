@@ -55,21 +55,21 @@ const listSkills = [
 
 const HeaderGuest = () => {
   return (
-    <header className='bg-gray h-[84px] sticky top-0 z-20 bg-white shadow-sm'>
-      <div className='px-4 flex justify-between items-center h-full'>
-        <div className='flex gap-x-4 items-center'>
-          <div className='p-7 cursor-pointer'>
-            <img src='https://cdn.topdev.vn/v4/assets/images/td-logo.png' alt='img' className='h-[30px]' />
+    <header className='bg-gray sticky top-0 z-20 h-[84px] w-full bg-white bg-opacity-70 shadow-md backdrop-blur-[9px]'>
+      <div className='mx-auto flex h-full max-w-[1536px] items-center justify-between px-4 md:px-0'>
+        <div className='flex items-center gap-x-4'>
+          <div className='cursor-pointer p-7 pl-0'>
+            <img src={'./images/logo.png'} alt='img' className='h-[80px] w-[200px]' />
           </div>
 
-          <div className='p-7 cursor-pointer flex gap-x-2 font-bold capitalize hover:text-red-600 group relative '>
+          <div className='group relative flex cursor-pointer gap-x-2 p-7 font-bold capitalize hover:text-red-600 '>
             <button>Việc làm IT</button>
             <IconChevronDown className='group-hover:text-red-600' />
 
-            <ul className='shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] mt-12 absolute invisible text-gray-700 group-hover:visible bg-white w-72 box-border border p-4 list-none text-sm font-semibold'>
+            <ul className='invisible absolute mt-12 box-border w-72 list-none border bg-white p-4 text-sm font-semibold text-gray-700 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] group-hover:visible'>
               <li className='group/item pb-2'>
-                <a className='rounded bg-[#F4F5F5] group-hover/item:bg-slate-300 hover:text-red-600 group-hover/item:text-red-600 py-2 px-4 whitespace-no-wrap flex justify-between items-center relative group'>
-                  <p className='flex justify-between gap-x-4 text-sm font-semibold items-center'>
+                <a className='whitespace-no-wrap group relative flex items-center justify-between rounded bg-[#F4F5F5] px-4 py-2 hover:text-red-600 group-hover/item:bg-slate-300 group-hover/item:text-red-600'>
+                  <p className='flex items-center justify-between gap-x-4 text-sm font-semibold'>
                     <IconSearch className='text-red-600' />
                     By Levels
                   </p>
@@ -78,10 +78,10 @@ const HeaderGuest = () => {
                   </p>
                 </a>
 
-                <div className='z-20 flex flex-col gap-y-2 invisible group-hover/item:visible absolute left-64 top-0 ml-[14px] w-52 box-border border p-4 bg-white z-12 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)]'>
+                <div className='z-12 invisible absolute left-64 top-0 z-20 ml-[14px] box-border flex w-52 flex-col gap-y-2 border bg-white p-4 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] group-hover/item:visible'>
                   {listLevels.map(submenu => {
                     return (
-                      <button className='flex justify-between gap-x-4 text-sm font-semibold items-center rounded bg-[#F4F5F5] hover:bg-slate-300 px-4 py-2'>
+                      <button className='flex items-center justify-between gap-x-4 rounded bg-[#F4F5F5] px-4 py-2 text-sm font-semibold hover:bg-slate-300'>
                         {submenu.name}
                       </button>
                     );
@@ -90,8 +90,8 @@ const HeaderGuest = () => {
               </li>
 
               <li className='group/item pb-2'>
-                <a className='rounded bg-[#F4F5F5] group-hover/item:bg-slate-300 hover:text-red-600 group-hover/item:text-red-600 py-2 px-4 whitespace-no-wrap flex justify-between items-center relative group'>
-                  <p className='flex justify-between gap-x-4 text-sm font-semibold items-center'>
+                <a className='whitespace-no-wrap group relative flex items-center justify-between rounded bg-[#F4F5F5] px-4 py-2 hover:text-red-600 group-hover/item:bg-slate-300 group-hover/item:text-red-600'>
+                  <p className='flex items-center justify-between gap-x-4 text-sm font-semibold'>
                     <IconSearch className='text-red-600' />
                     By Job Type
                   </p>
@@ -100,10 +100,10 @@ const HeaderGuest = () => {
                   </p>
                 </a>
 
-                <div className='z-20 flex flex-col gap-y-2 invisible group-hover/item:visible absolute left-64 top-0 ml-[14px] w-52 box-border border p-4 bg-white z-12 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)]'>
+                <div className='z-12 invisible absolute left-64 top-0 z-20 ml-[14px] box-border flex w-52 flex-col gap-y-2 border bg-white p-4 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] group-hover/item:visible'>
                   {listTypes.map(submenu => {
                     return (
-                      <button className='flex justify-between gap-x-4 text-sm font-semibold items-center rounded bg-[#F4F5F5] hover:bg-slate-300 px-4 py-2'>
+                      <button className='flex items-center justify-between gap-x-4 rounded bg-[#F4F5F5] px-4 py-2 text-sm font-semibold hover:bg-slate-300'>
                         {submenu.name}
                       </button>
                     );
@@ -112,8 +112,8 @@ const HeaderGuest = () => {
               </li>
 
               <li className='group/item pb-2'>
-                <a className='rounded bg-[#F4F5F5] group-hover/item:bg-slate-300 hover:text-red-600 group-hover/item:text-red-600 py-2 px-4 whitespace-no-wrap flex justify-between items-center relative group'>
-                  <p className='flex justify-between gap-x-4 text-sm font-semibold items-center'>
+                <a className='whitespace-no-wrap group relative flex items-center justify-between rounded bg-[#F4F5F5] px-4 py-2 hover:text-red-600 group-hover/item:bg-slate-300 group-hover/item:text-red-600'>
+                  <p className='flex items-center justify-between gap-x-4 text-sm font-semibold'>
                     <IconSearch className='text-red-600' />
                     By Location
                   </p>
@@ -122,10 +122,10 @@ const HeaderGuest = () => {
                   </p>
                 </a>
 
-                <div className='z-20 flex flex-col gap-y-2 invisible group-hover/item:visible absolute left-64 top-0 ml-[14px] w-52 box-border border p-4 bg-white z-12 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)]'>
+                <div className='z-12 invisible absolute left-64 top-0 z-20 ml-[14px] box-border flex w-52 flex-col gap-y-2 border bg-white p-4 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] group-hover/item:visible'>
                   {listLocation.map(submenu => {
                     return (
-                      <button className='flex justify-between gap-x-4 text-sm font-semibold items-center rounded bg-[#F4F5F5] hover:bg-slate-300 px-4 py-2'>
+                      <button className='flex items-center justify-between gap-x-4 rounded bg-[#F4F5F5] px-4 py-2 text-sm font-semibold hover:bg-slate-300'>
                         {submenu.name}
                       </button>
                     );
@@ -134,8 +134,8 @@ const HeaderGuest = () => {
               </li>
 
               <li className='group/item pb-2'>
-                <a className='rounded bg-[#F4F5F5] group-hover/item:bg-slate-300 hover:text-red-600 group-hover/item:text-red-600 py-2 px-4 whitespace-no-wrap flex justify-between items-center relative group'>
-                  <p className='flex justify-between gap-x-4 text-sm font-semibold items-center'>
+                <a className='whitespace-no-wrap group relative flex items-center justify-between rounded bg-[#F4F5F5] px-4 py-2 hover:text-red-600 group-hover/item:bg-slate-300 group-hover/item:text-red-600'>
+                  <p className='flex items-center justify-between gap-x-4 text-sm font-semibold'>
                     <IconSearch className='text-red-600' />
                     By Skills
                   </p>
@@ -144,10 +144,10 @@ const HeaderGuest = () => {
                   </p>
                 </a>
 
-                <div className='z-20 flex flex-col gap-y-2 invisible group-hover/item:visible absolute left-64 top-0 ml-[14px] w-52 box-border border p-4 bg-white z-12 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)]'>
+                <div className='z-12 invisible absolute left-64 top-0 z-20 ml-[14px] box-border flex w-52 flex-col gap-y-2 border bg-white p-4 shadow-[1px_6px_23px_-6px_rgba(0,0,0,0.73)] group-hover/item:visible'>
                   {listSkills.map(submenu => {
                     return (
-                      <button className='flex justify-between gap-x-4 text-sm font-semibold items-center rounded bg-[#F4F5F5] hover:bg-slate-300 px-4 py-2'>
+                      <button className='flex items-center justify-between gap-x-4 rounded bg-[#F4F5F5] px-4 py-2 text-sm font-semibold hover:bg-slate-300'>
                         {submenu.name}
                       </button>
                     );
@@ -157,19 +157,13 @@ const HeaderGuest = () => {
             </ul>
           </div>
 
-          <div className='p-7 cursor-pointer font-bold capitalize hover:text-red-600'>Công ty IT</div>
+          <div className='cursor-pointer p-7 font-bold capitalize hover:text-red-600'>Công ty IT</div>
         </div>
 
-        <div className='flex gap-x-4 items-center'>
-          <IconBellFilled className='cursor-pointer rounded text-center transition-all hover:bg-gray-200 focus:bg-gray-200' />
-          <div className='p-4 flex gap-x-4 cursor-pointer items-center'>
-            <div className='font-bold capitalize'>Nguyễn Tiến Ánh</div>
-            <IconChevronDown className='cursor-pointer' />
-          </div>
-
-          <p className='hover:text-red-600 cursor-pointer'>EN</p>
+        <div className='flex items-center gap-x-4'>
+          <p className='cursor-pointer hover:text-red-600'>EN</p>
           <p>|</p>
-          <p className='hover:text-red-600 cursor-pointer'>VI</p>
+          <p className='cursor-pointer hover:text-red-600'>VI</p>
         </div>
       </div>
     </header>

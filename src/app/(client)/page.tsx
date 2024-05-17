@@ -1,33 +1,11 @@
 'use client';
 
-import AuthForm from '@/components/elements/formElements/AuthForm';
 import JobsToday from '@/components/sections/client/JobsToday';
-import { useNProgress, useNProgressRouter } from '@/hooks/useNProgress';
 import { JobType } from '@/types/enum';
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Group,
-  Input,
-  MultiSelect,
-  Select,
-  Text,
-  useComputedColorScheme,
-  useMantineColorScheme,
-} from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconSun, IconMoonStars, IconFilterDown, IconFilterX } from '@tabler/icons-react';
-import Image from 'next/image';
-import React from 'react';
+import { Badge, Box, Button, Flex, Input, MultiSelect, Select, Text } from '@mantine/core';
+import { IconFilterX } from '@tabler/icons-react';
 
 export default function Home() {
-  useNProgress();
-  const router = useNProgressRouter();
-
   const dataLocation = [
     { label: 'All Locations', value: 'all' },
     { label: 'Hồ Chí Minh', value: 'hochiminh' },
@@ -60,7 +38,7 @@ export default function Home() {
   return (
     <Box>
       <div
-        className='bg-no-repeat py-8 h-auto'
+        className='h-auto w-full bg-no-repeat py-8'
         style={{
           backgroundImage: `url("https://c.topdevvn.com/v4/assets/images/bg-search.jpg")`,
           backgroundRepeat: 'no-repeat',
@@ -77,13 +55,13 @@ export default function Home() {
         </div>
 
         {/* Form */}
-        <div className='container mx-auto flex flex-col gap-y-4 pt-5'>
+        <div className='container mx-auto flex  flex-col gap-y-4 pt-5'>
           <Input
             className='shadow-[2px_6px_22px_0px_rgba(0,0,0,0.45)]'
             size='xl'
             placeholder='Search by Skills, Position, Company,...'
             rightSection={
-              <Button color='#DD3F24' className='hover:cursor-pointer pointer-events-auto mr-3' size='lg'>
+              <Button color='#DD3F24' className='pointer-events-auto mr-3 hover:cursor-pointer' size='lg'>
                 Search
               </Button>
             }
@@ -91,7 +69,7 @@ export default function Home() {
             rightSectionWidth={140}
           />
 
-          <Box className='flex justify-between items-center gap-x-3'>
+          <Box className='flex items-center justify-between gap-x-3'>
             <Select
               className='flex-1'
               size='lg'
@@ -132,9 +110,9 @@ export default function Home() {
           </Box>
         </div>
 
-        <Box className='container mx-auto pt-5 flex justify-center'>
+        <Box className='container mx-auto flex justify-start pt-5'>
           <Flex align={'center'} columnGap={8}>
-            <Text>Suggested keywords:</Text>
+            <div className='text-[20px] font-semibold'>Suggested keywords:</div>
             <Button variant='default'>Java</Button>
             <Button variant='default'>C++</Button>
             <Button variant='default'>Javascript</Button>

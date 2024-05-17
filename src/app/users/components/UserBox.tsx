@@ -29,17 +29,17 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
       <div
         onClick={handleClick}
         className='
-          w-full 
           relative 
           flex 
+          w-full 
+          cursor-pointer 
           items-center 
           space-x-3 
-          bg-white 
-          p-3 
-          hover:bg-neutral-100
-          rounded-lg
+          rounded-lg 
+          bg-white
+          p-3
           transition
-          cursor-pointer
+          hover:bg-neutral-100
         '
       >
         <Avatar src={data?.image} color='cyan' radius='xl' className='cursor-pointer'>
@@ -49,7 +49,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
         <div className='min-w-0 flex-1 transition-colors'>
           <div className='focus:outline-none'>
             <span className='absolute inset-0' aria-hidden='true' />
-            <div className='flex justify-between items-center mb-1'>
+            <div className='mb-1 flex items-center justify-between'>
               <p className='text-sm font-medium text-gray-900'>{data.name}</p>
             </div>
           </div>

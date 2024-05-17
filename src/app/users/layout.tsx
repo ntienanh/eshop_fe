@@ -9,7 +9,7 @@ const Conversation = async ({ children }: { children: React.ReactNode }) => {
   return (
     <SideBarLayout>
       <UserList items={users} />
-      <main className='flex-1 h-screen'>{children}</main>
+      <main className='h-screen flex-1'>{children}</main>
     </SideBarLayout>
   );
 };

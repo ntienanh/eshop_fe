@@ -77,7 +77,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
               ADMIN
             </Badge>
             <Tooltip label='Mở website'>
-              <ActionIcon variant='subtle' onClick={() => router.push('/')}>
+              <ActionIcon variant='subtle' onClick={() => router.replace('/')}>
                 <IconCurrentLocation stroke={1.5} />
               </ActionIcon>
             </Tooltip>
