@@ -32,7 +32,7 @@ const Header = (props: IHeaderProps) => {
   return (
     <div
       className={clsx(
-        'p-2 gap-x-4 items-center border-b-[var(--mantine-color-gray-3)] border-b border-solid',
+        'items-center gap-x-4 border-b border-solid border-b-[var(--mantine-color-gray-3)] p-2',
         className,
       )}
     >

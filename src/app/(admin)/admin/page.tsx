@@ -19,12 +19,12 @@ const AdminPage = () => {
   // });
 
   return (
-    <Box className='w-4/5 mx-[auto] my-[0]'>
+    <Box className='mx-[auto] my-[0] w-4/5'>
       <Flex direction={'column'} rowGap={16}>
         <Flex align={'flex-end'} justify={'flex-start'} columnGap={12}>
-          <Flex className='text-3xl font-semibold gap-x-3'>
+          <Flex className='gap-x-3 text-3xl font-semibold'>
             👋
-            <Text className='text-4xl font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent'>
+            <Text className='bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-4xl font-semibold text-transparent'>
               Chào mừng bạn `Admin`
             </Text>
           </Flex>
@@ -44,10 +44,10 @@ const AdminPage = () => {
                   padding='md'
                   radius='md'
                   withBorder
-                  className='hover:bg-[#f2fbf6] transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-300 cursor-pointer hover:border border-solid flex gap-x-8 items-center justify-evenly flex-row'
+                  className='delay-50 hover:scale-102 flex cursor-pointer flex-row items-center justify-evenly gap-x-8 border-solid transition duration-300 ease-in-out hover:-translate-y-1 hover:border hover:bg-[#f2fbf6]'
                 >
                   <IconBrandAmongUs size={54} />
-                  <div className='flex gap-y-2 flex-col items-center flex-1'>
+                  <div className='flex flex-1 flex-col items-center gap-y-2'>
                     <CountUp key={idx} start={0} end={100} delay={0}>
                       {({ countUpRef }) => <span className='text-4xl font-bold' ref={countUpRef} />}
                     </CountUp>

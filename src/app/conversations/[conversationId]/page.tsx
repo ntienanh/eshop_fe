@@ -19,17 +19,17 @@ const ConversationsId = async ({ params }: { params: IConversationsIdProps }) =>
 
   if (!conversation) {
     return (
-      <div className='w-full h-screen'>
+      <div className='h-screen w-full'>
         <EmptyState />
       </div>
     );
   }
 
   return (
-    <div className='w-full h-screen flex flex-col'>
-      <Header className='flex' conversation={conversation} />
+    <div className='flex h-screen w-full flex-col'>
+      <Header className='flex pl-3' conversation={conversation} />
       <Body initialMessages={messages} conversation={conversation} />
-      <Form className='absolute bottom-0 w-[calc(100vw_-_64px-_320px)] p-3 border-t-gray-200 border-t border-solid bg-white' />
+      <Form className='absolute bottom-0 w-[calc(100vw_-_64px-_320px)] border-t border-solid border-t-gray-200 bg-white p-3' />
     </div>
   );
 };

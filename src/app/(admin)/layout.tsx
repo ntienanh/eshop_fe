@@ -1,7 +1,6 @@
 'use client';
 
 import Navbar from '@/components/sections/admin/Navbar';
-import { useNProgressRouter } from '@/hooks/useNProgress';
 import { spotlightActions } from '@/jsons/spotlight';
 import {
   ActionIcon,
@@ -160,7 +159,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
                     <Stack gap={'sm'}>
-                      <Text className='cursor-pointer hover:bg-slate-200 rounded p-2'>Profile</Text>
+                      <Text className='cursor-pointer rounded p-2 hover:bg-slate-200'>Profile</Text>
 
                       {!isAuthen && (
                         <Text
@@ -168,14 +167,14 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                             changePassOpen();
                             popoverClose();
                           }}
-                          className='cursor-pointer hover:bg-slate-200 rounded p-2'
+                          className='cursor-pointer rounded p-2 hover:bg-slate-200'
                         >
                           Change Password
                         </Text>
                       )}
 
                       <Group
-                        className='cursor-pointer hover:bg-slate-200 rounded p-2 justify-between'
+                        className='cursor-pointer justify-between rounded p-2 hover:bg-slate-200'
                         onClick={() => {
                           signOut();
                           notifications.show({

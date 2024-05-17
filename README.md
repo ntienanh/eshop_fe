@@ -2,14 +2,5 @@ https://www.youtube.com/watch?v=PGPGcKBpAk8&t=29546s
 
 https://github.com/AntonioErdeljac/next13-messenger
 
-1:40
-Handle login social but not oke
-2:58
-
-2:47:58 / 8:49:13
-
-3:28 conversations
-
-3:43
-
-3:57
+8:00
+update seen api route
