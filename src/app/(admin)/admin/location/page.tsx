@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-const Skills = () => {
+const Location = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
@@ -16,12 +16,12 @@ const Skills = () => {
     defaultValues: { id: '', name: '', images: [], product_details: [] },
   });
 
-  const skillsData = useQuery({
-    queryKey: ['skills'],
-    queryFn: () => axios.get('http://localhost:1337/api/skills?populate=*').then(res => res.data),
+  const locationsData = useQuery({
+    queryKey: ['locations'],
+    queryFn: () => axios.get('http://localhost:1337/api/locations?populate=*').then(res => res.data),
   });
 
-  const dataSource = skillsData?.data?.data?.map((item: any) => {
+  const dataSource = locationsData?.data?.data?.map((item: any) => {
     const { id, attributes } = item;
     return { id, ...attributes };
   });
@@ -29,10 +29,10 @@ const Skills = () => {
   // Delete Mutations
   const deleteMutation = useMutation({
     mutationFn: (id: any) => {
-      return axios.delete(`http://localhost:1337/api/skills/${id}`);
+      return axios.delete(`http://localhost:1337/api/locations/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['locations'] });
     },
   });
 
@@ -40,20 +40,20 @@ const Skills = () => {
   const updateMutation = useMutation({
     mutationFn: (body: any) => {
       const { id, ...data } = body;
-      return axios.put(`http://localhost:1337/api/skills/${id}`, { data });
+      return axios.put(`http://localhost:1337/api/locations/${id}`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['locations'] });
     },
   });
 
   // Create Mutations
   const createMutation = useMutation({
     mutationFn: (data: any) => {
-      return axios.post(`http://localhost:1337/api/skills`, { data });
+      return axios.post(`http://localhost:1337/api/locations`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['locations'] });
     },
   });
 
@@ -171,4 +171,4 @@ const Skills = () => {
   );
 };
 
-export default Skills;
+export default Location;

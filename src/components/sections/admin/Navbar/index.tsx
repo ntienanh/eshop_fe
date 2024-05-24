@@ -1,14 +1,17 @@
 'use client';
 import { NavLink } from '@mantine/core';
-import { IconPhoto, IconSchool, IconUsers } from '@tabler/icons-react';
-import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
+import { IconUsers } from '@tabler/icons-react';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const path = usePathname();
   const nav = [
-    { link: '/admin/user', label: 'Users', icon: IconUsers },
-    { link: '/admin/product', label: 'Products', icon: IconSchool },
-    { link: '/admin/media', label: 'Media Library', icon: IconPhoto },
+    { link: '/admin/skill', label: 'Skills', icon: IconUsers },
+    { link: '/admin/jobtype', label: 'Types', icon: IconUsers },
+    { link: '/admin/level', label: 'Levels', icon: IconUsers },
+    { link: '/admin/location', label: 'Locations', icon: IconUsers },
+    // { link: '/admin/product', label: 'Products', icon: IconSchool },
+    // { link: '/admin/media', label: 'Media Library', icon: IconPhoto },
   ];
 
   return (
