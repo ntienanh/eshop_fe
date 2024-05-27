@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-const Skills = () => {
+const Companies = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
@@ -18,12 +18,12 @@ const Skills = () => {
     defaultValues: { id: '', name: '', images: [], product_details: [] },
   });
 
-  const skillsData = useQuery({
-    queryKey: ['skills'],
-    queryFn: () => axios.get('http://localhost:1337/api/skills?populate=*').then(res => res.data),
+  const companiesData = useQuery({
+    queryKey: ['companies'],
+    queryFn: () => axios.get('http://localhost:1337/api/companies?populate=*').then(res => res.data),
   });
 
-  const dataSource = skillsData?.data?.data?.map((item: any) => {
+  const dataSource = companiesData?.data?.data?.map((item: any) => {
     const { id, attributes } = item;
     return { id, ...attributes };
   });
@@ -31,10 +31,10 @@ const Skills = () => {
   // Delete Mutations
   const deleteMutation = useMutation({
     mutationFn: (id: any) => {
-      return axios.delete(`http://localhost:1337/api/skills/${id}`);
+      return axios.delete(`http://localhost:1337/api/companies/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] });
     },
   });
 
@@ -42,20 +42,20 @@ const Skills = () => {
   const updateMutation = useMutation({
     mutationFn: (body: any) => {
       const { id, ...data } = body;
-      return axios.put(`http://localhost:1337/api/skills/${id}`, { data });
+      return axios.put(`http://localhost:1337/api/companies/${id}`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] });
     },
   });
 
   // Create Mutations
   const createMutation = useMutation({
     mutationFn: (data: any) => {
-      return axios.post(`http://localhost:1337/api/skills`, { data });
+      return axios.post(`http://localhost:1337/api/companies`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] });
       notifications.show({
         message: `Create successfully`,
         color: 'green',
@@ -141,14 +141,14 @@ const Skills = () => {
   return (
     <div className='flex flex-col gap-5 p-6'>
       <div className='flex items-center justify-between'>
-        <p className='text-[32px] font-medium uppercase'>Kĩ năng</p>
+        <p className='text-[32px] font-medium uppercase'>Công ty</p>
 
         <Button type='primary' onClick={showModal}>
           Tạo mới
         </Button>
 
         <Modal
-          title={isEdit ? 'Chỉnh sửa sản phẩm' : 'Tạo mới sản phẩm'}
+          title={isEdit ? 'Chỉnh sửa công ty' : 'Tạo mới công ty'}
           open={isModalOpen}
           onOk={handleSubmit(onSubmit)}
           onCancel={handleCancel}
@@ -178,4 +178,4 @@ const Skills = () => {
   );
 };
 
-export default Skills;
+export default Companies;

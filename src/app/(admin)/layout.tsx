@@ -42,7 +42,7 @@ import {
 import React from 'react';
 import classes from './admin.module.css';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { IconBell } from '@tabler/icons-react';
 import ActionIconBadge from '@/components/elements/ActionIconBadge';
 
@@ -73,8 +73,15 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <Group h='100%' px='md'>
             <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' />
             <MantineLogo size={30} />
-            <Badge radius='sm' size='lg' color='var(--mantine-color-blue-7)'>
-              ADMIN
+            <Badge
+              component='button'
+              className='cursor-pointer'
+              radius='sm'
+              size='xl'
+              color='var(--mantine-color-blue-7)'
+              onClick={() => router.replace('/admin')}
+            >
+              Admin Home
             </Badge>
             <Tooltip label='Mở website'>
               <ActionIcon variant='subtle' onClick={() => router.replace('/')}>

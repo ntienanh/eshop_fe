@@ -6,7 +6,7 @@ const GuestLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <HeaderGuest />
-      <main>{children}</main>
+      <main className='mx-auto max-w-[1536px]'>{children}</main>
       <FooterGuest />
     </>
   );

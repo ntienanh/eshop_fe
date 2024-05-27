@@ -134,14 +134,14 @@ const JobType = () => {
   return (
     <div className='flex flex-col gap-5 p-6'>
       <div className='flex items-center justify-between'>
-        <p className='text-[32px] font-medium uppercase'>Kĩ năng</p>
+        <p className='text-[32px] font-medium uppercase'>Loại công việc</p>
 
         <Button type='primary' onClick={showModal}>
           Tạo mới
         </Button>
 
         <Modal
-          title={isEdit ? 'Chỉnh sửa sản phẩm' : 'Tạo mới sản phẩm'}
+          title={isEdit ? 'Chỉnh sửa loại công việc' : 'Tạo mới loại công việc'}
           open={isModalOpen}
           onOk={handleSubmit(onSubmit)}
           onCancel={handleCancel}

@@ -1,22 +1,56 @@
 'use client';
 
-import { useNProgress } from '@/hooks/useNProgress';
 import { listTech } from '@/jsons/listTech';
 import { Accordion, Badge, Box, Card, Flex, Grid, Image, List, ListItem, Text, ThemeIcon, rem } from '@mantine/core';
-import { IconBrandAmongUs, IconBrandDatabricks, IconCircleCheck } from '@tabler/icons-react';
+import { IconInbox } from '@tabler/icons-react';
+import {
+  IconBrandAmongUs,
+  IconBrandDatabricks,
+  IconBuilding,
+  IconChartArrowsVertical,
+  IconCircleCheck,
+  IconFileTypography,
+  IconMapPin,
+  IconSquareRoundedLetterS,
+} from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import React from 'react';
 import CountUp from 'react-countup';
 
 const AdminPage = () => {
-  useNProgress();
-  // const productQuery = useQuery({
-  //   queryKey: [ServiceName.Product],
-  //   queryFn: async () =>
-  //     await serviceProcessor({
-  //       serviceName: ServiceName.Product,
-  //       options: { querystring: "?populate=*" },
-  //     }),
-  //   staleTime: 10 * 1000,
-  // });
+  const [count, setCount] = React.useState<any[]>([]);
+
+  const companiesData = useQuery({
+    queryKey: ['companies'],
+    queryFn: () => axios.get('http://localhost:1337/api/companies?populate=*').then(res => res.data),
+  });
+  const skillsData = useQuery({
+    queryKey: ['skills'],
+    queryFn: () => axios.get('http://localhost:1337/api/skills?populate=*').then(res => res.data),
+  });
+  const levelsData = useQuery({
+    queryKey: ['levels'],
+    queryFn: () => axios.get('http://localhost:1337/api/levels?populate=*').then(res => res.data),
+  });
+  const typesData = useQuery({
+    queryKey: ['types'],
+    queryFn: () => axios.get('http://localhost:1337/api/types?populate=*').then(res => res.data),
+  });
+  const locationData = useQuery({
+    queryKey: ['locations'],
+    queryFn: () => axios.get('http://localhost:1337/api/locations?populate=*').then(res => res.data),
+  });
+  const postsData = useQuery({
+    queryKey: ['posts'],
+    queryFn: () => axios.get('http://localhost:1337/api/posts?populate=*').then(res => res.data),
+  });
+
+  const countData = (res: any, title: string, icon: any) => ({
+    count: res?.data?.data?.length,
+    title: title,
+    icon: icon,
+  });
 
   return (
     <Box className='mx-[auto] my-[0] w-4/5'>
@@ -34,7 +68,16 @@ const AdminPage = () => {
         </Flex>
 
         <Grid gutter={{ base: 8 }}>
-          {['1', '2', '3', '4', '5', '6'].map((item, idx) => {
+          {[
+            countData(companiesData, 'Companies', IconBuilding),
+            countData(skillsData, 'Skills', IconSquareRoundedLetterS),
+            countData(levelsData, 'Levels', IconChartArrowsVertical),
+            countData(locationData, 'Locations', IconMapPin),
+            countData(typesData, 'Job-type', IconFileTypography),
+            countData(postsData, 'Post', IconInbox),
+          ].map((item, idx) => {
+            const { icon: Icon } = item || {};
+
             return (
               <Grid.Col key={idx} span={{ base: 12, xs: 12, lg: 4, sm: 6 }}>
                 <Card
@@ -46,12 +89,12 @@ const AdminPage = () => {
                   withBorder
                   className='delay-50 hover:scale-102 flex cursor-pointer flex-row items-center justify-evenly gap-x-8 border-solid transition duration-300 ease-in-out hover:-translate-y-1 hover:border hover:bg-[#f2fbf6]'
                 >
-                  <IconBrandAmongUs size={54} />
+                  <Icon size={54} className='text-gray-400' />
                   <div className='flex flex-1 flex-col items-center gap-y-2'>
-                    <CountUp key={idx} start={0} end={100} delay={0}>
+                    <CountUp key={idx} start={0} end={item.count} delay={0}>
                       {({ countUpRef }) => <span className='text-4xl font-bold' ref={countUpRef} />}
                     </CountUp>
-                    <span className='text-base font-semibold text-gray-500'>{item}</span>
+                    <span className='text-base font-semibold uppercase text-gray-500'>{item.title}</span>
                   </div>
                 </Card>
               </Grid.Col>

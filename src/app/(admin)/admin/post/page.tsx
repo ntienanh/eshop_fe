@@ -1,7 +1,5 @@
 'use client';
 
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, Input, Modal, Space, Table, Tooltip } from 'antd';
 import axios from 'axios';
@@ -9,21 +7,21 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-const Skills = () => {
+const Post = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
 
   const { control, handleSubmit, reset, setValue } = useForm({
-    defaultValues: { id: '', name: '', images: [], product_details: [] },
+    defaultValues: { id: '', title: '', images: [], product_details: [] },
   });
 
-  const skillsData = useQuery({
-    queryKey: ['skills'],
-    queryFn: () => axios.get('http://localhost:1337/api/skills?populate=*').then(res => res.data),
+  const postsData = useQuery({
+    queryKey: ['posts'],
+    queryFn: () => axios.get('http://localhost:1337/api/posts?populate=*').then(res => res.data),
   });
 
-  const dataSource = skillsData?.data?.data?.map((item: any) => {
+  const dataSource = postsData?.data?.data?.map((item: any) => {
     const { id, attributes } = item;
     return { id, ...attributes };
   });
@@ -31,10 +29,10 @@ const Skills = () => {
   // Delete Mutations
   const deleteMutation = useMutation({
     mutationFn: (id: any) => {
-      return axios.delete(`http://localhost:1337/api/skills/${id}`);
+      return axios.delete(`http://localhost:1337/api/posts/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
@@ -42,31 +40,26 @@ const Skills = () => {
   const updateMutation = useMutation({
     mutationFn: (body: any) => {
       const { id, ...data } = body;
-      return axios.put(`http://localhost:1337/api/skills/${id}`, { data });
+      return axios.put(`http://localhost:1337/api/posts/${id}`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
   // Create Mutations
   const createMutation = useMutation({
     mutationFn: (data: any) => {
-      return axios.post(`http://localhost:1337/api/skills`, { data });
+      return axios.post(`http://localhost:1337/api/posts`, { data });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['skills'] });
-      notifications.show({
-        message: `Create successfully`,
-        color: 'green',
-        icon: <IconCheck size='1.1rem' />,
-      });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
-    { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Name', dataIndex: 'title', key: 'title' },
     {
       title: 'Created At',
       dataIndex: 'createdAt',
@@ -91,7 +84,7 @@ const Skills = () => {
                 onClick={() => {
                   setIsEdit(true);
                   setValue('id', record.id);
-                  setValue('name', record.name);
+                  setValue('title', record.name);
                   setValue('images', record.images);
                   setValue('product_details', record?.product_details);
                   setIsModalOpen(true);
@@ -141,14 +134,14 @@ const Skills = () => {
   return (
     <div className='flex flex-col gap-5 p-6'>
       <div className='flex items-center justify-between'>
-        <p className='text-[32px] font-medium uppercase'>Kĩ năng</p>
+        <p className='text-[32px] font-medium uppercase'>Địa điểm</p>
 
         <Button type='primary' onClick={showModal}>
           Tạo mới
         </Button>
 
         <Modal
-          title={isEdit ? 'Chỉnh sửa sản phẩm' : 'Tạo mới sản phẩm'}
+          title={isEdit ? 'Chỉnh sửa địa điểm' : 'Tạo mới địa điểm'}
           open={isModalOpen}
           onOk={handleSubmit(onSubmit)}
           onCancel={handleCancel}
@@ -156,7 +149,7 @@ const Skills = () => {
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
             <Controller
               control={control}
-              name='name'
+              name='title'
               render={({ field: { onChange, value }, fieldState: { error } }) => {
                 return (
                   <div>
@@ -178,4 +171,4 @@ const Skills = () => {
   );
 };
 
-export default Skills;
+export default Post;

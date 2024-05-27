@@ -20,7 +20,7 @@ const AvatarBadge = (props: IAvatarBadgeProps) => {
     <div className='relative inline-block'>
       <Avatar src={user?.image} alt='no image here' />
       <Badge
-        className='absolute top-0 right-[-8px]'
+        className='absolute right-[-8px] top-0'
         size='xs'
         circle
         color={status === 'Offline' || !isActive ? 'gray' : 'green'}

@@ -1,21 +1,7 @@
-import { JobType, Position } from '@/types/enum';
-import { Avatar } from '@mantine/core';
-import { IconArrowRight, IconBellFilled, IconChevronDown, IconSearch, IconUserCircle } from '@tabler/icons-react';
-import React from 'react';
+'use client';
 
-const listHeaderItems = [
-  {
-    name: 'Việc làm IT',
-    subItem: [
-      { name: 'By Levels', subsubItem: [{ name: 'Subsub1', link: '1111' }] },
-      { name: 'By Jobs Type', subsubItem: [{ name: 'Subsub2', link: '2222' }] },
-    ],
-  },
-  {
-    name: 'Công ty IT',
-    subItem: [],
-  },
-];
+import { JobType, Position } from '@/types/enum';
+import { IconArrowRight, IconChevronDown, IconSearch } from '@tabler/icons-react';
 
 const listLevels = [
   { name: Position.Intern, href: '/jobs/intern' },
@@ -31,7 +17,6 @@ const listLevels = [
 const listTypes = [
   { name: JobType.Hybird, href: '/jobs/hybird' },
   { name: JobType.Office, href: '/jobs/office' },
-  { name: JobType.Oversea, href: '/jobs/oversea' },
   { name: JobType.Remote, href: '/jobs/remote' },
 ];
 
@@ -45,12 +30,17 @@ const listLocation = [
 const listSkills = [
   { name: 'Javascript', href: '/jobs/javascript' },
   { name: 'Java', href: '/jobs/java' },
-  { name: '.NET', href: '/jobs/net' },
   { name: 'C#', href: '/jobs/csharp' },
+  { name: 'Java', href: '/jobs/csharp' },
   { name: 'PHP', href: '/jobs/php' },
   { name: 'Python', href: '/jobs/python' },
+  { name: 'Mobile', href: '/jobs/python' },
   { name: 'Tester', href: '/jobs/tester' },
-  { name: 'Mobile', href: '/jobs/mobile' },
+  { name: 'BusinessAnalyst', href: '/jobs/python' },
+  { name: 'Nextjs', href: '/jobs/python' },
+  { name: 'Reactjs', href: '/jobs/python' },
+  { name: 'Vuejs', href: '/jobs/python' },
+  { name: 'Angularjs', href: '/jobs/python' },
 ];
 
 const HeaderGuest = () => {
@@ -59,7 +49,7 @@ const HeaderGuest = () => {
       <div className='mx-auto flex h-full max-w-[1536px] items-center justify-between px-4 md:px-0'>
         <div className='flex items-center gap-x-4'>
           <div className='cursor-pointer p-7 pl-0'>
-            <img src={'./images/logo.png'} alt='img' className='h-[80px] w-[200px]' />
+            <img src={'./images/logo.png'} alt='img' className='h-[54px] w-[200px]' />
           </div>
 
           <div className='group relative flex cursor-pointer gap-x-2 p-7 font-bold capitalize hover:text-red-600 '>
@@ -160,11 +150,11 @@ const HeaderGuest = () => {
           <div className='cursor-pointer p-7 font-bold capitalize hover:text-red-600'>Công ty IT</div>
         </div>
 
-        <div className='flex items-center gap-x-4'>
+        {/* <div className='flex items-center gap-x-4'>
           <p className='cursor-pointer hover:text-red-600'>EN</p>
           <p>|</p>
           <p className='cursor-pointer hover:text-red-600'>VI</p>
-        </div>
+        </div> */}
       </div>
     </header>
   );
